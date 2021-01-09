@@ -1,0 +1,32 @@
+// Utilities
+@import "../../variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+
+.events-box {
+    text-align: left;
+    padding: 20px;
+    border: 1px solid $color1;
+    border-radius: 20px;
+    .events-img {
+        @include media-breakpoint-up(lg) { 
+            @include img-container(110px, 'cover');
+        }
+        @include media-breakpoint-up(xl) { 
+            @include img-container(77%, 'cover');
+        }
+        margin: 10px 0;
+        img {
+        }
+    }
+    .events-sum {
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+    .events-date {
+        color: $color2;
+        margin-top: 20px;
+    }
+}

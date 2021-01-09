@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './inheritance/css/style.css';
+import './custom.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
@@ -15,3 +17,40 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+let fullscreenWidth = document.getElementsByClassName('fullscreen-width');
+// for (let elm of fullscreenWidth) {
+//   elm.style.cssText = "position: relative; width: 100vw;";
+// }
+
+// function initialize () {
+//   for (let elm of fullscreenWidth) {
+//     // console.log(elm);
+//     let rect = elm.getBoundingClientRect();
+//     let marginLeft = rect.left + 0;
+//     elm["marginLeft"] = marginLeft;
+//   }
+// }
+
+function resize() {
+  for (let elm of fullscreenWidth) {
+    elm.style.cssText = 'position: static;';
+    let viewWidth = document.body.clientWidth;
+    let rect = elm.getBoundingClientRect();
+    let marginLeft = rect.left + 0;
+
+    elm.style.cssText = "width: " + viewWidth + "px; margin-left: -" + marginLeft + "px;";
+    // console.log(elm);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  // console.log('DOM fully loaded and parsed');
+  // initialize ();
+  resize();
+});
+
+window.onresize = () => {
+  // console.log('window resized');
+  resize();
+}

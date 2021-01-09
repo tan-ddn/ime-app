@@ -1,0 +1,17 @@
+// Utilities
+@import "../../variables";
+// @import "~bootstrap";
+
+
+.team-carousel {
+    margin: -12px;
+    .slick-slider {
+        .slick-slide {
+            & > div {
+                display: flex;
+                padding: 12px;
+            }
+        }
+    }
+    
+}
