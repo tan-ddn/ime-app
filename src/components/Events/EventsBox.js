@@ -17,6 +17,8 @@ export default class EventsBox extends Component {
                     </ul>
                 </div>
                 <a className="anchor-style1" href="">Read More &#187;</a> 
+                <div className="events-date">
+                </div> 
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ import EventsBox from './Events/EventsBox';
 import TeamCarousel from './Team/TeamCarousel';
 import LatestPublications from './Publications/LatestPublications';
 import ResearchAreas from './Research/ResearchAreas';
+import LatestProjects from './Research/LatestProjects';
 
 const newsBoxes = [
   {
@@ -23,7 +24,37 @@ const newsBoxes = [
       image: process.env.PUBLIC_URL + '/img/news/battery_recycling.png',
       date: '29.10.2019'
   },
-]
+];
+const assets = [
+  {
+    title: 'IME-Society',
+    description: 'RemovAl-Removing the Waste Streams from the Primary Aluminum Production and Other Metal Sectrosin Europe ...',
+    button: 'see more',
+    buttonUrl: '',
+    image: process.env.PUBLIC_URL + '/img/social/dsc06366_id_8980.jpg'
+  },
+  {
+    title: 'Excursions',
+    description: 'The IME organizes several excursions yearly. Beside of one-day excursions, ...',
+    button: 'see more',
+    buttonUrl: '',
+    image: process.env.PUBLIC_URL + '/img/social/gruppenfoto_bri_id_6191.jpg'
+  },
+  {
+    title: 'Network & Partners',
+    description: 'We have an extensive network of partners. These include i...',
+    button: 'see more',
+    buttonUrl: '',
+    image: process.env.PUBLIC_URL + '/img/partners/ntua_id_8109.jpg'
+  },
+  {
+    title: 'Now in Instagram',
+    description: '',
+    button: 'see more',
+    buttonUrl: '',
+    image: process.env.PUBLIC_URL + ''
+  }
+];
 
 export default class MainContent extends Component {
   render() {
@@ -137,11 +168,24 @@ export default class MainContent extends Component {
             </div>
             <div id="latest-projects" className="py-3">
               <h2 className="heading">Latest Added Projects</h2>
-              
+              <LatestProjects />
             </div>
-            <div id="social-assets" className="py-3">
+            <div id="social-assets" className="py-3 pb-5">
               <h2 className="heading">Social Assets</h2>
-              
+              <div className="row">
+                <div className="col-3">
+                  <NewsBox classNames="style2" height="440px" content={assets[0]} date="0"/>
+                </div>
+                <div className="col-3">
+                  <NewsBox classNames="style2" height="440px" content={assets[1]} date="0"/>
+                </div>
+                <div className="col-3">
+                  <NewsBox classNames="style2" height="440px" content={assets[2]} date="0" image="contain"/>
+                </div>
+                <div className="col-3">
+                  <NewsBox classNames="style2" height="440px" content={assets[3]} date="0"/>
+                </div>
+              </div>
             </div>
         </div>
     )

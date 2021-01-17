@@ -4,21 +4,25 @@ import '../Scss/box.scss';
 export default class NewsBox extends Component {
     
   render() {
+    let classText = "events-box " + this.props.classNames;
+    console.log(classText);
+    let imageClass = "events-img " + this.props.image;
     return (
-        // {let content = this.props.content}
-        <div id="events" className="events-box" style={{height: `${this.props.height}`}}>
+        <div id="events" className={classText} style={{height: `${this.props.height}`}}>
             <div className="events-wrapper">
                 <h5 className="box-title">{this.props.content.title}</h5>
-                <div className="events-img">
+                <div className={imageClass}>
                     <img src={this.props.content.image} alt="" />
                 </div>
                 <div className="events-sum">
                     {this.props.content.description}
                 </div>
-                <a className="anchor-style1" href="">Read More &#187;</a>
+                <a className="anchor-style1" href="">{this.props.content.button} &#187;</a>
+                {this.props.date != '0' &&
                 <div className="events-date">
                     {this.props.content.date}
                 </div> 
+                }
             </div>
         </div>
     )

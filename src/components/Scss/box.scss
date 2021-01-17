@@ -6,27 +6,95 @@
 
 
 .events-box {
+    font-size: .95em;
     text-align: left;
     padding: 20px;
     border: 1px solid $color1;
     border-radius: 20px;
+    .events-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        height: 100%;
+    }
+    .box-title {
+        min-height: 2.4em;
+    }
     .events-img {
         @include media-breakpoint-up(lg) { 
             @include img-container(110px, 'cover');
         }
         @include media-breakpoint-up(xl) { 
-            @include img-container(77%, 'cover');
+            @include img-container(70%, 'cover');
         }
         margin: 10px 0;
+        &.contain {
+            @include media-breakpoint-up(lg) { 
+                @include img-container(110px, 'contain');
+            }
+            @include media-breakpoint-up(xl) { 
+                @include img-container(70%, 'contain');
+            }
+        }
         img {
         }
     }
     .events-sum {
         font-size: 1.1em;
         line-height: 1.6;
+        display: inline-flex;
+        flex-grow: 1;
     }
     .events-date {
         color: $color2;
-        margin-top: 20px;
+        min-height: 1.5em;
+        margin-top: 10px;
+    }
+    &.style2 {
+        .box-title {
+            color: $color1;
+            font-weight: 400;
+            text-align: center;
+            min-height: 1.2em;
+        }
+        .anchor-style1 {
+            font-size: 1.4em;
+            text-align: center;
+            margin: 0;
+            border: 0;
+        }
+    }
+}
+
+//For slider
+.box-slider {
+    .slick-slider {
+        padding: 0 20px;
+        .slick-prev {
+            left: 0;
+        }
+        .slick-next {
+            right: 0;
+        }
+    }
+    .slick-track {
+        display: flex;
+        align-items: stretch;
+        .slick-slide {
+            display: inline-flex;
+            float: none;
+            height: auto;
+            padding: 10px;
+            & > div {
+                height: 100%;
+            }
+            .events-box {
+                height: 100%;
+                // min-height: 500px;
+                .box-title {
+                    min-height: 3.8em;
+                }
+            }
+        }
     }
 }
