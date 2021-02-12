@@ -11,7 +11,7 @@ export default class MainContent extends Component {
           </div>
             <div className="wrapper">
                 <div className="image">
-                    <img src={process.env.PUBLIC_URL + '/img/home-slider/160316-IME-383.jpg'} alt="" />
+                    <img src={process.env.PUBLIC_URL + '/img/home-slider/160316-IME-383_e.jpg'} alt="" />
                 </div>
             </div>
         </div>

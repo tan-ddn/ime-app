@@ -6,12 +6,13 @@ import TeamCarousel from './Team/TeamCarousel';
 import LatestPublications from './Publications/LatestPublications';
 import ResearchAreas from './Research/ResearchAreas';
 import LatestProjects from './Research/LatestProjects';
+import InstaBox from './Instagram/InstaBox';
 
 const newsBoxes = [
   {
       title: 'News I',
       description: 'Starting this year, the Aurubis-Award for excellent Master\'s theses with a grade of at least 1.3 will...',
-      button: 'Read More',
+      button: 'Read More &#187;',
       buttonUrl: '',
       image: process.env.PUBLIC_URL + '/img/news/LiMCA_photo.jpg',
       date: '05.03.2020'
@@ -19,7 +20,7 @@ const newsBoxes = [
   {
       title: 'News II',
       description: 'A camera team from the german TV channel “Deutsche Welle” got an insight into the research...',
-      button: 'Read More',
+      button: 'Read More &#187;',
       buttonUrl: '',
       image: process.env.PUBLIC_URL + '/img/news/battery_recycling.png',
       date: '29.10.2019'
@@ -29,28 +30,33 @@ const assets = [
   {
     title: 'IME-Society',
     description: 'RemovAl-Removing the Waste Streams from the Primary Aluminum Production and Other Metal Sectrosin Europe ...',
-    button: 'see more',
+    button: 'see more &#187;',
     buttonUrl: '',
     image: process.env.PUBLIC_URL + '/img/social/dsc06366_id_8980.jpg'
   },
   {
     title: 'Excursions',
     description: 'The IME organizes several excursions yearly. Beside of one-day excursions, ...',
-    button: 'see more',
+    button: 'see more &#187;',
     buttonUrl: '',
     image: process.env.PUBLIC_URL + '/img/social/gruppenfoto_bri_id_6191.jpg'
   },
   {
     title: 'Network & Partners',
     description: 'We have an extensive network of partners. These include i...',
-    button: 'see more',
+    button: 'see more &#187;',
     buttonUrl: '',
-    image: process.env.PUBLIC_URL + '/img/partners/ntua_id_8109.jpg'
+    image: [process.env.PUBLIC_URL + '/img/partners/ntua_id_8109.jpg',
+      process.env.PUBLIC_URL + '/img/partners/donetsk_id_5582.jpg', 
+      process.env.PUBLIC_URL + '/img/partners/university_of_b_id_8947.jpg',
+      process.env.PUBLIC_URL + '/img/partners/maeribor_id_1324.png',
+      process.env.PUBLIC_URL + '/img/partners/istaenbul_id_5059.jpg',
+      process.env.PUBLIC_URL + '/img/partners/ntnu_w_id_3627.png']
   },
   {
     title: 'Now in Instagram',
     description: '',
-    button: 'see more',
+    button: 'see more &#187;',
     buttonUrl: '',
     image: process.env.PUBLIC_URL + ''
   }
@@ -76,13 +82,13 @@ export default class MainContent extends Component {
                         <NewsBox height="500px" content={newsBoxes[1]}/>
                       </div>
                       <div className="col-4">
-                        <EventsBox height="500px"/>
+                        <EventsBox height="500px" />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+              <div className="pt-4 text-center"><a className="btn btn-primary">View All News</a></div>
               {/* <article className="news-article">
                 <div className="row no-gutters">
                   <div className="col-3">
@@ -183,7 +189,7 @@ export default class MainContent extends Component {
                   <NewsBox classNames="style2" height="440px" content={assets[2]} date="0" image="contain"/>
                 </div>
                 <div className="col-3">
-                  <NewsBox classNames="style2" height="440px" content={assets[3]} date="0"/>
+                  <InstaBox classNames="style2" height="440px" content={assets[3]} date="0"/>
                 </div>
               </div>
             </div>

@@ -18,6 +18,9 @@ export default class HeaderNav extends Component {
               <a className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-1" tabIndex={0} aria-expanded="false" role="button" data-href="/cms/Materialwissenschaft-und-Werkstofftechni/~kvt/Studium/lidx/1/">About Us</a>
             </li>
             <li className="rwth_jsopen">
+              <a className="panel" title="Team (Main Navigation)" aria-controls="nav-section-5" tabIndex={0} aria-expanded="false" role="button" data-href="#">Team</a>
+            </li>
+            <li className="rwth_jsopen">
               <a className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={0} aria-expanded="false" role="button" data-href="#">Research</a>
             </li>
             <li className="rwth_jsopen">
@@ -26,12 +29,12 @@ export default class HeaderNav extends Component {
             <li className="rwth_jsopen">
               <a className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={0} aria-expanded="false" role="button" data-href="#">Study</a>
             </li>
-            <li className="rwth_jsopen">
+            {/* <li className="rwth_jsopen">
               <a className="panel" title="Network (Main Navigation)" aria-controls="nav-section-5" tabIndex={0} aria-expanded="false" role="button" data-href="#">Network</a>
             </li>
             <li className="rwth_jsopen">
               <a className="panel" title="Association (Main Navigation)" aria-controls="nav-section-6" tabIndex={0} aria-expanded="false" role="button" data-href="#">Association</a>
-            </li>
+            </li> */}
           </ol>
           <ol className="toc style3 ml-4">
             <li id="nav-icons">
