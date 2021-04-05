@@ -1,80 +1,153 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link, withRouter } from "react-router-dom";
+import ResponsiveComponent from './ResponsiveComponent';
+// import MainNavToggle from './MainNavToggle';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default class HeaderNav extends Component {
+export default class HeaderNav extends ResponsiveComponent {
+  constructor(props) {
+      super(props);
+      this.state = {
+          clicked: false,
+          className: this.props.className + ' vertical'
+      };
+      this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+      this.setState({clicked: !(this.state.clicked)});
+      if (this.state.clicked) {
+        this.state.className = this.state.className.replaceAll(' active', ' ');
+      } else {
+        this.state.className += ' active';
+      }
+  }
+
   render() {
+    // let mobileNav;
+    // switch (this.state.screenSize) {
+    //   case 'xs':
+    //   case 'sm':
+    //   case 'md':
+    //     mobileNav = true;
+    //     break;
+    //   default:
+    //     mobileNav = false;
+    //     break;
+    // }
+    // if (mobileNav) this.state.className += ' mobile-nav';
+
+    // var orientation = this.state.screenOrientation;
+    // console.log('Screen orientation: '+orientation);
+    // this.state.className += ' ' + orientation;
+    if (this.state.screenOrientation === 'horizontal') {
+      this.state.className = this.state.className.replaceAll(' vertical', ' horizontal');
+    } else {
+      this.state.className = this.state.className.replaceAll(' horizontal', ' vertical');
+    }
+
     return (
-      <div id="nav-global" role="navigation" className="has-subnav">
+      <div id={this.props.id} role="navigation" className={this.state.className}>
         {/* <div className="ime-logo-container">
           <div className="ime-logo">
             <img src={process.env.PUBLIC_URL + '/img/ime_icon.png'} />
           </div>
         </div> */}
         <h2>Navigation</h2>
-        {/* <div className="nav-global-toc"> */}
+        <div className="nav-toggle" onClick={this.handleClick}>
+          <FontAwesomeIcon icon="bars" />
+          <FontAwesomeIcon icon="times" />
+        </div>
+        {/* <MainNavToggle/> */}
         <div className="nav-global-main d-flex align-items-stretch justify-content-end">
           
           <ol className="toc style2">
             <li className="rwth_jsopen">
-              <a className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-1" tabIndex={0} aria-expanded="false" role="button" data-href="/cms/Materialwissenschaft-und-Werkstofftechni/~kvt/Studium/lidx/1/">About Us</a>
+              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="/cms/Materialwissenschaft-und-Werkstofftechni/~kvt/Studium/lidx/1/">About Us</Link>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Team (Main Navigation)" aria-controls="nav-section-5" tabIndex={0} aria-expanded="false" role="button" data-href="#">Team</a>
+              <a className="panel" title="Team (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">Team</a>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={0} aria-expanded="false" role="button" data-href="#">Research</a>
+              <a className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Research</a>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-3" tabIndex={0} aria-expanded="false" role="button" data-href="#">Equipment</a>
+              <a className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Equipment</a>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={0} aria-expanded="false" role="button" data-href="#">Study</a>
+              <a className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Study</a>
+            </li>
+            {this.props.type === 'mobile-nav' && <>
+            <li className="rwth_jsopen">
+              <a className="panel" title="News (Main Navigation)" aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">News</a>
             </li>
             {/* <li className="rwth_jsopen">
-              <a className="panel" title="Network (Main Navigation)" aria-controls="nav-section-5" tabIndex={0} aria-expanded="false" role="button" data-href="#">Network</a>
+              <a className="panel" title="Our Team (Main Navigation)" aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">Our Team</a>
+            </li> */}
+            <li className="rwth_jsopen">
+              <a className="panel" title="Publications (Main Navigation)" aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">Publications</a>
+            </li>
+            {/* <li className="rwth_jsopen">
+              <a className="panel" title="Research Areas (Main Navigation)" aria-controls="nav-section-8" tabIndex={8} aria-expanded="false" role="button" data-href="#">Research Areas</a>
+            </li> */}
+            <li className="rwth_jsopen">
+              <a className="panel" title="Public Funded Projects (Main Navigation)" aria-controls="nav-section-9" tabIndex={9} aria-expanded="false" role="button" data-href="#">Public Funded Projects</a>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Association (Main Navigation)" aria-controls="nav-section-6" tabIndex={0} aria-expanded="false" role="button" data-href="#">Association</a>
-            </li> */}
+              <a className="panel" title="Social Activities (Main Navigation)" aria-controls="nav-section-10" tabIndex={10} aria-expanded="false" role="button" data-href="#">Social Activities</a>
+            </li>
+            </>}
           </ol>
           <ol className="toc style3 ml-4">
             <li id="nav-icons">
                             <ul className="tools-menu header-right-menu">
                                 <li className="menu-item">
                                     <a href="contact" title="Contact">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/icon-347234_640.png'} />
+                                    <img alt="Contact icon" src={process.env.PUBLIC_URL + '/img/icons/icon-347234_640.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item" title="Imprint">
                                     <a href="imprint">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/information-1481584_640.png'} />
+                                    <img alt="Imprint icon" src={process.env.PUBLIC_URL + '/img/icons/information-1481584_640.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item" title="Language">
                                     <a href="language">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/flag_usa.png'} />
+                                    <img alt="Language icon" src={process.env.PUBLIC_URL + '/img/icons/flag_usa.png'} />
+                                    </a>
+                                </li>
+                                <li className="menu-item" title="Staff login">
+                                    <a href="login">
+                                    <img alt="Login icon" src={process.env.PUBLIC_URL + '/img/icons/avatar-1577909_640.png'} />
                                     </a>
                                 </li>
                             </ul>
                             <ul className="social-menu header-right-menu">
                                 <li className="menu-item">
-                                    <a href="instagram" title="Instagram">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/132px-Instagram.png'} />
+                                    <a target="_blank" href="researchgate" title="ResearchGate">
+                                    <img alt="ResearchGate icon" src={process.env.PUBLIC_URL + '/img/icons/rg_logo.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a href="researchgate" title="ResearchGate">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/rg_logo.png'} />
+                                    <a target="_blank" href="wiki" title="Wikipedia">
+                                    <img alt="Wikipedia icon" src={process.env.PUBLIC_URL + '/img/icons/120px-wikipedia.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a href="wiki" title="Wikipedia">
-                                    <img src={process.env.PUBLIC_URL + '/img/icons/120px-wikipedia.png'} />
+                                    <a target="_blank" href="linkedin" title="LinkedIn">
+                                    <img alt="LinkedIn icon" src={process.env.PUBLIC_URL + '/img/icons/LinkedIn2.png'} />
+                                    </a>
+                                </li>
+                                <li className="menu-item">
+                                    <a target="_blank" href="instagram" title="Instagram">
+                                    <img alt="Instagram icon" src={process.env.PUBLIC_URL + '/img/icons/132px-Instagram.png'} />
                                     </a>
                                 </li>
                             </ul> 
             </li>
           </ol>
         </div>
+        {this.props.type !== 'mobile-nav' && <>
         <div className="nav-global-inner" style={{clear: 'both'}}>
           <div className="nav-global-group">
             <div className="nav-global-wrapper" style={{display: 'none'}}>
@@ -425,7 +498,13 @@ export default class HeaderNav extends Component {
             </div>
           </div>  
         </div>
+        </>}
       </div>
     )
   }
 }
+
+HeaderNav.defaultProps = {
+  id: 'nav-global',
+  className: 'has-subnav'
+};

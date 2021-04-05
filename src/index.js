@@ -18,39 +18,40 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-let fullscreenWidth = document.getElementsByClassName('fullscreen-width');
-// for (let elm of fullscreenWidth) {
-//   elm.style.cssText = "position: relative; width: 100vw;";
-// }
+// let fullscreenWidth = document.getElementsByClassName('fullscreen-width');
 
-// function initialize () {
+// // for (let elm of fullscreenWidth) {
+// //   elm.style.cssText = "position: relative; width: 100vw;";
+// // }
+
+// // function initialize () {
+// //   for (let elm of fullscreenWidth) {
+// //     // console.log(elm);
+// //     let rect = elm.getBoundingClientRect();
+// //     let marginLeft = rect.left + 0;
+// //     elm["marginLeft"] = marginLeft;
+// //   }
+// // }
+
+// function resize() {
 //   for (let elm of fullscreenWidth) {
-//     // console.log(elm);
+//     elm.style.cssText = 'position: static;';
+//     let viewWidth = document.body.clientWidth;
 //     let rect = elm.getBoundingClientRect();
 //     let marginLeft = rect.left + 0;
-//     elm["marginLeft"] = marginLeft;
+
+//     elm.style.cssText = "width: " + viewWidth + "px; margin-left: -" + marginLeft + "px;";
+//     // console.log(elm);
 //   }
 // }
 
-function resize() {
-  for (let elm of fullscreenWidth) {
-    elm.style.cssText = 'position: static;';
-    let viewWidth = document.body.clientWidth;
-    let rect = elm.getBoundingClientRect();
-    let marginLeft = rect.left + 0;
+// document.addEventListener('DOMContentLoaded', (event) => {
+//   // console.log('DOM fully loaded and parsed');
+//   // initialize ();
+//   resize();
+// });
 
-    elm.style.cssText = "width: " + viewWidth + "px; margin-left: -" + marginLeft + "px;";
-    // console.log(elm);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-  // console.log('DOM fully loaded and parsed');
-  // initialize ();
-  resize();
-});
-
-window.onresize = () => {
-  // console.log('window resized');
-  resize();
-}
+// window.onresize = () => {
+//   // console.log('window resized');
+//   resize();
+// }

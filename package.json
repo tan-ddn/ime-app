@@ -1,8 +1,11 @@
 {
   "name": "ime-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@glideapps/glide-data-grid": "^2.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -14,7 +17,10 @@
     "react": "^16.13.1",
     "react-animated-slider": "^1.1.4",
     "react-dom": "^16.13.1",
+    "react-pdf": "^5.2.0",
+    "react-responsive": "^8.2.0",
     "react-responsive-carousel": "^3.2.11",
+    "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-slick": "^0.27.13",

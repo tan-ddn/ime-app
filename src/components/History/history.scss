@@ -1,0 +1,112 @@
+// Utilities
+@import "../../variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$marker_size: 38px;
+$text_bg: rgba(gray, .2);
+
+.history {
+    .timeline-wrapper {
+        .timeline-main {
+            .item {
+                position: relative;
+                z-index: 1;
+                padding: 15px 0;
+                display: flex;
+                flex: auto 1 1;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    z-index: -1;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    width: 2px;
+                    background-color: rgba($color1, .4);
+                }
+                &:first-child::before {
+                    top: 50%;
+                }
+                &:last-child::before {
+                    bottom: 50%;
+                }
+                .timeline-marker {
+                    color: $color1;
+                    text-align: center;
+                    width: 90px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .icon {
+                        color: #fff;
+                        width: $marker_size;
+                        height: $marker_size;
+                        line-height: $marker_size;
+                        text-align: center;
+                        border-radius: 5px;
+                        background-color: $color1;
+                    }
+                }
+                .timeline-date {
+                    width: 50%;
+                    padding: 0 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    .date {
+                        color: $color1;
+                        font-size: 1.2em;
+                        font-weight: 700;
+                        text-align: center;
+                    }
+                    .pic {
+                    }
+                }
+                .timeline-content {
+                    width: 50%;
+                    padding: 20px 30px;
+                    border-radius: 5px;
+                    background-color: $text_bg;
+                    position: relative;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        right: 100%;
+                        width: 0;
+                        height: 0;
+                        margin: auto;
+                        border-top: $marker_size/2 solid transparent;
+                        border-bottom: $marker_size/2 solid transparent;        
+                        border-right: $marker_size/2 solid $text_bg;
+                    }
+                    .title {
+                        color: $color1;
+                        font-weight: 700;
+                        padding-bottom: .5rem;
+                    }
+                }
+                &:nth-child(2n+1) {
+                    flex-direction: row-reverse;
+                    .timeline-date {
+                        align-items: flex-start;
+                    }
+                    .timeline-content {
+                        &:after {
+                            left: 100%;
+                            border-left: $marker_size/2 solid $text_bg;      
+                            border-right: none;            
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

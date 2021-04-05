@@ -25,7 +25,7 @@ export default class Box extends Component {
         return (
             <div id="events" className={classText} style={{height: `${this.props.height}`}}>
                 <div className="events-wrapper">
-                    {this.props.titleSize == 'small'
+                    {this.props.titleSize === 'small'
                         ? <h6 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
                         : <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
                     }
@@ -36,16 +36,16 @@ export default class Box extends Component {
                     : 
                     <Slider {...settings} className="box-img-slider">
                             {this.state.content.image.map((item, index) => (
-                                <div className="slide-img partner-logo" >
+                                <div key={index} className="slide-img partner-logo" >
                                     <img src={item} alt="" />
                                 </div>
                             ))}
                     </Slider>
                     }
                     <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
-                    <a className="anchor-style1" href="" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
-                    {this.state.date != '0' &&
-                    <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
+                    <a className="anchor-style1" href="#" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
+                    {this.state.content.date !== '' &&
+                        <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
                     }
                 </div>
             </div>

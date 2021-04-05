@@ -1,6 +1,8 @@
 // Utilities
 @import "../../variables";
-
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
 .news-slider{
   .slider {
@@ -23,7 +25,7 @@
     .slider-content {
         text-align: center;
         .inner {
-            padding: 0 70px;
+            padding: 20px;
             box-sizing: border-box;
             position: absolute;
             width: 100%;
@@ -41,6 +43,7 @@
                 }
             }
             .title {
+                font-size: 2em;
                 font-weight: 600;
                 margin: 0 auto;
                 max-width: 840px;
@@ -48,7 +51,7 @@
             }
             .article-text {
                 color: #FFFFFF;
-                font-size: 1.2em;
+                font-size: 1em;
                 line-height: 1.4;
                 margin: 30px auto 30px;
                 max-width: 640px;
@@ -84,9 +87,8 @@
     }
   }
 }
-  
-
-  
+ 
+// Responsiveness
   @media (max-height: 500px) {
     .slider-wrapper, .slide {
       height: calc(100vh - 75px);

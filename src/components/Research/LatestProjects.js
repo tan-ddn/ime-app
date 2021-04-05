@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
+// import { useMediaQuery } from 'react-responsive';
+import ResponsiveComponent from '../ResponsiveComponent';
 import Box from '../Box';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
@@ -81,54 +83,74 @@ const areas = [
     },
 ]
 
-export default class LatestProjects extends Component {
-  render() {
-    const settings = {
-        centerMode: true,
-        centerPadding: '0px',
-        autoplay: true,
-        autoplaySpeed: 5000,
-        infinite: true,
-        slidesToShow: 4,
-        speed: 500,
-        dots: true,
-        slidesPerRow: 1
-    };
-    // const settings = {
-    //     dots: true,
-    //     infinite: true,
-    //     speed: 500,
-    //     slidesToShow: 5,
-    //     slidesToScroll: 2
-    // };
-    areas.forEach(function(elm) {
-        elm.description = elm.description.substring(0, 90)+'...';
-        return elm;
-    });
-    return (
-        <div id="" className="latest-projects box-slider" style={{height: `${this.props.height}`}}>
-            <Slider {...settings}>
-                {areas.map((item, index) => (
-                <Box key={index} content={areas[index]} titleSize='small'/>
-                // <div key={index} className="events-box">
-                //     <div className="events-wrapper">
-                //         <h6 className="box-title">{item.title}</h6>
-                //         <div className="events-img">
-                //             <img src={item.image} alt="" />
-                //         </div>
-                //         <div className="events-sum">
-                //             {item.description.substring(0, 90)+'...'}
-                //         </div>
-                //         <a className="anchor-style1" href="">Read More &#187;</a>
-                //         <div className="events-date">
-                //             {item.date}
-                //         </div> 
-                //     </div>
+export default class LatestProjects extends ResponsiveComponent {
+    render() {
+        let noColumns;
+        switch (this.state.screenSize) {
+            case 'xl':
+            case 'lg':
+                noColumns = 4;
+                break;
+            case 'md':
+                noColumns = 3;
+                break;
+            case 'sm':
+                noColumns = 2;
+                break;
+            case 'xs':
+                noColumns = 1;
+                break;
+            default:
+                noColumns = 4;
+                break;
+        }
+        const settings = {
+            centerMode: true,
+            centerPadding: '0px',
+            autoplay: false,
+            // autoplay: true,
+            autoplaySpeed: 5000,
+            infinite: true,
+            slidesToShow: noColumns,
+            speed: 500,
+            dots: true,
+            slidesPerRow: 1
+        };
+        // const settings = {
+        //     dots: true,
+        //     infinite: true,
+        //     speed: 500,
+        //     slidesToShow: 5,
+        //     slidesToScroll: 2
+        // };
+        areas.forEach(function(elm) {
+            elm.description = elm.description.substring(0, 90)+'...';
+            return elm;
+        });
+        return (
+            <div id="" className="latest-projects box-slider" style={{height: `${this.props.height}`}}>
+                <Slider {...settings}>
+                    {areas.map((item, index) => (
+                    <Box key={index} content={areas[index]} titleSize='small'/>
+                    // <div key={index} className="events-box">
+                    //     <div className="events-wrapper">
+                    //         <h6 className="box-title">{item.title}</h6>
+                    //         <div className="events-img">
+                    //             <img src={item.image} alt="" />
+                    //         </div>
+                    //         <div className="events-sum">
+                    //             {item.description.substring(0, 90)+'...'}
+                    //         </div>
+                    //         <a className="anchor-style1" href="">Read More &#187;</a>
+                    //         <div className="events-date">
+                    //             {item.date}
+                    //         </div> 
+                    //     </div>
 
-                // </div>
-                ))}
-            </Slider>
-        </div>
-    )
-  }
+                    // </div>
+                    ))}
+                </Slider>
+            </div>
+        )
+    }
 }

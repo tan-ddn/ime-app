@@ -28,7 +28,7 @@ const publications = [
 export default class LatestPublications extends Component {
   render() {
     return (
-        <div id="" className="latest-publications" style={{height: `${this.props.height}`}}>
+        <div id="" className="latest-publications" style={{height: `${this.props.height}`, marginTop: '30px'}} >
             <table className="table table-sm0 table-striped table-hover table-responsive">
                 <thead className="thead-color1">
                     <tr>

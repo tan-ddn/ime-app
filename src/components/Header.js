@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link, withRouter } from "react-router-dom";
+import ResponsiveComponent from './ResponsiveComponent';
 import HeaderNav from './HeaderNav';
 
-export default class Header extends Component {
+export default class Header extends ResponsiveComponent {  
   render() {
     return (
         <div id="header" className="">
@@ -63,7 +65,7 @@ export default class Header extends Component {
                     </p>
                     <div className="ime-logo-container">
                     <div className="ime-logo">
-                        <img src={process.env.PUBLIC_URL + '/img/ime_logo.png'} />
+                        <Link to="/" ><img alt="IME logo" src={process.env.PUBLIC_URL + '/img/ime_logo.png'} /></Link>
                     </div>
                     </div>
                     {/* <div className="vertical-separator"></div>
@@ -78,10 +80,12 @@ export default class Header extends Component {
                     </div> */}
                     {/* <h2 id="logo-extension">Welcome to IME Process Metallurgy and Metal Recycling</h2> */}
                     <div className="vertical-separator">
-                        <img src={process.env.PUBLIC_URL + '/img/header_sep.png'} /></div>
+                        <img alt="logo separator" src={process.env.PUBLIC_URL + '/img/header_sep.png'} /></div>
                     <div className="ime-logo-container">
                     <div className="ime-logo">
-                        <img src={process.env.PUBLIC_URL + '/img/rwth_logo.png'} />
+                        <a rel="noopener noreferrer" target="_blank" href="https://www.rwth-aachen.de/go/id/a/?lidx=1">
+                            <img alt="RWTH logo" src={process.env.PUBLIC_URL + '/img/rwth_logo.png'} />
+                        </a>                        
                     </div>
                     </div>
                     {/* <div className="header-right">
@@ -95,8 +99,9 @@ export default class Header extends Component {
                 </div>
             </div>
         </div>
-        <HeaderNav/>
+        <HeaderNav id="nav-global"/>
         </div>
+        <HeaderNav id="mobile-nav-global" type="mobile-nav"/>
         </div>
     )
   }

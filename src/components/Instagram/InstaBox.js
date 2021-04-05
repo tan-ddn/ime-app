@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 // import '../Scss/box.scss';
 import Box from '../Box';
 

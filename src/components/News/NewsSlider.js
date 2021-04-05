@@ -31,7 +31,7 @@ const slides = [
 export default class NewsSlider extends Component {
   render() {
     return (
-        <div id="" className="news-slider" style={{height: `${this.props.height}`}}>
+        <div id="" className="news-slider" style={{height: `${this.props.height}`, margin: '15px 0'}}>
             <Slider autoplay={4000}
                 classNames={{
                     previousButton: 'hidden',
