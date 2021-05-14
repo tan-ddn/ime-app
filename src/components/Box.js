@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, useHistory, withRouter } from "react-router-dom";
 import './Scss/box.scss';
 import Slider from "react-slick";
 
@@ -44,7 +45,13 @@ export default class Box extends Component {
                             ))}
                     </Slider>
                     }
-                    <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
+                    {this.props.profile === '1'
+                        ? <div className="events-sum" >
+                            <h6 className="team-name"><Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link></h6>
+                            <div dangerouslySetInnerHTML={{__html: this.state.content.description}} />
+                            </div>
+                        : <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
+                    }                    
                     <a className="anchor-style1" href="#" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
                     {this.state.content.date !== '' &&
                         <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />

@@ -9,12 +9,13 @@ let groups = [
         'title': 'Direction of the Institute',
         'members': [
             {
+                'id': 29,
                 'name': 'Prof. Dr. Ing. Dr. h.c. Bernd Friedrich',
                 'tel': '+49 241 80 95850',
                 'fax': '+49 241 80 92154',
                 'email': 'bfriedrich@ime-aachen.de',
                 'img': process.env.PUBLIC_URL + '/img/team/bild12_id_5544.jpg',
-                'url': '#'
+                'url': '/team/29'
             },
             {
                 'name': 'Dr.-Ing. Alexander Birich',
@@ -122,10 +123,7 @@ export default class Team extends Component {
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-3">
-                                                <figure>
                                                     <img src={process.env.PUBLIC_URL + '/img/teaem_2020_web_id_8598.jpg'} alt="IME Team" />
-                                                    {/* <figcaption>Building of the IME</figcaption> */}
-                                                </figure>
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-9">
                                                     <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
@@ -137,7 +135,7 @@ export default class Team extends Component {
                                     <div id="staff" className="py-3">
                                         <h2 className="heading">Our Staff</h2>
                                         {this.state.groups.map((elm, index) => (
-                                            <TeamGroup group={elm} />
+                                            <TeamGroup key={index} group={elm} />
                                         ))}
                                     </div>
                                 </div>

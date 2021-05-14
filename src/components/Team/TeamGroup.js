@@ -21,9 +21,11 @@ export default class TeamGroup extends ResponsiveComponent {
         let boxContent = Array();
         this.state.group.members.forEach((elm, index) => {
             boxContent[index] = {
+                link: "/team/" + elm.id,
+                name: elm.name,
                 image: elm.img,
                 url: elm.url,
-                description: '<h6 class="team-name">' + elm.name + '</h6><p>Tel: ' + elm.tel + '<br/>Fax: ' + elm.fax + '<br/><a href="mailto:' + elm.email + '">' + elm.email + '</a></p>'
+                description: '<p>Tel: ' + elm.tel + '<br/>Fax: ' + elm.fax + '<br/><a href="mailto:' + elm.email + '">' + elm.email + '</a></p>'
             };
         });
         return(
@@ -31,8 +33,8 @@ export default class TeamGroup extends ResponsiveComponent {
                 <h4 className="box-title">{this.state.group.title}</h4>
                 <div className="row">
                     {boxContent.map((elm, index) => (
-                        <div className="col-12 col-lg-4 d-flex">
-                            <Box content={elm} classNames="team-box rounded bg-darkblue"/>
+                        <div key={index} className="col-12 col-lg-4 d-flex">
+                            <Box content={elm} classNames="team-box rounded bg-darkblue" profile="1" />                            
                         </div>
                     ))}
                 </div>

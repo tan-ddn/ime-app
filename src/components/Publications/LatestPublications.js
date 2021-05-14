@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './publications.scss';
+import PublicationTable from './PublicationTable';
 
 const publications = [
     {
@@ -28,45 +29,46 @@ const publications = [
 export default class LatestPublications extends Component {
   render() {
     return (
-        <div id="" className="latest-publications" style={{height: `${this.props.height}`, marginTop: '30px'}} >
-            <table className="table table-sm0 table-striped table-hover table-responsive">
-                <thead className="thead-color1">
-                    <tr>
-                    <th scope="col">Year</th>
-                    <th scope="col">Publications</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <th scope="row">{publications[0].year}</th>
-                    <td>
-                        <p className="tag">{publications[0].tag}</p>
-                        <h6 className="title">{publications[0].title}</h6>
-                        <p className="meta">{publications[0].metadata}</p>
-                        <p className="authors">{publications[0].authors}</p>
-                    </td>
-                    </tr>
-                    <tr>
-                    <th scope="row">{publications[1].year}</th>
-                    <td>
-                        <p className="tag">{publications[1].tag}</p>
-                        <h6 className="title">{publications[1].title}</h6>
-                        <p className="meta">{publications[1].metadata}</p>
-                        <p className="authors">{publications[1].authors}</p>
-                    </td>
-                    </tr>
-                    <tr>
-                    <th scope="row">{publications[2].year}</th>
-                    <td>
-                        <p className="tag">{publications[2].tag}</p>
-                        <h6 className="title">{publications[2].title}</h6>
-                        <p className="meta">{publications[2].metadata}</p>
-                        <p className="authors">{publications[2].authors}</p>
-                    </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <PublicationTable className="latest-publications" thead="1" publications={publications} height={this.props.height}/>
+        // <div id="" className="latest-publications" style={{height: `${this.props.height}`, marginTop: '30px'}} >
+        //     <table className="table table-sm0 table-striped table-hover table-responsive">
+        //         <thead className="thead-color1">
+        //             <tr>
+        //             <th scope="col">Year</th>
+        //             <th scope="col">Publications</th>
+        //             </tr>
+        //         </thead>
+        //         <tbody>
+        //             <tr>
+        //             <th scope="row">{publications[0].year}</th>
+        //             <td>
+        //                 <p className="tag">{publications[0].tag}</p>
+        //                 <h6 className="title">{publications[0].title}</h6>
+        //                 <p className="meta">{publications[0].metadata}</p>
+        //                 <p className="authors">{publications[0].authors}</p>
+        //             </td>
+        //             </tr>
+        //             <tr>
+        //             <th scope="row">{publications[1].year}</th>
+        //             <td>
+        //                 <p className="tag">{publications[1].tag}</p>
+        //                 <h6 className="title">{publications[1].title}</h6>
+        //                 <p className="meta">{publications[1].metadata}</p>
+        //                 <p className="authors">{publications[1].authors}</p>
+        //             </td>
+        //             </tr>
+        //             <tr>
+        //             <th scope="row">{publications[2].year}</th>
+        //             <td>
+        //                 <p className="tag">{publications[2].tag}</p>
+        //                 <h6 className="title">{publications[2].title}</h6>
+        //                 <p className="meta">{publications[2].metadata}</p>
+        //                 <p className="authors">{publications[2].authors}</p>
+        //             </td>
+        //             </tr>
+        //         </tbody>
+        //     </table>
+        // </div>
     )
   }
 }

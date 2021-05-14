@@ -33,7 +33,7 @@ export default class TopicGrid extends ResponsiveComponent {
                     {boxContent.map((elm, index) => (
                     //  {this.state.topics.map((elm, index) => (
                         <div className="col-12 col-lg-4 d-flex">
-                            <Box content={elm} classNames="topic-box rounded bg-darkblue"/>
+                            <Box key={index} content={elm} classNames="topic-box rounded bg-darkblue"/>
                         </div>
                     ))}
                 </div>

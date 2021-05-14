@@ -1,9 +1,8 @@
 // Utilities
 @import "../../variables";
 
-.latest-publications {
+.publications {
     table {
-        font-size: 80%;
         h1, h2, h3, h4, h5, h6, p {
             line-height: 1.4;
             margin: 0;
@@ -29,5 +28,37 @@
     }
     .authors {
         color: $color1;
+    }
+    &.latest-publications {
+        table {
+            font-size: 80%;
+        }
+    }
+}
+
+.publication-links {
+    // display: flex;
+    // align-items: flex-end;
+    // justify-content: flex-end;
+    .pl-wrap {
+        float: right;
+        a {
+            display: block;
+            width: 40px;
+            height: 40px;
+            margin: 10px 0 0 10px;
+            border-radius: 50%;
+            overflow: hidden;
+            opacity: .8;
+            transform: scale(.95);
+            transition: all .15s ease-in;
+            &:hover {
+                transform: scale(1);
+                opacity: 1;
+            }
+            img {
+
+            }
+        }
     }
 }

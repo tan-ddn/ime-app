@@ -11,7 +11,7 @@ export default class HeaderBanner extends ResponsiveComponent {
     // console.log(imgStyle);
     return (
         <div className="header-banner" id={this.props.id}>
-          {this.props.greenLogo == true && <>
+          {this.props.greenLogo === true && <>
           <div className="slider-overlay">
             <div className="slider-overlay-wrap">
               <img src={process.env.PUBLIC_URL + '/img/home-slider/Logo_GreenMetallurgy.png'} alt="Green Metallurgy logo" />
@@ -20,7 +20,7 @@ export default class HeaderBanner extends ResponsiveComponent {
           </>}
             <div className="wrapper">
                 <div className="image">
-                  {this.props.overlay == 'dark' &&<>
+                  {this.props.overlay === 'dark' &&<>
                     <div className="overlay dark" />
                   </>}
                     <img src={this.props.img} alt={this.props.imgAlt} style={imgStyle} />

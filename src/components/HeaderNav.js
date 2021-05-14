@@ -19,7 +19,7 @@ class HeaderNav extends ResponsiveComponent {
     this.unlisten = this.props.history.listen((location, action) => {
       // console.log('on route change');
       this.setState({clicked: false});
-      this.state.className = this.state.className.replaceAll(' active', ' ');
+      this.state.className = this.state.className.replaceAll(' active', ' ');window.scrollTo({top: 0, left: 0, behavior: 'auto'});
     });
   }
 
