@@ -25,9 +25,11 @@ export default class Box extends Component {
         return (
             <div id="events" className={classText} style={{height: `${this.props.height}`}}>
                 <div className="events-wrapper">
-                    {this.props.titleSize === 'small'
+                    {this.state.content.title
+                    ? this.props.titleSize === 'small'
                         ? <h6 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
                         : <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
+                    : ''
                     }
                     {!Array.isArray(this.state.content.image)
                     ? <div className={imageClass}>

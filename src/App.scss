@@ -4,6 +4,9 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+html {
+  overflow-x: hidden;
+}
 body {
   font-size: 16px;
   line-height: 1.5;
@@ -49,6 +52,49 @@ img {
   display: none;
 }
 
+.bg-darkblue {
+  color: #fff;
+  background-color: $color1;
+  a, .box-title {
+    color: #fff;
+  }
+}
+.bg-grey {
+  background-color: rgba($color2, .15);
+}
+
+.scrollTop {
+  color: #fff;
+  font-size: 1.4em;
+  position: fixed; 
+  right: 15px;
+  bottom: 15px;
+  width: 35px;
+  height: 35px;
+  // border-radius: 50%;
+  background-color: $color1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 990;
+  cursor: pointer;
+  animation: fadeIn 0.3s;
+  transition: opacity 0.4s;
+  opacity: 0.5;
+  &:hover{
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
 // Typography
 h1, h2, h3, h4, h5, h6 {
   font-size: 1em;
@@ -84,7 +130,9 @@ h6 {
   font-size: 1.2em;
 }
 p {
-
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 ol, ul {
   margin-left: 1em;
@@ -131,38 +179,6 @@ ol, ul {
 .thead-color1 {
   color: #fff;
   background-color: $color1;
-}
-
-.scrollTop {
-  color: #fff;
-  font-size: 1.4em;
-  position: fixed; 
-  right: 15px;
-  bottom: 15px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: $color1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 990;
-  cursor: pointer;
-  animation: fadeIn 0.3s;
-  transition: opacity 0.4s;
-  opacity: 0.5;
-  &:hover{
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0.5;
-  }
 }
 
 // Header & Topbar
@@ -586,6 +602,19 @@ ol, ul {
       height: 0;
       padding-bottom: 300px;
       overflow: hidden;
+      .overlay {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        &.dark {
+          background-color: rgba(black, .5);
+        }
+      }
       img {
         position: absolute;
         top: -999px;
@@ -975,6 +1004,9 @@ ol, ul {
   @include img-container(64%, contain);
 }
 
+.box-img {
+  border: 1px solid rgba($color1,.7);
+}
 .box-img-slider {
   padding: 10px;
   margin: 10px 0;
@@ -1165,6 +1197,7 @@ ol, ul {
       top: 0;
       bottom: 0;
       left: 0;
+      left: calc(100% - 50px);
       right: 0;
       .nav-global-main {
         display: none;
@@ -1246,8 +1279,11 @@ ol, ul {
       }
       &.active {
         position: fixed;
+        left: 0;
+        width: 100vw;
+        padding: 0;
         .nav-toggle {
-          position: fixed;
+          // position: fixed;
           background-color: $color1;
           .fa-bars {
             display: none;
@@ -1257,6 +1293,7 @@ ol, ul {
           }
         }
         .nav-global-main {
+          display: flex;
           transform: translateX(0%);
           opacity: 1;
         }

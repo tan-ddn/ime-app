@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { Link, useHistory, withRouter } from "react-router-dom";
 import ResponsiveComponent from './ResponsiveComponent';
 // import MainNavToggle from './MainNavToggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export default class HeaderNav extends ResponsiveComponent {
+class HeaderNav extends ResponsiveComponent {
   constructor(props) {
       super(props);
       this.state = {
@@ -12,6 +12,19 @@ export default class HeaderNav extends ResponsiveComponent {
           className: this.props.className + ' vertical'
       };
       this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    super.componentDidMount();
+    this.unlisten = this.props.history.listen((location, action) => {
+      // console.log('on route change');
+      this.setState({clicked: false});
+      this.state.className = this.state.className.replaceAll(' active', ' ');
+    });
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
   }
 
   handleClick() {
@@ -63,13 +76,13 @@ export default class HeaderNav extends ResponsiveComponent {
           
           <ol className="toc style2">
             <li className="rwth_jsopen">
-              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="/cms/Materialwissenschaft-und-Werkstofftechni/~kvt/Studium/lidx/1/">About Us</Link>
+              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">About Us</Link>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Team (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">Team</a>
+              <Link to="/team" className="panel" title="Team (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">Team</Link>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Research</a>
+            <Link to="/research" className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Research</Link>
             </li>
             <li className="rwth_jsopen">
               <a className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Equipment</a>
@@ -503,6 +516,8 @@ export default class HeaderNav extends ResponsiveComponent {
     )
   }
 }
+
+export default withRouter(HeaderNav);
 
 HeaderNav.defaultProps = {
   id: 'nav-global',

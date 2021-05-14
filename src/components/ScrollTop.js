@@ -31,7 +31,7 @@ export default class ScrollTop extends Component {
 
     render() {
         return (
-            <div className="scrollTop" onClick={this.scrollTop} style={{display: this.state.showScroll ? 'flex' : 'none'}} >
+            <div className="scrollTop rounded" onClick={this.scrollTop} style={{display: this.state.showScroll ? 'flex' : 'none'}} >
                 <FontAwesomeIcon icon="angle-up"/>
             </div>
         )

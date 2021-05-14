@@ -3,6 +3,12 @@ import ResponsiveComponent from './ResponsiveComponent';
 
 export default class HeaderBanner extends ResponsiveComponent {
   render() {
+    let tx = (this.props.transformX) ? this.props.transformX : 0;
+    let ty = (this.props.transformY) ? this.props.transformY : 0;
+    const imgStyle = {
+      transform: 'translate('+tx+', '+ty+')'
+    };
+    // console.log(imgStyle);
     return (
         <div className="header-banner" id={this.props.id}>
           {this.props.greenLogo == true && <>
@@ -14,7 +20,10 @@ export default class HeaderBanner extends ResponsiveComponent {
           </>}
             <div className="wrapper">
                 <div className="image">
-                    <img src={this.props.img} alt={this.props.imgAlt} />
+                  {this.props.overlay == 'dark' &&<>
+                    <div className="overlay dark" />
+                  </>}
+                    <img src={this.props.img} alt={this.props.imgAlt} style={imgStyle} />
                 </div>
             </div>
         </div>

@@ -68,8 +68,7 @@ const assets = [
 
 export default class MainContent extends ResponsiveComponent {
   render() {
-    let greenLogoAlign = 'right';
-    greenLogoAlign = (this.state.screenSize === 'xs') && 'center';
+    let greenLogoAlign = (this.state.screenSize === 'xs') ? 'center' : 'right';
     return (
         <div className="content" role="article">
             <div id="home-news" className="py-3">
@@ -171,7 +170,7 @@ export default class MainContent extends ResponsiveComponent {
                 </div>
                 <div className="col-12 col-sm-3">
                 <p style={{textAlign: greenLogoAlign}}>
-                  <img src={process.env.PUBLIC_URL + '/img/green.gif'} alt="" />
+                  <img src={process.env.PUBLIC_URL + '/img/green.gif'} alt="Logo Green Metallurgy" />
                 </p>
                 </div>
               </div>

@@ -25,3 +25,56 @@
     }
     
 }
+
+.team-group {
+    padding: 10px 0;
+    border-bottom: 1px solid #888;
+    &:last-child {
+        border-bottom: 0;
+    }
+    .team-box {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        .events-wrapper {
+            flex-direction: row;
+            border: 0;
+            .events-img {
+                flex-basis: 40%;
+                padding-bottom: 50%;
+                height: 100%;
+                margin: 0;
+                // margin: 15px;
+                // border-radius: 5px;
+                // border: 1px solid #fff;
+                background-color: #ccc;
+                overflow: hidden;
+                img {
+                    max-width: 105%;
+                    max-height: 105%;
+                }
+            }
+            .events-sum {
+                color: #fff;
+                line-height: 1.4;
+                flex-basis: 60%;
+                flex-direction: column;
+                padding: 15px;
+                margin: 0;
+                // margin-left: 20px;
+                // background-color: #ccc;
+                .team-name {
+                    font-weight: 600;
+                    line-height: 1.2;
+                    min-height: 2.4em;
+                    padding-bottom: .5rem;
+                    border-bottom: 1px solid #fff;
+                }
+            }
+            .anchor-style1 {
+                display: none;
+            }
+        }
+    }
+}

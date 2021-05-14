@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.scss';
-import { Home, About } from './components/Pages';
+import { Home, About, Team, Research } from './components/Pages';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollTop from './components/ScrollTop';
@@ -24,6 +24,8 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={() => <Home />} />
             <Route path="/about" exact component={() => <About />} />
+            <Route path="/team" exact component={() => <Team />} />
+            <Route path="/research" exact component={() => <Research />} />
           </Switch>
 
           <Footer/>

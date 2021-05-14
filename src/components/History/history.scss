@@ -69,6 +69,8 @@ $text_bg: rgba(gray, .2);
                     }
                 }
                 .timeline-content {
+                    font-size: .85em;
+                    text-align: left;
                     width: 50%;
                     padding: 20px 30px;
                     border-radius: 5px;
@@ -92,6 +94,19 @@ $text_bg: rgba(gray, .2);
                         font-weight: 700;
                         padding-bottom: .5rem;
                     }
+                    .text {
+                        p:nth-of-type(2n) {
+                            img {
+                                float: right;
+                            }
+                        }
+                        p:nth-of-type(2n+1) {
+                            img {
+                                float: left;
+                                margin-right: 10px;
+                            }
+                        }
+                    }
                 }
                 &:nth-child(2n+1) {
                     flex-direction: row-reverse;
@@ -103,6 +118,50 @@ $text_bg: rgba(gray, .2);
                             left: 100%;
                             border-left: $marker_size/2 solid $text_bg;      
                             border-right: none;            
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .history {
+        .timeline-wrapper {
+            .timeline-main {
+                .item {
+                    justify-content: space-between;
+                    .timeline-date {
+                        position: absolute;
+                        top: 0px;
+                        bottom: 0;
+                        height: max-content;
+                        width: 58px;
+                        padding: 10px 0 15px;
+                        margin: auto;
+                        transform: translateY(-5%);
+                        background: #fff;
+                    }
+                    .timeline-marker {
+                        // align-items: flex-start;
+                        width: 58px;
+                    }
+                    .timeline-content {
+                        width: calc(100% - 74px);
+                    }
+                    &:before {
+                        left: 29px;
+                        right: auto;
+                    }
+                    &:nth-child(2n+1) {
+                        flex-direction: row;
+                        .timeline-content {
+                            &:after {
+                                left: auto;
+                                border-left: 0;
+                                border-right: 19px solid rgba(128, 128, 128, 0.2);
+                            }
                         }
                     }
                 }
