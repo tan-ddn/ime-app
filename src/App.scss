@@ -63,6 +63,12 @@ img {
   background-color: rgba($color2, .15);
 }
 
+.table-lg {
+  th, td {
+    padding: 5px;
+  }
+}
+
 .scrollTop {
   color: #fff;
   font-size: 1.4em;

@@ -34,7 +34,7 @@ export default class TeamGroup extends ResponsiveComponent {
                 <div className="row">
                     {boxContent.map((elm, index) => (
                         <div key={index} className="col-12 col-lg-4 d-flex">
-                            <Box content={elm} classNames="team-box rounded bg-darkblue" profile="1" />                            
+                            <Box content={elm} classNames="team-box rounded bg-darkblue0" type="team" />                            
                         </div>
                     ))}
                 </div>

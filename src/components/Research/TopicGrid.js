@@ -20,11 +20,13 @@ export default class TopicGrid extends ResponsiveComponent {
         let boxContent = Array();
         this.state.topics.forEach((elm, index) => {
             boxContent[index] = {
+                id: elm.id,
                 title: elm.title,
                 image: elm.image,
                 button: 'Read More',
                 buttonUrl: elm.buttonUrl,
-                description: '<p>' + elm.description + '</p><a class="btn btn-primary" href="">Read more</a>'
+                // description: '<p>' + elm.description + '</p><a class="btn btn-primary" href="">Read more</a>'
+                description: elm.description
             };
         });
         return(
@@ -33,7 +35,7 @@ export default class TopicGrid extends ResponsiveComponent {
                     {boxContent.map((elm, index) => (
                     //  {this.state.topics.map((elm, index) => (
                         <div className="col-12 col-lg-4 d-flex">
-                            <Box key={index} content={elm} classNames="topic-box rounded bg-darkblue"/>
+                            <Box key={index} content={elm} type="research" classNames="topic-box rounded bg-darkblue0"/>
                         </div>
                     ))}
                 </div>

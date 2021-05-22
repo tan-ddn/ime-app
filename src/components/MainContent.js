@@ -30,6 +30,31 @@ import FullscreenWidth from './FullscreenWidth';
 //       date: '29.10.2019'
 //   },
 // ];
+
+const slides = [
+  {
+      title: 'IME Aktuell - Current Issue',
+      description: 'The current issue of the IME Aktuell, published twice every year, is online now. Some promotional topics are presented, ...',
+      button: 'Read More',
+      buttonUrl: '',
+      image: process.env.PUBLIC_URL + '/img/news/ime_aektuell_jp_id_7224.jpg'
+  },
+  {
+      title: 'Joint research with a safety distance of 1500 km',
+      description: 'In fulfillment of a DAAD project with The University of Belgrade, which includes mutual research and scientist exchange, ...',
+      button: 'Read More',
+      buttonUrl: '',
+      image: process.env.PUBLIC_URL + '/img/news/dominic_news_id_3840.jpg'
+  },
+  {
+      title: 'Improved exhaust gas cleaning by cyclone',
+      description: 'Last week, the institute\'s own exhaust gas purification plant was upgraded. In this context, ...',
+      button: 'Read More',
+      buttonUrl: '',
+      image: process.env.PUBLIC_URL + '/img/news/zyklon_id_2211.jpg'
+  },
+]
+
 const assets = [
   {
     title: 'IME-Society',
@@ -79,7 +104,7 @@ export default class MainContent extends ResponsiveComponent {
                   <div className="col-12 col-lg-6 col-xl-">
                     <div className="row">
                       <div className="col-12 col-sm-6">
-                        <NewsSlider height="500px"/>
+                        <NewsSlider slides={slides} height="500px"/>
                       </div>
                       <div className="col-12 col-sm-6">
                         {/* <NewsBox height="500px" content={newsBoxes[0]}/> */}

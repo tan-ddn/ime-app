@@ -29,16 +29,26 @@ const slides = [
 ]
 
 export default class NewsSlider extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        slides: this.props.slides
+    }
+  }
+
   render() {
+    let classText = "news-slider " + this.props.className;
+
     return (
-        <div id="" className="news-slider" style={{height: `${this.props.height}`, margin: '15px 0'}}>
+        <div id="" className={classText} style={{height: `${this.props.height}`, margin: '15px 0'}}>
             <Slider autoplay={4000}
                 classNames={{
                     previousButton: 'hidden',
                     nextButton: 'hidden',
                 }}
             >
-                {slides.map((item, index) => (
+                {this.state.slides.map((item, index) => (
 				<div
 					key={index}
 					className="slider-content"
@@ -46,9 +56,9 @@ export default class NewsSlider extends Component {
 					<div className="inner">
 						<h1 className="title">{item.title}</h1>
 						<p className="article-text">{item.description}</p>
-                        <button className="btn btn-primary" >
+                        <a href={item.buttonUrl} className="btn btn-primary" >
                             {item.button}
-                        </button>
+                        </a>
 					</div>
 				</div>
 			))}

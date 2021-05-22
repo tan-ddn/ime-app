@@ -42,6 +42,7 @@
         padding: 0;
         border: 0;
         overflow: hidden;
+        background-color: #f2f2f2;
         .events-wrapper {
             flex-direction: row;
             border: 0;
@@ -61,7 +62,7 @@
                 }
             }
             .events-sum {
-                color: #fff;
+                // color: #fff;
                 line-height: 1.4;
                 flex-basis: 60%;
                 flex-direction: column;
@@ -69,14 +70,22 @@
                 margin: 0;
                 // margin-left: 20px;
                 // background-color: #ccc;
+                // border-style: solid;
+                border-width: 1px 1px 1px 0;
+                border-color: $color1;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
                 .team-name {
                     font-weight: 600;
                     line-height: 1.2;
                     min-height: 2.4em;
                     padding-bottom: .5rem;
                     border-bottom: 1px solid #fff;
+                    border-bottom-color: $color1;
                     a:hover {
                         text-decoration: underline;
+                        text-shadow: none;
+                        border-color: transparent;
                     }
                 }
             }

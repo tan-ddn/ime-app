@@ -7,8 +7,42 @@ export default class Box extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            content: this.props.content
+            content: this.props.content,
+            type: this.props.type
         };
+    }
+
+    teamSummary() {
+        // console.log('teamSummary');
+        return (
+            <div className="events-sum">
+                <h6 className="team-name"><Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link></h6>
+                <div dangerouslySetInnerHTML={{__html: this.state.content.description}} />
+            </div>
+        );
+    }
+    researchSummary() {
+        let link = "/research/" + this.state.content.id;
+        console.log(link);
+        return (
+            <div className="events-sum">
+                <p>{this.state.content.description}</p>
+                <Link class="btn btn-primary" to={link}>{this.state.content.button}</Link>
+            </div>
+        );
+    }
+
+    renderSummary(type) {
+        switch(type) {
+            case 'team':
+                return this.teamSummary();
+            case 'research':
+                return this.researchSummary();
+            case 'equipment':
+                return null;
+            default:
+                return <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />;
+        }
     }
 
     render() {
@@ -45,13 +79,14 @@ export default class Box extends Component {
                             ))}
                     </Slider>
                     }
-                    {this.props.profile === '1'
+                    {this.renderSummary(this.props.type)}
+                    {/* {this.props.profile === '1'
                         ? <div className="events-sum" >
                             <h6 className="team-name"><Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link></h6>
                             <div dangerouslySetInnerHTML={{__html: this.state.content.description}} />
                             </div>
                         : <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
-                    }                    
+                    }                     */}
                     <a className="anchor-style1" href="#" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
                     {this.state.content.date !== '' &&
                         <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
