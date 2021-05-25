@@ -8,8 +8,22 @@ export default class Box extends Component {
         super(props);
         this.state = {
             content: this.props.content,
-            type: this.props.type
+            type: this.props.type,
+            linkTitle: this.props.linkTitle
         };
+    }
+
+    renderTitle(linkTitle) {
+        switch(linkTitle) {
+            case '1':
+                return (
+                    <Link to={this.state.content.buttonUrl}>
+                        {this.state.content.title}
+                    </Link>
+                );
+            default:
+                return this.state.content.title;
+        }
     }
 
     teamSummary() {
@@ -62,8 +76,10 @@ export default class Box extends Component {
                 <div className="events-wrapper">
                     {this.state.content.title
                     ? this.props.titleSize === 'small'
-                        ? <h6 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
-                        : <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
+                        // ? <h6 className="box-title" dangerouslySetInnerHTML={{__html: this.renderTitle(this.state.linkTitle)}} />
+                        // : <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.renderTitle(this.state.linkTitle)}} />
+                        ? <h6 className="box-title">{this.renderTitle(this.state.linkTitle)}</h6>
+                        : <h5 className="box-title">{this.renderTitle(this.state.linkTitle)}</h5>
                     : ''
                     }
                     {!Array.isArray(this.state.content.image)

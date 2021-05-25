@@ -6,3 +6,4 @@ export { default as Research } from "./Research";
 export { default as ResearchProject } from "./ResearchProject";
 export { default as ProjectDetails } from "./ProjectDetails";
 export { default as Equipment } from "./Equipment";
+export { default as EquipmentCategory } from "./EquipmentCategory";

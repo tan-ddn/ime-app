@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, useHistory, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import NewsSlider from '../News/NewsSlider';
@@ -97,7 +98,7 @@ export default class Equipment extends Component {
                 title: elm.title,
                 image: elm.image,
                 button: elm.button,
-                buttonUrl: elm.buttonUrl,
+                buttonUrl: '/equipment/' + elm.id,
                 description: elm.description
             };
         });
@@ -113,21 +114,42 @@ export default class Equipment extends Component {
                             {/*googleon: all*/}
                             <div className="">
                                 <div className="content" role="article">
-                                    {/* <div id="intro" className="py-3">
+                                    <div id="intro" className="py-3">
                                         <h2 className="heading">Flyer</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
-                                                <div className="py-2 col-12 col-sm-9">
+                                                <div className="py-2 col-12 col-sm-7">
                                                     <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="row">
+                                                        <div className="py-3 col-12 col-sm-7">
+                                                            <ul>
+                                                                {slides.map((elm, index) => {
+                                                                    if (index !== 0) {
+                                                                        return (
+<li><a href={elm.buttonUrl}>{elm.title}</a></li>
+                                                                        )
+                                                                    }
+                                                                })}
+                                                                
+                                                                {/* <li><a href="#"> 	Vacuum Metallurgy</a></li>
+                                                                <li><a href="#"> 	Recyclingmetallurgy</a></li> */}
+                                                            </ul>
+                                                        </div>
+                                                        {/* <div className="py-3 col-12 col-sm-5">
+                                                            <img src={process.env.PUBLIC_URL + '/img/equipment/ausstattung.png'} alt="IME Team" />
+                                                        </div> */}
+                                                    </div>
                                                 </div>
-                                                <div className="py-2 col-12 col-sm-3">
-                                                    <img src={process.env.PUBLIC_URL + '/img/equipment/ausstattung.png'} alt="IME Team" />
+                                                <div className="py-2 col-12 col-sm-5">
+                                                    <div style={{'margin': '-15px 0'}}>
+                                                    <NewsSlider slides={slides} className="equipment-slider" height="250px"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div id="topics" className="py-3">
                                         <h2 className="heading">Equipment</h2>
                                         <div className="">
@@ -136,8 +158,8 @@ export default class Equipment extends Component {
                                                     <NewsSlider slides={slides} className="equipment-slider" height="400px"/>
                                                 </div>
                                                 {boxContent.map((elm, index) => (
-                                                <div className="col-12 col-lg-4 d-flex">
-                                                    <Box key={index} content={elm} type="equipment" classNames="equipment-box rounded bg-darkblue0"/>
+                                                <div key={index} className="col-12 col-lg-4 d-flex">
+                                                    <Box content={elm} type="equipment" linkTitle="1" classNames="equipment-cat-box rounded bg-darkblue0"/>
                                                 </div>
                                                 ))}
                                             </div>

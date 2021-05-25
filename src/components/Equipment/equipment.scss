@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 
-.equipment-box {
+.equipment-cat-box {
     width: 100%;
     padding: 0;
     border: 0;
@@ -50,6 +50,27 @@
     &:hover {
         .events-sum {
             top: 0;
+        }
+    }
+}
+
+.equipment-subcat {
+    font-size: 1.2em;
+    // padding: 10px 0 0px;
+    // margin-bottom: 30px;
+    // border-bottom: 1px solid $color1;
+}
+
+.equipment-box {
+    .title {
+        color: $color1;
+    }
+    .equipment-image {
+        @include img-container(100%, 'cover');
+        margin: 10px 0;
+        img {
+            max-width: 120%;
+            max-height: 140%;
         }
     }
 }

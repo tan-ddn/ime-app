@@ -157,6 +157,15 @@ ol, ul {
 .box-title {
   color: $color2;
   font-weight: 600;
+  a[href] {
+    color: $color1;
+    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+      text-shadow: none;
+      border-bottom-color: transparent;
+    }
+  }
 }
 .sub {
   font-size: .7em;
@@ -557,6 +566,20 @@ ol, ul {
           }
         }
       }
+    }
+  }
+}
+
+//Side Navigation
+.side-nav {
+  .heading {
+    border-bottom: 0;
+  }
+  .nav {
+    .nav-item {
+      font-size: 1.1em;
+      list-style: disc;
+      text-indent: -10px;
     }
   }
 }

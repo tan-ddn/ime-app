@@ -1,0 +1,31 @@
+// Utilities
+@import "../../variables";
+
+.nav-tabs {
+    padding: 20px 0 0;
+    margin: 0 0 20px;
+    .nav-item {
+        .nav-link {
+            color: inherit;
+            &.active {
+                color: $color1;
+            }
+        }
+    }
+    .show .nav-link {
+        color: $color1;
+    }
+}
+
+.nav-pills {
+    margin: 0;
+    .nav-item {
+        margin: 20px 0;
+        .nav-link.active {
+            background-color: $color1;
+        }
+    }
+    .show > .nav-link {
+        background-color: $color1;
+    }
+}

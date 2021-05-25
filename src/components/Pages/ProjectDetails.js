@@ -32,7 +32,7 @@ class ProjectDetails extends Component {
     }
     
     render() {
-        let basicDetails = Object.assign({}, projectDetails);
+        let basicDetails = Object.assign({}, this.state.projectDetails);
         delete basicDetails.description;
         delete basicDetails.id;
         console.log(this.state.projectDetails.description);
