@@ -88,7 +88,7 @@ class HeaderNav extends ResponsiveComponent {
             <Link to="/equipment" className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Equipment</Link>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Study</a>
+            <Link to="/study" className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Study</Link>
             </li>
             {this.props.type === 'mobile-nav' && <>
             <li className="rwth_jsopen">

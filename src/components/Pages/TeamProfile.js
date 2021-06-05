@@ -11,7 +11,11 @@ let groups = [
         'title': 'Direction of the Institute',
         'members': [
             {
+                'id': 29,
                 'name': 'Prof. Dr. Ing. Dr. h.c. Bernd Friedrich',
+                'job': 'Professor',
+                'topicList': 'Head of the institute',
+                'room': 'R 108',
                 'tel': '+49 241 80 95850',
                 'fax': '+49 241 80 92154',
                 'email': 'bfriedrich@ime-aachen.de',
@@ -19,7 +23,14 @@ let groups = [
                 'url': '#'
             },
             {
+                'id': 243,
                 'name': 'Dr.-Ing. Alexander Birich',
+                'job': 'Chief Engineer',
+                'topic': 'Electronic Scrap Recycling',
+                'topicUrl': '',
+                'topicList': '<ul><li>Hydrometallurgical Processing and Recycling</li></ul>',
+                'supervision': '<ul><li>Practical course: Process characterization, Process Metallurgy</li><li>Course: Metallurgical Engineering (English)</li></ul>',
+                'room': 'R 110',
                 'tel': '+49 241 80 95852 / +49 160 99707 667',
                 'fax': '+49 241 80 92154',
                 'email': 'abirich@ime-aachen.de',
@@ -75,6 +86,9 @@ class TeamProfile extends Component {
     }
     
     render() {
+        let profileId = this.props.match.params.id;
+        const profile = this.state.groups[0].members.find(elm => elm.id == profileId);
+        // console.log(profile);
         return(
             <div className="team">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/team/RWTH-FB5-043-1920px.jpg'} transformY='-10%' overlay='dark'/>
@@ -95,37 +109,51 @@ class TeamProfile extends Component {
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-2">
                                                     <div className="profile-img">
-                                                    <img src={process.env.PUBLIC_URL + '/img/team/bild12_id_5544.jpg'} alt="IME Team" />
+                                                    <img src={profile.img} alt="IME Team" />
                                                     </div>
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-10">
-                                                    <h4>Prof. Dr. Ing. Dr. h.c. Bernd Friedrich </h4>
+                                                    <h4>{profile.name}</h4>
                                                     <div className="row">
-                                                        <div className="py-2 col-12 col-sm-4" dangerouslySetInnerHTML={{__html: this.state.intro}} />
-                                                        <div className="py-2 col-12 col-sm-4">
-                                                        <p><b>IME Metallurgische Prozesstechnik und Metallrecycling</b><br/>
+                                                        {/* <div className="py-2 col-12 col-sm-4" dangerouslySetInnerHTML={{__html: this.state.intro}} /> */}
+                                                        <div className="py-2 col-12 col-sm-6">
+                                                            <dl>
+                                                                <dt>Job:</dt>
+                                                                <dd>{profile.job}</dd>
+                                                            </dl>
+                                                            <dl>
+                                                                <dt>Topic: <a href={profile.topicUrl}>{profile.topic}</a></dt>
+                                                                <dd dangerouslySetInnerHTML={{__html: profile.topicList}} />
+                                                            </dl>
+                                                            {profile.supervision &&
+                                                                    <dl><dt>Supervision:</dt><dd dangerouslySetInnerHTML={{__html: profile.supervision}} /></dl>
+                                                                }
+                                                        </div>
+                                                        <div className="py-2 col-12 col-sm-6">
+                                                        <p><b>Contact:</b></p>
+                                                        <p>IME Metallurgische Prozesstechnik und Metallrecycling<br/>
                                                         RWTH Aachen<br/>
                                                         Intzestraße 3<br/>
                                                         D-52056</p>
-                                                        </div>
-                                                        <div className="py-2 col-12 col-sm-4">
+                                                        {/* </div>
+                                                        <div className="py-2 col-12 col-sm-4"> */}
                                                             <table border="0">
                                                                 <tbody>
                                                                 <tr>
                                                                     <td style={{width:'24%'}}>Room:</td>
-                                                                    <td>R 108</td>
+                                                                    <td>{profile.room}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Phone:</td>
-                                                                    <td>+49 241 80 95850</td>
+                                                                    <td>{profile.tel}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Fax:</td>
-                                                                    <td>+49 241 80 92154</td>
+                                                                    <td>{profile.fax}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Email: </td>
-                                                                    <td><a href="mailto:bfriedrich@ime-aachen.de">bfriedrich@ime-aachen.de</a></td>
+                                                                    <td><a href={"mailto:"+profile.email}>{profile.email}</a></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>

@@ -18,6 +18,7 @@ let groups = [
                 'url': '/team/29'
             },
             {
+                'id': 243,
                 'name': 'Dr.-Ing. Alexander Birich',
                 'tel': '+49 241 80 95852 / +49 160 99707 667',
                 'fax': '+49 241 80 92154',

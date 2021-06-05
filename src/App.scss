@@ -69,6 +69,17 @@ img {
   }
 }
 
+.exam-form {
+  .input-group-prepend {
+    flex-basis: 200px;
+    .input-group-text {
+      color: white;
+      width: 100%;
+      background-color: $color1;
+    }
+  }
+}
+
 .scrollTop {
   color: #fff;
   font-size: 1.4em;
@@ -190,10 +201,20 @@ ol, ul {
     background: transparent;
   }
 }
+.btn-link {
+  color: $color1;
+}
 
 .thead-color1 {
   color: #fff;
   background-color: $color1;
+}
+
+#wrapper {
+  label, input, textarea {
+    font-size: 100%;
+    padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  }
 }
 
 // Header & Topbar
