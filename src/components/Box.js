@@ -103,7 +103,7 @@ export default class Box extends Component {
                             </div>
                         : <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
                     }                     */}
-                    <a className="anchor-style1" href="#" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
+                    <Link to={this.state.content.buttonUrl} className="anchor-style1" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
                     {this.state.content.date !== '' &&
                         <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
                     }

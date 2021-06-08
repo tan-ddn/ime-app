@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.scss';
-import { Home, About, Team, TeamProfile, Research, Equipment, ResearchProject, ProjectDetails, EquipmentCategory, Study } from './components/Pages';
+import { Home, About, Team, TeamProfile, Research, Equipment, ResearchProject, ProjectDetails, EquipmentCategory, Study, Association, Excursions } from './components/Pages';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollTop from './components/ScrollTop';
@@ -32,6 +32,8 @@ class App extends Component {
             <Route path="/equipment" exact component={() => <Equipment />} />
             <Route path="/equipment/:id" exact component={() => <EquipmentCategory />} />
             <Route path="/study" exact component={() => <Study />} />
+            <Route path="/association" exact component={() => <Association />} />
+            <Route path="/excursions" exact component={() => <Excursions />} />
           </Switch>
 
           <Footer/>

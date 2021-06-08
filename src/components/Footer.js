@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Footer extends Component {
   render() {
@@ -8,21 +9,28 @@ export default class Footer extends Component {
             <div className="footer-container">
                 <h5>IME - Metallurgische Prozesstechnik und Metallrecycling
                 <br/>Institut und Lehrstuhl der RWTH Aachen </h5>
-                <div className="row no-gutters">
-                    <div className="col-12 col-md-6 col-xl-3">
-                        <p>Intzestr. 3<br/>
+                <div className="row no-gutters0 justify-content-between">
+                    <div className="col-12 col-md-6 col-xl-auto">
+                        <b>Social Activities:</b>
+                        <ul>
+                            <li><Link to="/association">IME-Society</Link></li>
+                            <li><Link to="/excursions">Excursions</Link></li>
+                            <li><Link to="/">Network &amp; Partners</Link></li>
+                        </ul>
+                    </div>
+                    <div className="col-12 col-md-6 col-xl-auto">
+                        <b>Address:</b>
+                        <p style={{'margin-left': '0px'}}>Intzestr. 3<br/>
                             52056 Aachen<br/>
                             Gebäude 1401</p>
                     </div>
-                    <div className="col-12 col-md-6 col-xl-3">
+                    <div className="col-12 col-md-6 col-xl-auto">
                         <p>Phone: +49 241 80 95851<br/>
-                            Fax: +49 241 80 92154<br/></p>
-                    </div>
-                    <div className="col-12 col-md-6 col-xl-3">
-                        <p>Email: <a href="mailto:institut@ime-aachen.de">institut@ime-aachen.de</a><br/>
+                            Fax: +49 241 80 92154<br/>
+                            Email: <a href="mailto:institut@ime-aachen.de">institut@ime-aachen.de</a><br/>
                             URL: <a href="www.ime-aachen.de">www.ime-aachen.de</a></p>
                     </div>
-                    <div className="col-12 col-md-6 col-xl-3">
+                    <div className="col-12 col-md-6 col-xl-auto">
                         <ul className="social-menu footer-menu">
                                 <li className="menu-item">
                                     <a target="_blank" href="researchgate" title="ResearchGate">

@@ -1,0 +1,28 @@
+// Utilities
+@import "../../variables";
+// @import "~bootstrap";
+
+.popup-trigger {
+    cursor: pointer;
+    overflow: hidden;
+}
+.popup-content {
+    width: auto;
+    max-width: 90%;
+    .close {
+        cursor: pointer;
+        position: absolute;
+        display: block;
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        line-height: 18px;
+        right: -10px;
+        top: -10px;
+        font-size: 24px;
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #cfcece;
+    }
+}
+  

@@ -1118,6 +1118,13 @@ ol, ul {
   }
 }
 
+.gallery-row {
+  display: flex;
+  img {
+    max-height: 200px;
+  }
+}
+
 // Responsiveness
 @include media-breakpoint-down(lg) {
   #header {

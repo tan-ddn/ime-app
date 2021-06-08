@@ -60,14 +60,14 @@ const assets = [
     title: 'IME-Society',
     description: 'RemovAl-Removing the Waste Streams from the Primary Aluminum Production and Other Metal Sectrosin Europe ...',
     button: 'see more &#187;',
-    buttonUrl: '',
+    buttonUrl: '/association',
     image: process.env.PUBLIC_URL + '/img/social/dsc06366_id_8980.jpg'
   },
   {
     title: 'Excursions',
     description: 'The IME organizes several excursions yearly. Beside of one-day excursions, ...',
     button: 'see more &#187;',
-    buttonUrl: '',
+    buttonUrl: '/excursions',
     image: process.env.PUBLIC_URL + '/img/social/gruppenfoto_bri_id_6191.jpg'
   },
   {

@@ -76,27 +76,27 @@ class HeaderNav extends ResponsiveComponent {
           
           <ol className="toc style2">
             <li className="rwth_jsopen">
-              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">About Us</Link>
+              <Link to="/" className="panel" title="Home (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">Home</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/team" className="panel" title="Team (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">Team</Link>
+              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">About Us</Link>
             </li>
             <li className="rwth_jsopen">
-            <Link to="/research" className="panel" title="Research (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Research</Link>
+              <Link to="/team" className="panel" title="Team (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Team</Link>
             </li>
             <li className="rwth_jsopen">
-            <Link to="/equipment" className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Equipment</Link>
+              <Link to="/research" className="panel" title="Research (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Research</Link>
             </li>
             <li className="rwth_jsopen">
-            <Link to="/study" className="panel" title="Study (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Study</Link>
+              <Link to="/equipment" className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Equipment</Link>
+            </li>
+            <li className="rwth_jsopen">
+              <Link to="/study" className="panel" title="Study (Main Navigation)" aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">Study</Link>
             </li>
             {this.props.type === 'mobile-nav' && <>
             <li className="rwth_jsopen">
-              <a className="panel" title="News (Main Navigation)" aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">News</a>
+              <a className="panel" title="News (Main Navigation)" aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">News</a>
             </li>
-            {/* <li className="rwth_jsopen">
-              <a className="panel" title="Our Team (Main Navigation)" aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">Our Team</a>
-            </li> */}
             <li className="rwth_jsopen">
               <a className="panel" title="Publications (Main Navigation)" aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">Publications</a>
             </li>

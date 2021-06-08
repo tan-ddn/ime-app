@@ -8,4 +8,6 @@ export { default as ProjectDetails } from "./ProjectDetails";
 export { default as Equipment } from "./Equipment";
 export { default as EquipmentCategory } from "./EquipmentCategory";
 export { default as Study } from "./Study";
+export { default as Association } from "./Association";
+export { default as Excursions } from "./Excursions";
 
