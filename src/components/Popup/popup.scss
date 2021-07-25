@@ -3,6 +3,7 @@
 // @import "~bootstrap";
 
 .popup-trigger {
+    display: block;
     cursor: pointer;
     overflow: hidden;
 }
@@ -23,6 +24,9 @@
         background: #ffffff;
         border-radius: 18px;
         border: 1px solid #cfcece;
+    }
+    &.small-size-content {
+        max-width: 50%;
     }
 }
   

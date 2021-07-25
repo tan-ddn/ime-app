@@ -40,7 +40,7 @@ export default class Excursions extends Component {
             };
         });
         return(
-            <div className="about">
+            <div className="excursions">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/excursions/RWTH-FB5-039.jpg'} transformY='0%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}

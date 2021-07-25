@@ -16,7 +16,7 @@ export default class PublicationTable extends ResponsiveComponent {
         let className = "publications " + this.props.className;
         let tableClass = "table table-sm0 table-striped table-hover table-responsive";
         return(
-            <div id={this.props.id} className={className} style={{height: `${this.props.height}`, marginTop: '30px'}} >
+            <div id={this.props.id} className={className} style={{height: `${this.props.height}`}} >
                 <table className={tableClass}>
                     {this.props.thead === '1' &&
                         <thead className="thead-color1">

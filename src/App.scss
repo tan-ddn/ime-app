@@ -63,6 +63,10 @@ img {
   background-color: rgba($color2, .15);
 }
 
+.rounded {
+  overflow: hidden;
+}
+
 .table-lg {
   th, td {
     padding: 5px;
@@ -183,6 +187,12 @@ ol, ul {
   margin: 0px 4px;
 }
 
+.link {
+  color: $color1;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 .anchor-style1 {
   font-size: 1.2em;
   display: block;
@@ -594,6 +604,7 @@ ol, ul {
 //Side Navigation
 .side-nav {
   .heading {
+    color: $color2;
     border-bottom: 0;
   }
   .nav {
@@ -1122,6 +1133,71 @@ ol, ul {
   display: flex;
   img {
     max-height: 200px;
+  }
+}
+
+.uni-logo-box {
+  &.events-box {   
+    width: 100%;
+    padding: 0;
+    position: relative;
+    overflow: hidden; 
+    border: 1px solid #ddd;
+    background-color: #ddd;
+    .box-title {
+      text-align: center;
+      min-height: 3.6em;
+      margin: 0px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .events-img {
+      @include img-container(70%, contain);
+      background-color: white;
+      img {
+        max-width: 90%;
+        max-height: 80%;
+      }
+    }
+    .anchor-style1, .events-date {
+        display: none;
+    }
+    &:hover {
+        .events-sum {
+            top: 0;
+        }
+    }
+  } 
+}
+
+.uni-person {
+  &.events-box {
+    // padding: 10px 0 0px;
+    border-color: #ddd;
+    background-color: #ddd;
+    .box-title {
+      text-align: center;
+      // margin: 0;
+    }
+    .events-img {
+      @include img-container(240px, cover);
+      width: 200px;
+      margin: 0 auto;
+      img {
+        max-width: 120%;
+        max-height: 110%;
+      }
+    }
+    .anchor-style1, .events-date {
+      display: none;
+    }
+  }
+}
+
+.news-box {
+  .box-title {
+    color: $color1;
   }
 }
 

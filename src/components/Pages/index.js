@@ -5,9 +5,15 @@ export { default as TeamProfile } from "./TeamProfile";
 export { default as Research } from "./Research";
 export { default as ResearchProject } from "./ResearchProject";
 export { default as ProjectDetails } from "./ProjectDetails";
+export { default as Publications } from "./Publications";
 export { default as Equipment } from "./Equipment";
 export { default as EquipmentCategory } from "./EquipmentCategory";
 export { default as Study } from "./Study";
+export { default as ThesisTopic } from "./ThesisTopic";
 export { default as Association } from "./Association";
 export { default as Excursions } from "./Excursions";
+export { default as NetworkPartners } from "./NetworkPartners";
+export { default as UniDetails } from "./UniDetails";
+export { default as Imprint } from "./Imprint";
+export { default as News } from "./News";
 

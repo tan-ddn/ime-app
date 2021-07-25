@@ -71,7 +71,7 @@ class ResearchProject extends Component {
     
     render() {
         return(
-            <div className="team">
+            <div className="research-projects">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
@@ -84,7 +84,7 @@ class ResearchProject extends Component {
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
                                         {/* {this.state.id} */}
-                                        <h2 className="heading">Electronic Scrap Recycling </h2>
+                                        <h2 className="heading"><Link className="d-inline-block " to="/research">Research</Link> <span className="text-dark">&#187; Electronic Scrap Recycling</span> </h2>
                                         <div className="intro-wrap p-4 bg-grey text-left">
                                         <div className="px-2">
                                             <div className="row">

@@ -18,7 +18,7 @@ export default class Association extends Component {
     
     render() {
         return(
-            <div className="about">
+            <div className="association">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/association/160224-IME-149.jpg'} transformY='0%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}

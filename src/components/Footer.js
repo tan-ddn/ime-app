@@ -1,7 +1,34 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default class Footer extends Component {
+class Footer extends Component {
+
+    // useScrollTo = id => {
+    //     // console.log(id);
+    //     if (id) {
+    //         const el = document.getElementById(id);
+    //         // console.log(el);
+    //         const top = (el) && window.scrollY + el.getBoundingClientRect().top;
+    //         window.scrollTo({ top, behavior: "smooth" });
+    //     }
+    // }
+
+    // componentDidMount() {
+    //     this.unlisten = this.props.history.listen((location, action) => {
+    //         let id = location.hash.substring(1);
+    //         this.useScrollTo(id);
+    //     });
+    // }
+
+    // componentDidUpdate() {
+    //     let id = window.location.hash.substring(1);
+    //     this.useScrollTo(id);        
+    // }
+
+    // componentWillUnmount() {
+    //     this.unlisten();
+    // }
+  
   render() {
     return (
         <div id="site-footer">
@@ -15,12 +42,12 @@ export default class Footer extends Component {
                         <ul>
                             <li><Link to="/association">IME-Society</Link></li>
                             <li><Link to="/excursions">Excursions</Link></li>
-                            <li><Link to="/">Network &amp; Partners</Link></li>
+                            <li><Link to="/network">Network &amp; Partners</Link></li>
                         </ul>
                     </div>
                     <div className="col-12 col-md-6 col-xl-auto">
                         <b>Address:</b>
-                        <p style={{'margin-left': '0px'}}>Intzestr. 3<br/>
+                        <p style={{'marginLeft': '0px'}}>Intzestr. 3<br/>
                             52056 Aachen<br/>
                             Gebäude 1401</p>
                     </div>
@@ -69,7 +96,7 @@ export default class Footer extends Component {
                     {/* <h3 className="">RWTH</h3> */}
                     <ul>
                     <li className="">
-                        <a href="imprint" title="Imprint (Footer)">Imprint</a>
+                        <Link to="/imprint" title="Imprint (Footer)">Imprint</Link>
                     </li>
                     </ul>
                 </div>
@@ -77,7 +104,7 @@ export default class Footer extends Component {
                     {/* <h3 className="">Contacts</h3> */}
                     <ul>
                     <li className="">
-                        <a href="privacy" title="Privacy Policy (Footer)">Privacy Policy</a>
+                        <Link to="/imprint#liability" title="Privacy Policy (Footer)">Privacy Policy</Link>
                     </li>
                     </ul>
                 </div>
@@ -85,14 +112,14 @@ export default class Footer extends Component {
                     {/* <h3 className="">Contacts</h3> */}
                     <ul>
                     <li className="">
-                        <a href="privacy" title="Terms of service (Footer)">Terms of service</a>
+                        <Link to="/imprint#terms" title="Terms of service (Footer)">Terms of service</Link>
                     </li>
                     </ul>
                 </div>
                 <div className="col-6 col-lg-3">
                     <ul>
                     <li className="">
-                        <a href="terms" title="Main Page (Footer)">Main Page</a>
+                        <Link to="/" title="Main Page (Footer)">Main Page</Link>
                     </li>
                     </ul>
                 </div>
@@ -134,3 +161,4 @@ export default class Footer extends Component {
     )
   }
 }
+export default withRouter(Footer);

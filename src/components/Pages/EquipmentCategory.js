@@ -6,6 +6,7 @@ import EquipmentSingle from '../Equipment/EquipmentSingle';
 import SideNav from '../Navigation/SideNav';
 import Tabs from '../Tabs/Tabs';
 import '../Tabs/Tabs.scss';
+import { Link } from 'react-router-dom';
 
 let categories = [
     {
@@ -157,7 +158,7 @@ class EquipmentCategory extends Component {
                                             <SideNav heading="Categories" content={this.state.categories} />
                                         </div>
                                         <div className="col-12 col-md-9">
-                                            <h2 className="heading">{this.state.category.title} Equipment</h2>
+                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {this.state.category.title}</span> </h2>
                                             <ul id="subcatTab" className="nav nav-tabs " role="tablist">
                                             {subCat.map((elm, index) => {
                                                 let active = "", selected = false;

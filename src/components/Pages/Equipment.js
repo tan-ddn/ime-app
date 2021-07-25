@@ -103,7 +103,7 @@ export default class Equipment extends Component {
             };
         });
         return(
-            <div className="research">
+            <div className="equipment">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-208.jpg'} transformY='0%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}

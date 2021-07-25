@@ -1,43 +1,32 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.scss';
-import { Home, About, Team, TeamProfile, Research, Equipment, ResearchProject, ProjectDetails, EquipmentCategory, Study, Association, Excursions } from './components/Pages';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import ScrollTop from './components/ScrollTop';
 // import ReactDOM from 'react-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import PageLayout from './PageLayout';
 
 library.add(fas, faBars, faTimes);
+window.useScrollTo = function() {
+  let id = window.location.hash.substring(1);
+  // console.log(id);
+  if (id) {
+      const el = document.getElementById(id);
+      // console.log(el);
+      const top = (el) && window.scrollY + el.getBoundingClientRect().top;
+      window.scrollTo({ top, behavior: "smooth" });
+  }
+}
 
 class App extends Component {
-  
-  render() {
+
+  render() {    
     return (
       // <div id='wrapper'>
       <div className="App">
         <Router>
-          <Header/>
-          {/* <HeaderNav/> */}
-          <Switch>
-            <Route path="/" exact component={() => <Home />} />
-            <Route path="/about" exact component={() => <About />} />
-            <Route path="/team" exact component={() => <Team />} />
-            <Route path="/team/:id" exact component={() => <TeamProfile />} />
-            <Route path="/research" exact component={() => <Research />} />
-            <Route path="/research/:id" exact component={() => <ResearchProject />} />
-            <Route path="/research/project/:id" exact component={() => <ProjectDetails />} />
-            <Route path="/equipment" exact component={() => <Equipment />} />
-            <Route path="/equipment/:id" exact component={() => <EquipmentCategory />} />
-            <Route path="/study" exact component={() => <Study />} />
-            <Route path="/association" exact component={() => <Association />} />
-            <Route path="/excursions" exact component={() => <Excursions />} />
-          </Switch>
-
-          <Footer/>
-          <ScrollTop/>
+          <PageLayout/>
         </Router>
       </div>
     )

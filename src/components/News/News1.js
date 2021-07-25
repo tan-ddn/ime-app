@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link, useHistory, withRouter } from "react-router-dom";
 // import '../Scss/box.scss';
 import Box from '../Box';
+import Moment from 'react-moment';
 
 export default class News1 extends Box {
     constructor(props) {
@@ -18,12 +20,27 @@ export default class News1 extends Box {
     render() {
         let classText = "events-box " + this.props.classNames;
         // console.log(classText);
+        let news = 'Loading...';
+        if (this.props.news) {
+            news =  this.props.news.slice(0, 4).map((elm) => {
+                let link = "/news#"+elm.id;
+                return (<li key={elm.id} id={"news-"+elm.id}>
+                    <b><Moment format="DD.MM.YYYY">{elm.datum}</Moment></b><br/>
+                    <Link to={link}>{elm.titel_eng}</Link>
+                </li>);
+            })
+        } 
         return (
             <div id="news-1" className={classText} style={{height: `${this.props.height}`}}>
                 <div className="events-wrapper">
                     <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title}} />
-                    <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
-                    <a className="anchor-style1" href="#" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
+                    {/* <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} /> */}
+                    <div className="events-sum">
+                        <ul id="" className="news1-list">
+                        {news}
+                        </ul>
+                    </div>
+                    <Link className="anchor-style1" to="/news" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
                     {/* {this.state.date != '0' &&
                     <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
                     } */}

@@ -18,7 +18,7 @@ export default class StyledPopup extends Component {
         let className = "popup-trigger " + this.props.className;
         const trigger = (this.state.trigger) ? React.createElement('span', {className:className}, this.state.trigger) : React.createElement('span', {className:className}, this.props.children);
         return (
-            <Popup trigger={trigger} modal>
+            <Popup className={this.props.className} trigger={trigger} modal>
                 {close => (
                     <div className="">
                     <a className="close" onClick={close}>

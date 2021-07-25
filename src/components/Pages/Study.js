@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link, useHistory, withRouter } from "react-router-dom";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -7,7 +8,7 @@ import HeaderBanner from '../HeaderBanner';
 
 let intro = '<p>You can have a look at all lectures and courses which are given at the IME in the current semester in RWTHonline. Access is only given for matriculated students of RWTH Aachen or employers of the university. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&amp;$skip=0&amp;$top=20&amp;objTermId=187&amp;orgId=14507&amp;q=" target="_blank">Here</a> you find a direct link to the courses.</p><p><b>Notification: online lectures at IME. </b></p><p>Due to the current situation, the IME has created an online contingency plan (Download note: due to the uncertain situation, this can change at any time). The big courses take place online this semester. We hope that lectures on a smaller scale (<20 students) will be held physically at the end of May, for which all measures regarding hygiene and safety distance will be specially followed. The lectures of larger dimensions will be broadcasted via zoom. Students are provided with the lecture manuscript as well as the exercise documents and exercise videos in Moodle. Since we do not want to do the practical course online, these will take place to a limited extent in compliance with the hygiene measures and the safety distance.</p>';
 
-export default class Study extends Component {
+class Study extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +18,7 @@ export default class Study extends Component {
     
     render() {
         return(
-            <div className="about">
+            <div className="study">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
@@ -147,9 +148,9 @@ export default class Study extends Component {
                                                 <div className="card-body text-left row">
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
-                                                        <li><a href="#">Investigation of alternative reducing agents for the production of ferroalloys</a></li>
-                                                        <li><a href="#">Modelling of Migration and Agglomeration of Particles in Aluminium Melt under Electromagnetically (EM)-Induced Flow</a></li>
-                                                        <li><a href="#">Automatization of the molten salt electrolysis process to produce neodymium and praseodymium</a></li>
+                                                        <li><Link to="/study/thesistopic/1">Investigation of alternative reducing agents for the production of ferroalloys</Link></li>
+                                                        <li><Link to="/study/thesistopic/1">Modelling of Migration and Agglomeration of Particles in Aluminium Melt under Electromagnetically (EM)-Induced Flow</Link></li>
+                                                        <li><Link to="/study/thesistopic/1">Automatization of the molten salt electrolysis process to produce neodymium and praseodymium</Link></li>
                                                     </ul>
                                                     </div>
                                                 </div>
@@ -242,3 +243,4 @@ export default class Study extends Component {
         );
     }
 }
+export default withRouter(Study);

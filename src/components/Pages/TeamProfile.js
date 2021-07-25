@@ -4,6 +4,7 @@ import HeaderBanner from '../HeaderBanner';
 import { withRouter } from "react-router";
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
+import { Link } from 'react-router-dom';
 
 let intro = '<dl><dt>Job:</dt><dd>Professor</dd><dt>Topic:</dt><dd>Head of the institute</dd></dl>';
 let groups = [
@@ -103,7 +104,7 @@ class TeamProfile extends Component {
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
                                         {/* {this.state.id} */}
-                                        <h2 className="heading">Team: Direction of the institute</h2>
+                                        <h2 className="heading"><Link className="d-inline-block " to="/team">Team</Link> <span className="text-dark">&#187; Direction of the institute</span></h2>
                                         <div className="intro-wrap p-4 bg-grey text-left">
                                         <div className="px-2">
                                             <div className="row">
@@ -194,7 +195,7 @@ class TeamProfile extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <PublicationTable thead="1" publications={this.state.publications}/>
+                                        <PublicationTable thead="1" publications={this.state.publications} className="mt-3"/>
                                     </div>
                                 </div>
                             </div>
