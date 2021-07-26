@@ -13,6 +13,10 @@ class StringHandle {
     static extract(text = '', limit) {
         return this.beautifyHTML(text).split(' ', limit).join(' ');
     }
+
+    static capitalize(str = '') {
+        return str.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+    }
 }
 
 export default StringHandle;

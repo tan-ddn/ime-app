@@ -51,7 +51,7 @@ class Db {
             params.on = this._on;
         }
         url.search = new URLSearchParams(params).toString();
-        // console.log(url);
+        console.log(url);
         let response = await fetch(url)
         .then((res) => {
             return res.json();
@@ -95,19 +95,76 @@ class Db {
     }
 
     static getMemberFromTeamGroup(groupId) {
-        let cond = 'einteilung='+groupId;
+        let cond = 't.einteilung='+groupId;
         let memDb = new this('teamverwaltung');
-        memDb.columns = 't.id, t.einteilung, t.name, t.vorname, t.bild, t.tel, t.fax, t.mail, t.position, tt.titel'
+        memDb.columns = 't.id, t.titel, t.einteilung, t.name, t.vorname, t.bild, t.tel, t.fax, t.mail, t.position, tt.titel';
         memDb.innerJoin = true;
         memDb.tableAs = 't';
         memDb.otherTable = 'team_titel';
         memDb.otherTableAs = 'tt';
-        memDb.on = 't.einteilung=tt.id';
+        memDb.on = 't.titel=tt.id';
         memDb.cond = cond;
 
         let mem = memDb.query();
         // console.log(mem);
         return mem;
+    }
+
+    static getProfileDetails(id) {
+        let cond = 't.id='+id;
+        let profileDb = new this('teamverwaltung');
+        profileDb.columns = 't.id, t.titel, t.einteilung, t.name, t.vorname, t.beruf, t.beruf_eng, t.bild, t.gebiet1, t.gebiet2, t.gebiet1_eng, t.gebiet2_eng, t.raum, t.tel, t.fax, t.mail, t.unternehmen1, t.unternehmen2, t.strasse, t.plz, t.ort, t.position, t.dissertation, t.dissertation_eng, t.dissert_url, t.duration, tt.titel';
+        profileDb.innerJoin = true;
+        profileDb.tableAs = 't';
+        profileDb.otherTable = 'team_titel';
+        profileDb.otherTableAs = 'tt';
+        profileDb.on = 't.titel=tt.id';
+        profileDb.cond = cond;
+
+        let profile = profileDb.query();
+        // console.log(profile);
+        return profile;
+    }
+
+    static getGroupTitleFromProfile(id) {
+        let cond = 't.id='+id;
+        let groupDb = new this('teamverwaltung');
+        groupDb.columns = 'te.einteilung, te.einteilung_eng';
+        groupDb.innerJoin = true;
+        groupDb.tableAs = 't';
+        groupDb.otherTable = 'team_einteilung';
+        groupDb.otherTableAs = 'te';
+        groupDb.on = 't.einteilung=te.id';
+        groupDb.cond = cond;
+
+        let group = groupDb.query();
+        return group;
+    }
+
+    static getResearchTopicFromProfile(id) {
+        let cond = 'frdpc.contactPerson='+id;
+        let topicDb = new this('fr_detail_project_contacts');
+        topicDb.columns = 'frdpc.contactPerson, frdp.id, frdp.title, frdp.title_eng';
+        topicDb.innerJoin = true;
+        topicDb.tableAs = 'frdpc';
+        topicDb.otherTable = 'fr_detail_project';
+        topicDb.otherTableAs = 'frdp';
+        topicDb.on = 'frdpc.project_id = frdp.id';
+        topicDb.cond = cond;
+
+        let topic = topicDb.query();
+        return topic;
+    }
+
+    static getPubSocialLinks(id) {
+        let cond = 'id='+id;
+        let pubSocialDb = new this('teamverwaltung');
+        pubSocialDb.columns = 'researchgate, googlescholar, scopus, orcid';
+        pubSocialDb.cond = cond;
+
+        let pubSocial = pubSocialDb.query();
+        console.log(pubSocial);
+        return pubSocial;
     }
 }
 

@@ -50,7 +50,7 @@ export default class TeamGroup extends ResponsiveComponent {
         let boxContent = Array();
         members.forEach((elm, index) => {
             let title = '';
-            if (elm.t_einteilung != 16) title = elm.tt_titel;
+            if (elm.t_titel != 16) title = elm.tt_titel;
             boxContent[index] = {
                 id: elm.t_id,
                 link: "/team/" + elm.t_id,
