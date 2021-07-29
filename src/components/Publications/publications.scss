@@ -22,12 +22,24 @@
     .title {
         color: #000;
         font-weight: 600;
+        a, a:hover {
+            color: inherit;
+            text-shadow: none;
+            border-bottom: 0;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
     }
     .meta {
         color: $color2;
     }
     .authors {
-        color: $color1;
+        color: inherit;
+        a {
+            color: $color1;
+
+        }
     }
     &.latest-publications {
         table {

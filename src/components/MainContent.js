@@ -110,8 +110,9 @@ export default class MainContent extends ResponsiveComponent {
   }
 
   componentDidMount() {
-    let db = new Db('news');
-    db.query().then((data) => {
+    // let db = new Db('news');
+    // db.query().then((data) => {
+    Db.get('News').then((data) => {
       // console.log(data);
       if (data.success) {
         this.setState({news: data.results});
@@ -235,7 +236,7 @@ export default class MainContent extends ResponsiveComponent {
               <div className="row">
                 <div className="col-12 col-lg-6 py-3">
                   <h2 className="heading"><Link to="/team">Our Team</Link></h2>
-                  <img style={{marginTop: '15px'}} src={process.env.PUBLIC_URL + '/img/teaem_2020_web_id_8598.jpg'} alt="" />
+                  <img style={{marginTop: '0px'}} src={process.env.PUBLIC_URL + '/img/teaem_2020_web_id_8598.jpg'} alt="" />
                   {/* <TeamCarousel/> */}
                 </div>
                 <div className="col-12 col-lg-6 py-3">

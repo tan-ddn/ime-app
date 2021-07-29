@@ -11,11 +11,11 @@ import withGetDb from './control/withGetDb';
 
 const TeamGetDb = withGetDb(
     Team,
-    (Db) => Db.getTeamGroups()
+    (Db) => Db.get('TeamGroups')
 );
 const NewsGetDb = withGetDb(
     News,
-    (Db) => Db.getNews()
+    (Db) => Db.get('RecentNews')
 );
 
 class PageLayout extends Component {

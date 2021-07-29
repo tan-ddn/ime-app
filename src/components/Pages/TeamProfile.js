@@ -14,11 +14,13 @@ let intro = '<dl><dt>Job:</dt><dd>Professor</dd><dt>Topic:</dt><dd>Head of the i
 
 const ProfileDetailsGetDb = withGetDb(
     ProfileDetails,
-    (Db, props) => Db.getProfileDetails(props.id)
+    // (Db, props) => Db.getWithId('ProfileDetails', props.id)
+    (Db, props) => Db.get('ProfileDetails', props.id)
 );
 const PubSocialGetDb = withGetDb(
     PubSocial,
-    (Db, props) => Db.getPubSocialLinks(props.id)
+    // (Db, props) => Db.getWithId('PubSocialLinks', props.id)
+    (Db, props) => Db.get('PubSocialLinks', props.id)
 );
 
 class TeamProfile extends Component {
@@ -42,7 +44,7 @@ class TeamProfile extends Component {
         // const profile = this.state.groups[0].members.find(elm => elm.id == profileId);
         // console.log(profile);
         return(
-            <div className="team">
+            <div className="team-profile">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/team/RWTH-FB5-043-1920px.jpg'} transformY='-10%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
@@ -65,7 +67,7 @@ class TeamProfile extends Component {
                                                 <PubSocialGetDb id={this.state.id} />
                                             </div>
                                         </div>
-                                        {/* <PublicationTable thead="1" publications={this.state.publications} className="mt-3"/> */}
+                                        <PublicationTable thead="1" teamId={this.state.id} className="mt-3"/>
                                     </div>
                                 </div>
                             </div>

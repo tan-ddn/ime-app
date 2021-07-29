@@ -9,7 +9,8 @@ let intro = '<p>Here you find all employees working currently at the IME - "meta
 
 const TeamGroupGetDb = withGetDb(
     TeamGroup,
-    (Db, props) => Db.getMemberFromTeamGroup(props.group.id)
+    // (Db, props) => Db.getWithId('MemberFromTeamGroup', props.group.id)
+    (Db, props) => Db.get('MemberFromTeamGroup', props.group.id)
 );
 
 export default class Team extends Component {

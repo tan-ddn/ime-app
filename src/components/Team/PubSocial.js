@@ -8,11 +8,12 @@ export default class PubSocial extends Component {
     }
 
     pubLink(type, link) {
+        if (link === 0 || link === '0') return;
         let alt = '', src = process.env.PUBLIC_URL + '/img/icons/';
         switch(type) {
             case 'researchgate':
                 alt = 'Research Gate';
-                src += 'icon_scopus.png';
+                src += 'rg_logo.png';
                 break;
             case 'googlescholar':
                 alt = 'Google Scholar';
@@ -20,7 +21,7 @@ export default class PubSocial extends Component {
                 break;
             case 'scopus':
                 alt = 'Scopus';
-                src += 'rg_logo.png';
+                src += 'icon_scopus.png';
                 break;
             case 'orcid':
                 alt = 'Orcid';
