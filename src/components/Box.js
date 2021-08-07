@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import './Scss/box.scss';
 import Slider from "react-slick";
+import SanitizedHTML from 'react-sanitized-html';
+import StringHandle from '../utility/stringHandle';
 
 export default class Box extends Component {
     constructor(props) {
@@ -37,11 +39,12 @@ export default class Box extends Component {
     }
     researchSummary() {
         let link = "/research/" + this.state.content.id;
-        console.log(link);
+        // console.log(link);
         return (
             <div className="events-sum">
-                <p>{this.state.content.description}</p>
-                <Link class="btn btn-primary" to={link}>{this.state.content.button}</Link>
+                {/* <p>{this.state.content.description}</p> */}
+                <SanitizedHTML className="mb-3" html={StringHandle.extract(this.state.content.description, 50) + '...' } />
+                <Link className="btn btn-primary" to={link}>{this.state.content.button}</Link>
             </div>
         );
     }
@@ -72,7 +75,7 @@ export default class Box extends Component {
         }
     
         return (
-            <div id="events" className={classText} style={{height: `${this.props.height}`}}>
+            <div id={this.props.id} className={classText} style={{height: `${this.props.height}`}}>
                 <div className="events-wrapper">
                     {this.state.content.title
                     ? this.props.titleSize === 'small'

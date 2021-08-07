@@ -3,52 +3,52 @@ import Db from '../../control/class.db';
 import './publications.scss';
 import PublicationTable from './PublicationTable';
 
-const publications = [
-    {
-        title: 'Recycling Strategies for Ceramic All-Solid-State Batteries—Part I: Study on Possible Treatments in Contrast to Li-Ion Battery Recycling',
-        metadata: 'Metals 2020, 10, 1523 DOI:10.3390/met10111523',
-        tag: 'article in scientific journal',
-        authors: 'Lilian Schwich geb. Peters, Michael Küpers, Martin Finsterbusch, Andrea Schreiber, Dina Fattakhova-Rohlfing, Olivier Guillon, Bernd Friedrich',
-        year: '2020'
-    },
-    {
-        title: 'Recovery of Cobalt From Primary and Secondary Materials – An Overview',
-        metadata: 'MILITARY TECHNICAL COURIER, 2020, Vol. 68, Issue 2',
-        tag: 'article in scientific journal',
-        authors: 'Srecko Stopic, Bernd Friedrich',
-        year: '2020'
-    },
-    {
-        title: 'Evaluation of Recyclability of a WEEE Slag by Means of Integrative X-Ray Computer Tomography and SEM-Based Image Analysis',
-        metadata: 'Minerals 2020, 10(4), 309 DOI: 10.3390/min10040309',
-        tag: 'article in scientific journal',
-        authors: 'Markus Buchmann, Nikolaus Borowski, Thomas Leißner, Thomas Heinig, Markus A. Reuter, Bernd Friedrich, Urs A. Peuker',
-        year: '2020'
-    },
-]
+// const publications = [
+//     {
+//         title: 'Recycling Strategies for Ceramic All-Solid-State Batteries—Part I: Study on Possible Treatments in Contrast to Li-Ion Battery Recycling',
+//         metadata: 'Metals 2020, 10, 1523 DOI:10.3390/met10111523',
+//         tag: 'article in scientific journal',
+//         authors: 'Lilian Schwich geb. Peters, Michael Küpers, Martin Finsterbusch, Andrea Schreiber, Dina Fattakhova-Rohlfing, Olivier Guillon, Bernd Friedrich',
+//         year: '2020'
+//     },
+//     {
+//         title: 'Recovery of Cobalt From Primary and Secondary Materials – An Overview',
+//         metadata: 'MILITARY TECHNICAL COURIER, 2020, Vol. 68, Issue 2',
+//         tag: 'article in scientific journal',
+//         authors: 'Srecko Stopic, Bernd Friedrich',
+//         year: '2020'
+//     },
+//     {
+//         title: 'Evaluation of Recyclability of a WEEE Slag by Means of Integrative X-Ray Computer Tomography and SEM-Based Image Analysis',
+//         metadata: 'Minerals 2020, 10(4), 309 DOI: 10.3390/min10040309',
+//         tag: 'article in scientific journal',
+//         authors: 'Markus Buchmann, Nikolaus Borowski, Thomas Leißner, Thomas Heinig, Markus A. Reuter, Bernd Friedrich, Urs A. Peuker',
+//         year: '2020'
+//     },
+// ]
 
 export default class LatestPublications extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: {success: false}
-        }
+        // this.state = {
+        //     data: {success: false}
+        // }
     }
 
-    componentDidMount() {
-        Db.get('RecentPub').then((res) => {
-            this.setState({data: res})
-        })
-    }
+    // componentDidMount() {
+    //     Db.get('RecentPub').then((res) => {
+    //         this.setState({data: res})
+    //     })
+    // }
 
     render() {
-        let publications = false;
-        if (this.state.data.success) {
-            publications = this.state.data.results.splice(0, 3);
-            // console.log(publications);
-        }
+        // let publications = false;
+        // if (this.state.data.success) {
+        //     publications = this.state.data.results.splice(0, 3);
+        //     // console.log(publications);
+        // }
         return (
-            <PublicationTable className="latest-publications" thead="1" publications={publications} pagination="0" height={this.props.height}/>
+            <PublicationTable className="latest-publications" thead="1" limit="3" recent="1" height={this.props.height}/>
             // <div id="" className="latest-publications" style={{height: `${this.props.height}`, marginTop: '30px'}} >
             //     <table className="table table-sm0 table-striped table-hover table-responsive">
             //         <thead className="thead-color1">

@@ -4,6 +4,7 @@ import HeaderBanner from '../HeaderBanner';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
+import ResearchDetails from '../Research/ResearchDetails';
 
 let intro = '<p>The IME pursues the objective to use the high potential of WEEE as a resource for various metals by developing a sustainable metallurgical recycling process. The focal point is the recovery of base metals (copper, aluminum), precious metals (gold, silver, platinum and palladium) as well as critical elements (gallium, germanium and indium). Currently, five doctoral studies examine different approaches of hydro- and pyrometallurgical processes concerning their selectivity, efficiency and flexibility. These processes aim at the treatment of several waste streams (such as printed circuit boards, shredder dust or whole smartphones) to recover various valuable metals with minimal losses. By elaborating several single methods, a process concept will be developed, which enables the recovery of individual elements through a flexible combination of these methods, adapted to a given waste stream and particular requirements.</p><p>Key aspects: Reductive and energetic use of organics; thermal preparation of rest fractions (Pyrolysis); autothermal metallurgy, microwave heating; slag design and controlled solidification for metal concentration; critical metals recovery; autogenious pellets with respect to phase separation; TBRC furnace development for treating pure WEEE; scraps synergies by waste mixtures</p>';
 let projectList = [
@@ -52,8 +53,8 @@ class ResearchProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 0,
-            intro: intro,
+            id: this.props.match.params.id,
+            // intro: intro,
             projectList: projectList,
             publications: publications
         }
@@ -61,11 +62,6 @@ class ResearchProject extends Component {
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.fetchData(id);
-    }
-
-    fetchData = id => {
-        // console.log(id);
         this.setState({id: id});
     }
     
@@ -82,40 +78,7 @@ class ResearchProject extends Component {
                             {/*googleon: all*/}
                             <div className="">
                                 <div className="content" role="article">
-                                    <div id="intro" className="py-3">
-                                        {/* {this.state.id} */}
-                                        <h2 className="heading"><Link className="d-inline-block " to="/research">Research</Link> <span className="text-dark">&#187; Electronic Scrap Recycling</span> </h2>
-                                        <div className="intro-wrap p-4 bg-grey text-left">
-                                        <div className="px-2">
-                                            <div className="row">
-                                                <div className="py-2 col-12 col-sm-12" dangerouslySetInnerHTML={{__html: this.state.intro}} />
-                                                <div className="py-2 col-12 col-sm-4">
-                                                    <p><b>Contact:</b></p>
-                                                    <ul>
-                                                        <li>Dr.-Ing. Fabian Diaz</li>
-                                                        <li>M. Sc. Damien Latacz</li>
-                                                        <li>M. Sc. Gunnar Hovestadt</li>
-                                                        <li>Dr.-Ing. Alexander Birich</li>
-                                                    </ul>
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-4">
-                                                    <p><b>Alumni:</b></p>
-                                                    <ul>
-                                                        <li>M. Sc. Nikolaus Borowski</li>
-                                                        <li>Dr.-Ing. Sebastian Maurell-Lopez</li>
-                                                        <li>M. Sc. Benedikt Flerus</li>
-                                                        <li>M. Sc. Anna Trentmann</li>
-                                                    </ul>
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-4">
-                                                    <div className="profile-img">
-                                                    <img src={process.env.PUBLIC_URL + '/img/projects/WEEE.jpg'} alt="WEEE" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
+                                    <ResearchDetails id={this.state.id} />
                                     <div id="project-list" className="py-3">
                                         <h2 className="heading">Project List</h2>
                                         <div className="row justify-content-center">

@@ -79,7 +79,7 @@ export default class Publications extends Component {
                                         <img className="float-right" src={process.env.PUBLIC_URL + '/img/publications/pdf_icon_small.gif'} alt="Building of the IME" />
                                         </div>
                                         </div>
-                                        <PublicationTable teamId="-1" thead="1"/>
+                                        <PublicationTable teamId="-1" search="1" thead="1"/>
                                     </div>
                                 </div>
                             </div>
