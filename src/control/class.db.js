@@ -40,13 +40,14 @@ class Db {
         return response;
     }
 
-    static get(item, id=null, pageNo=null, search='') {
+    static get(item, id=null, pageNo=null, search='', keywords='') {
         let func = 'get'+item;
         let obj = new this(func);
         obj.setSearch({
             id: id,
             pageNo: pageNo,
             search: search,
+            keywords: keywords,
         });
         return obj.querySelect();
     }

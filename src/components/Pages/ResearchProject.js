@@ -5,6 +5,8 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
 import ResearchDetails from '../Research/ResearchDetails';
+import ProjectList from '../Research/ProjectList';
+import Db from '../../control/class.db';
 
 let intro = '<p>The IME pursues the objective to use the high potential of WEEE as a resource for various metals by developing a sustainable metallurgical recycling process. The focal point is the recovery of base metals (copper, aluminum), precious metals (gold, silver, platinum and palladium) as well as critical elements (gallium, germanium and indium). Currently, five doctoral studies examine different approaches of hydro- and pyrometallurgical processes concerning their selectivity, efficiency and flexibility. These processes aim at the treatment of several waste streams (such as printed circuit boards, shredder dust or whole smartphones) to recover various valuable metals with minimal losses. By elaborating several single methods, a process concept will be developed, which enables the recovery of individual elements through a flexible combination of these methods, adapted to a given waste stream and particular requirements.</p><p>Key aspects: Reductive and energetic use of organics; thermal preparation of rest fractions (Pyrolysis); autothermal metallurgy, microwave heating; slag design and controlled solidification for metal concentration; critical metals recovery; autogenious pellets with respect to phase separation; TBRC furnace development for treating pure WEEE; scraps synergies by waste mixtures</p>';
 let projectList = [
@@ -55,18 +57,29 @@ class ResearchProject extends Component {
         this.state = {
             id: this.props.match.params.id,
             // intro: intro,
-            projectList: projectList,
-            publications: publications
+            // projectList: projectList,
+            // publications: publications
+            data: null,
+            keywords: '',
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
+        Db.get('KeywordFromResearch', id).then((res) => {
+            this.setState({data: res, keywords: String(res.results[0].publicationKeywords)});
+            console.log(this.state.keywords);
+        })
     }
     
     render() {
-        return(
+        // let keywords = '';
+        // if (this.state.data.success) {
+        //     keywords = this.state.data.results[0].publicationKeywords;
+        //     console.log(keywords);
+        // }
+        return this.state.keywords == '' ? <span>Loading...</span> : (
             <div className="research-projects">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -81,14 +94,7 @@ class ResearchProject extends Component {
                                     <ResearchDetails id={this.state.id} />
                                     <div id="project-list" className="py-3">
                                         <h2 className="heading">Project List</h2>
-                                        <div className="row justify-content-center">
-                                            <div className="col-11">
-                                                <ul>{this.state.projectList.map((elm, index) => (
-                                                    
-                                                    <li className="py-2"><Link to={'/research/project/'+elm.id}>{elm.title}</Link></li>
-                                                ))}</ul>
-                                            </div>
-                                        </div>
+                                        <ProjectList id={this.state.id} />
                                     </div>
                                     <div id="publications" className="py-3">
                                         <h2 className="heading">Publications</h2>
@@ -119,7 +125,7 @@ class ResearchProject extends Component {
                                                 </div>
                                             </div> */}
                                         </div>
-                                        <PublicationTable thead="1" publications={this.state.publications}/>
+                                        <PublicationTable thead="1" keywords={this.state.keywords} search="1"/>
                                     </div>
                                 </div>
                             </div>

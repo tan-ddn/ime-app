@@ -14,6 +14,7 @@ export default class PublicationTable extends ResponsiveComponent {
 
         this.state = {
             searchInput: '',
+            keywords: (this.props.keywords) ? this.props.keywords : '',
             pageNo: 1,
             hasPag: (this.props.pagination == false) ? false : true,
             totalPages: 1,
@@ -44,7 +45,8 @@ export default class PublicationTable extends ResponsiveComponent {
         // } else {
         //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
         } else {
-            Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput).then((res) => {
+            // console.log(this.props.keywords);
+            Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,
@@ -67,7 +69,7 @@ export default class PublicationTable extends ResponsiveComponent {
             //     console.log(this.state.pageNo);
             //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
             } else {
-                Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput).then((res) => {
+                Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
                     this.setState({
                         data: res, 
                         publications: res.results,
@@ -84,7 +86,7 @@ export default class PublicationTable extends ResponsiveComponent {
         console.log(input);
         this.setState({searchInput: input, pageNo: 1}, () => {
             let teamId = (this.props.teamId) ? this.props.teamId : -1;
-            Db.get('AllPub', teamId, this.state.pageNo, input).then((res) => {
+            Db.get('AllPub', teamId, this.state.pageNo, input, this.state.keywords).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,
