@@ -5,6 +5,7 @@ import HeaderBanner from '../HeaderBanner';
 import NewsSlider from '../News/NewsSlider';
 import Box from '../Box';
 import '../Equipment/equipment.scss';
+import Db from '../../control/class.db';
 
 let intro = '<p>IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures below. </p>';
 
@@ -87,21 +88,42 @@ export default class Equipment extends Component {
         super(props);
         this.state = {
             intro: intro,
-            equipment: equipment
+            // equipment: equipment,
+            data: Db.get('EquipCat').then(res => res)
         }
     }    
+
+    componentDidMount() {
+        Db.get('EquipCat').then((res) => {
+            this.setState({data: res});
+        });
+    }
     
     render() {
-        let boxContent = Array();
-        equipment.forEach((elm, index) => {
-            boxContent[index] = {
-                title: elm.title,
-                image: elm.image,
-                button: elm.button,
-                buttonUrl: '/equipment/' + elm.id,
-                description: elm.description
-            };
-        });
+        // let boxContent = Array();
+        // equipment.forEach((elm, index) => {
+        //     boxContent[index] = {
+        //         title: elm.title,
+        //         image: elm.image,
+        //         button: elm.button,
+        //         buttonUrl: '/equipment/' + elm.id,
+        //         description: elm.description
+        //     };
+        // });
+        let equipmentCat = [];
+        let boxContent = [];
+        if (this.state.data.success) {
+            equipmentCat = this.state.data.results;
+            console.log(equipmentCat);
+            equipmentCat.forEach((elm, index) => {
+                boxContent[index] = {
+                    title: elm.typ_eng,
+                    image: process.env.PUBLIC_URL + '/img/equipment/' + elm.bild,
+                    button: elm.button,
+                    buttonUrl: '/equipment/' + elm.id,
+                };
+            });
+        }
         return(
             <div className="equipment">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-208.jpg'} transformY='0%' overlay=''/>
@@ -154,9 +176,9 @@ export default class Equipment extends Component {
                                         <h2 className="heading">Equipment</h2>
                                         <div className="">
                                             <div className="row">
-                                                <div className="col-12 col-lg-4 d-flex">
+                                                {/* <div className="col-12 col-lg-4 d-flex">
                                                     <NewsSlider slides={slides} className="equipment-slider" height="400px"/>
-                                                </div>
+                                                </div> */}
                                                 {boxContent.map((elm, index) => (
                                                 <div key={index} className="col-12 col-lg-4 d-flex">
                                                     <Box content={elm} type="equipment" linkTitle="1" classNames="equipment-cat-box rounded bg-darkblue0"/>

@@ -55,15 +55,20 @@
 }
 
 .equipment-subcat {
-    font-size: 1.2em;
     // padding: 10px 0 0px;
     // margin-bottom: 30px;
     // border-bottom: 1px solid $color1;
+    .nav-tabs {
+        font-size: 1.2em;
+    }
 }
 
 .equipment-box {
+    border-bottom: 1px solid $color2;
+    margin-bottom: 30px;
     .title {
         color: $color1;
+        min-height: 2.8em;
     }
     .equipment-image {
         @include img-container(100%, 'cover');

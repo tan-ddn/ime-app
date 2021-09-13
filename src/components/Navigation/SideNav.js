@@ -7,22 +7,18 @@ export default class SideNav extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
-        this.state = {
-            heading: this.props.heading,
-            content: this.props.content
-        }
     }
 
     render() {
         let className = "side-nav pb-3 " + this.props.className;
         return(
             <div id={this.props.id} className={className} >
-                <h2 className="heading">{this.state.heading}</h2>
+                <h2 className="heading">{this.props.heading}</h2>
                 <ul className="nav flex-column pt-2">
-                    {this.state.content.map((elm, index) => (
+                    {this.props.content.map((elm, index) => (
                         <li className="nav-item">
                             <Link className="nav-link" to={elm.url}>
-                                {elm.title}
+                                {elm.title_eng}
                             </Link>
                         </li>
                     ))}

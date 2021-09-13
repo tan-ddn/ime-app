@@ -2,39 +2,38 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import { withRouter } from "react-router";
-import EquipmentSingle from '../Equipment/EquipmentSingle';
 import SideNav from '../Navigation/SideNav';
-import Tabs from '../Tabs/Tabs';
-import '../Tabs/Tabs.scss';
 import { Link } from 'react-router-dom';
+import Db from '../../control/class.db';
+import EquipmentSubcat from '../Equipment/EquipmentSubcat';
 
-let categories = [
-    {
-        'id': 1,
-        'title': 'Process Metallurgy',
-        'url': ''
-    },
-    {
-        'id': 2,
-        'title': 'Materials Synthesis',
-        'url': ''
-    },
-    {
-        'id': 3,
-        'title': 'Metal Electrolysis',
-        'url': ''
-    },
-    {
-        'id': 4,
-        'title': 'Basics',
-        'url': ''
-    },
-    {
-        'id': 5,
-        'title': 'Chemical Analysis',
-        'url': ''
-    },
-];
+// let categories = [
+//     {
+//         'id': 1,
+//         'title': 'Process Metallurgy',
+//         'url': ''
+//     },
+//     {
+//         'id': 2,
+//         'title': 'Materials Synthesis',
+//         'url': ''
+//     },
+//     {
+//         'id': 3,
+//         'title': 'Metal Electrolysis',
+//         'url': ''
+//     },
+//     {
+//         'id': 4,
+//         'title': 'Basics',
+//         'url': ''
+//     },
+//     {
+//         'id': 5,
+//         'title': 'Chemical Analysis',
+//         'url': ''
+//     },
+// ];
 
 let category = {
     'id': 1,
@@ -113,35 +112,49 @@ class EquipmentCategory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categories: categories,
-            category: category
+            // category: category
+            id: null,
+            categories: Db.get('EquipCat').then(res => res)
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.fetchData(id);
-    }
-
-    fetchData = id => {
-        // console.log(id);
         this.setState({id: id});
+        Db.get('EquipCat').then((res) => {
+            this.setState({categories: res});
+        });
     }
     
     render() {
-        this.state.categories.forEach((elm, index) => elm.url = '/equipment/' + elm.id)
-
-        let subCat = Array();
-        this.state.category.subcat.forEach((elm, index) => {
-            subCat[index] = Object.assign({}, elm);
-            subCat[index].equipment.forEach((e, i) => {
-                // delete e.image;
-                // delete e.id;
-            });
-        });
-        console.log(subCat);
-        return(
-            <div className="team">
+        let categories = [];
+        let cat = {
+            typ: '',
+            typ_eng: ''
+        }
+        if (this.state.categories.success) {
+            categories = this.state.categories.results;
+            // console.log(categories);
+            categories.forEach((elm, index) => {
+                elm.url = '/equipment/' + elm.id;
+                elm.title_eng = elm.typ_eng;
+                if (elm.id == this.state.id) {
+                    cat = elm;
+                }
+            })
+            // console.log(cat);
+        }
+        // let subCat = Array();
+        // this.state.category.subcat.forEach((elm, index) => {
+        //     subCat[index] = Object.assign({}, elm);
+        //     subCat[index].equipment.forEach((e, i) => {
+        //         // delete e.image;
+        //         // delete e.id;
+        //     });
+        // });
+        // console.log(subCat);
+        return cat.typ == '' ? <span>Loading...</span> : (
+            <div className="equipment-cat">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-208.jpg'} transformY='0%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
@@ -155,38 +168,11 @@ class EquipmentCategory extends Component {
                                     <div className="row py-3">
                                         <div className="col-12 col-md-3">
                                             {/* <Tabs/> */}
-                                            <SideNav heading="Categories" content={this.state.categories} />
+                                            <SideNav heading="Categories" content={categories} />
                                         </div>
                                         <div className="col-12 col-md-9">
-                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {this.state.category.title}</span> </h2>
-                                            <ul id="subcatTab" className="nav nav-tabs " role="tablist">
-                                            {subCat.map((elm, index) => {
-                                                let active = "", selected = false;
-                                                if (index === 0) {
-                                                    active = " active";
-                                                    selected = true;
-                                                }
-                                                return (
-                                                <li key={index} role="presentation" className="nav-item equipment-subcat">
-                                                    <a className={"nav-link" + active} href={"#cat-"+elm.id} role="tab" aria-controls={"cat-"+elm.id} aria-selected={selected} data-toggle="pill">{elm.title}</a>
-                                                    
-                                                </li>
-                                            )})}
-                                            </ul>
-                                            <div id="subcatTabContent" className="tab-content">
-                                            {subCat.map((elm, index) => {
-                                                let active = "";
-                                                if (index === 0) active = " show active";
-                                                return (
-                                                <div key={index} className={"tab-pane fade" + active} id={"cat-"+elm.id} role="tabpanel" aria-labelledby={"cat-"+elm.id+"-tab"}>
-                                                    <div className="row">
-                                                    {elm.equipment.map((e, i) => (
-                                                        <EquipmentSingle key={i} content={e}/>
-                                                    ))}
-                                                    </div>
-                                                </div>
-                                            )})}
-                                            </div>
+                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {cat.typ_eng}</span> </h2>
+                                            <EquipmentSubcat cat={cat.typ} />
                                         </div>
                                     </div>
                                 </div>
