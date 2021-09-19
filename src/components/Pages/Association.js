@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Db from '../../control/class.db';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -13,10 +14,22 @@ export default class Association extends Component {
         super(props);
         this.state = {
             intro: intro,
+            data: Db.get('YearlyMeeting', 1).then(res => res)
         }
     }    
+
+    componentDidMount() {
+        Db.get('YearlyMeeting', 1).then(res => {
+            this.setState({data: res});
+        });
+    }
     
     render() {
+        let meetings = [];
+        if (this.state.data.success) {
+            meetings = this.state.data.results;
+            console.log(meetings);
+        }
         return(
             <div className="association">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/association/160224-IME-149.jpg'} transformY='0%' overlay='dark'/>
@@ -93,7 +106,35 @@ export default class Association extends Component {
                                     <div id="annual-meeting" className="py-3 pb-5">
                                         <h2 className="heading">Yearly Meetings </h2>
                                         <p>Traditionally, the IME graduate meeting takes place every first Friday in November. This gives an opportunity to do a round-trip through the institute and to participate in the annual meeting of the association "Friends of IME e.V.". In the evening, the research funding awards and the prizes for excellent master thesis of Aurubis AG and the association are presented as well. </p>
-                                        <div className="annual-meeting-wrap py-2 bg-grey0">
+                                        {meetings.map((elm) => {
+                                            if (elm.pics == undefined) return;
+                                            return (
+                                            <div key={elm.id} className="annual-meeting-wrap py-2 bg-grey0">
+                                            <h4 className="box-title">{elm.name_eng}</h4>
+                                            <div className="row">
+                                                <div className="py-2 col-12">
+                                                    <p className="gallery-row">
+                                                        {elm.pics.map((e, i) => (
+                                                            <StyledPopup key={i} className="border rounded">
+                                                            <img src={process.env.PUBLIC_URL + '/img/albums/' + elm.file_name + '/' + e} alt={elm.name_eng} />
+                                                            </StyledPopup>
+                                                        ))}
+                                                        {/* <StyledPopup className="border rounded">
+                                                        <img src={process.env.PUBLIC_URL + '/img/association/meeting2018/ab_1_id_5674.jpg'} alt="Meeting 2018" />
+                                                        </StyledPopup>
+                                                        <StyledPopup className="border rounded">
+                                                        <img src={process.env.PUBLIC_URL + '/img/association/meeting2018/ab_2_id_6049.jpg'} alt="Meeting 2018" />
+                                                        </StyledPopup>
+                                                        <StyledPopup className="border rounded">
+                                                        <img src={process.env.PUBLIC_URL + '/img/association/meeting2018/ab_3_id_9406.jpg'} alt="Meeting 2018" />
+                                                        </StyledPopup> */}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            );
+                                        })}
+                                        {/* <div className="annual-meeting-wrap py-2 bg-grey0">
                                             <h4 className="box-title">Annual Meeting 2018</h4>
                                         <div className="row">
                                             <div className="py-2 col-12">
@@ -146,7 +187,7 @@ export default class Association extends Component {
                                                 </p>
                                             </div>
                                         </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
+import Db from '../../control/class.db';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
+import SanitizedHTML from 'react-sanitized-html';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<p>The IME offers thesis topics to students of engineering and material sciences with a processing background at any time. Here you may find a selection of current thesis topics.</p><p>You may also want to take the chance to contact our employees in order to make a personal appointment. We find interesting and exciting topics for everyone. </p>';
@@ -24,33 +26,49 @@ class ThesisTopic extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null,
             intro: intro,
-            masterThesis: masterThesis,
+            // masterThesis: masterThesis,
+            data: Db.get('Job', this.props.match.params.id).then(res => res),
+            contact: Db.get('JobContact', this.props.match.params.id).then(res => res)
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.fetchData(id);
-    }
-
-    fetchData = id => {
-        // console.log(id);
         this.setState({id: id});
+        Db.get('Job', id).then((res) => {
+            this.setState({data: res});
+        });
+        Db.get('JobContact', id).then((res) => {
+            this.setState({contact: res});
+        });
     }
     
     render() {
-        let leftColumn = Object.assign({}, this.state.masterThesis);
-        let rightColumn = {};
-        rightColumn['background'] = leftColumn.background;
-        rightColumn['job definition'] = leftColumn.jobDefinition;
-        delete leftColumn.id;
-        delete leftColumn.image;
-        delete leftColumn.background;
-        delete leftColumn.jobDefinition;
         // {Object.keys(leftColumn).map((key, index) => {
         //     if (key == 'jobDescription') key = 'job description';
         // })};
+
+        let leftColumn = {};
+        let rightColumn = {};
+        let job = {jp_pic: ''};
+        let contact;
+        if (this.state.data.success & this.state.contact.success) {
+            job = this.state.data.results[0];
+            contact = this.state.contact.results[0];
+            job.j_ueberschrift_eng = (job.j_ueberschrift_eng == '') ? job.j_ueberschrift : job.j_ueberschrift_eng;
+            job.j_problem_eng = (job.j_problem_eng == '') ? job.j_problem : job.j_problem_eng;
+            job.j_aufgaben_eng = (job.j_aufgaben_eng == '') ? job.j_aufgaben : job.j_aufgaben_eng;
+            leftColumn['topic'] = job.j_ueberschrift_eng;
+            leftColumn['description'] = job.ja_jobart_eng;
+            leftColumn['duration'] = job.j_dauer_number + ' month(s)';
+            leftColumn['start'] = 'Immediately';
+            leftColumn['contact'] = (<Link to={'/team/'+job.j_kontakt}>{contact.tt_titel + ' ' + contact.t_vorname + ' ' + contact.t_name}</Link>);
+            rightColumn['background'] = job.j_problem_eng;
+            rightColumn['job definition'] = job.j_aufgaben_eng;
+            // console.log(leftColumn);
+        }
         return(
             <div className="study">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark'/>
@@ -64,7 +82,7 @@ class ThesisTopic extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading"><Link className="d-inline-block " to="/study">Study</Link> <span className="text-dark">&#187; Work</span></h2>
+                                        <h2 className="heading"><Link className="d-inline-block " to="/study">Study</Link> <span className="text-dark">&#187; {leftColumn['description']}</span></h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
@@ -73,7 +91,9 @@ class ThesisTopic extends Component {
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-4">
                                                     <div className="rounded">
-                                                    <img src={process.env.PUBLIC_URL + this.state.masterThesis.image} alt="master thesis"/>
+                                                    {job.jp_pic &&
+                                                    <img src={process.env.PUBLIC_URL + '/img/study/' + job.jp_pic} alt={'Image: '+leftColumn['description']}/>
+                                                    }
                                                     </div>
                                                 </div>
                                             </div>
@@ -113,7 +133,7 @@ class ThesisTopic extends Component {
                                                 {Object.keys(rightColumn).map((key, index) => (
                                                     <dl key={index}>
                                                         <dt className="text-capitalize">{key}</dt>
-                                                        <dd>{rightColumn[key]}</dd>
+                                                        <dd><SanitizedHTML html={rightColumn[key]} /></dd>
                                                     </dl>
                                                 ))}
                                             </div>

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
+import Db from '../../control/class.db';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
+import HiwiJobs from '../Jobs/HiwiJob';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<p>You can have a look at all lectures and courses which are given at the IME in the current semester in RWTHonline. Access is only given for matriculated students of RWTH Aachen or employers of the university. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&amp;$skip=0&amp;$top=20&amp;objTermId=187&amp;orgId=14507&amp;q=" target="_blank">Here</a> you find a direct link to the courses.</p><p><b>Notification: online lectures at IME. </b></p><p>Due to the current situation, the IME has created an online contingency plan (Download note: due to the uncertain situation, this can change at any time). The big courses take place online this semester. We hope that lectures on a smaller scale (<20 students) will be held physically at the end of May, for which all measures regarding hygiene and safety distance will be specially followed. The lectures of larger dimensions will be broadcasted via zoom. Students are provided with the lecture manuscript as well as the exercise documents and exercise videos in Moodle. Since we do not want to do the practical course online, these will take place to a limited extent in compliance with the hygiene measures and the safety distance.</p>';
@@ -13,11 +15,45 @@ class Study extends Component {
         super(props);
         this.state = {
             intro: intro,
+            data: Db.get('Job').then(res => res)
         }
     }    
+
+    componentDidMount() {
+        Db.get('Job').then((res) => {
+            this.setState({data: res});
+        });
+    }
     
     render() {
-        return(
+        let jobs = [];
+        let hiwi = [], bachelor = [], master = [], mini = [];
+        if (this.state.data.success) {
+            jobs = this.state.data.results;
+            // console.log(jobs);
+            jobs.forEach(element => {
+                switch (element.j_art) {
+                    case 3:
+                        master.push(element);
+                        break;
+                    case 4:
+                        mini.push(element);
+                        break;
+                    case 5:
+                        bachelor.push(element);
+                        break;
+                    case 6:
+                        hiwi.push(element);
+                        break;
+                    default:
+                }
+            });
+            // console.log(master);
+            // console.log(mini);
+            // console.log(bachelor);
+            // console.log(hiwi);
+        }
+        return jobs.length == 0 ? "Loading..." : (
             <div className="study">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -80,49 +116,7 @@ class Study extends Component {
                                                     </h4>
                                                 </div>
                                                 <div id="hiwi-1" className="collapse " aria-labelledby="hiwi-heading-1" data-parent="#hiwi-accordion">
-                                                <div className="card-body text-left row">
-                                                    <div className="py-2 col-12 col-sm-6">
-                                                    <dd>
-                                                        <dt>Description</dt>
-                                                        <dd>Student worker</dd>
-                                                        <dt>Topic</dt>
-                                                        <dd>HiWi‘s gesucht !</dd>
-                                                        <dt>Background</dt>
-                                                        <dd>
-                                                        <p>Du möchtest bei deinem Studium nicht nur über Büchern sitzen und suchst einen Job, bei dem Du 5-8 Stunden die Woche praxisnah arbeiten kannst?</p>
-                                                        <p>Das IME bietet Dir:</p>
-                                                        <ul>
-                                                            <li>Anspruchsvolle Aufgaben in einem internationalen Team,</li>
-                                                            <li>Praktische Arbeiten, die das theoretisch Gelernte experimentell vertiefen,</li>
-                                                            <li>ein breites Spektrum aus Pyrometallurgie, Hydrometallurgie und angewandter Elektrochemie und Kontakte für zukünftige Praktika.</li>
-                                                        </ul>
-                                                        </dd>
-                                                    </dd>
-                                                    </div>
-                                                    <div className="py-2 col-12 col-sm-6">
-                                                    <dd>
-                                                        <dt>Duration</dt>
-                                                        <dd>6 months</dd>
-                                                        <dt>Start</dt>
-                                                        <dd>Immediately</dd>
-                                                        <dt>Job definition</dt>
-                                                        <dd>
-                                                        <p>Was Du mitbringen solltest sind::</p>
-                                                        <ul>
-                                                            <li>Gute Kenntnisse der MS Office Anwendungen,</li>
-                                                            <li>keine Angst vor flüssigem, heißem Metall,</li>
-                                                            <li>keine Angst vor Säuren und Basen,</li>
-                                                            <li>Spaß und Interesse an praktischen Arbeiten.</li>
-                                                        </ul>
-                                                        </dd>
-                                                        <dt>Contact</dt>
-                                                        <dd><a href="#">M. Sc. Dominic Feldhaus</a></dd>
-                                                    </dd>
-                                                    </div>
-                                                    <div className="text-center py-2 col-12 col-sm-">
-                                                    <img src={process.env.PUBLIC_URL + '/img/study/hiwi.png'} alt="hiwi" />
-                                                    </div>
-                                                </div>
+                                                    <HiwiJobs content={hiwi} />
                                                 </div>
                                             </div>
                                         </div>
@@ -148,9 +142,15 @@ class Study extends Component {
                                                 <div className="card-body text-left row">
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
-                                                        <li><Link to="/study/thesistopic/1">Investigation of alternative reducing agents for the production of ferroalloys</Link></li>
+                                                    {master.map((elm, index) => {
+                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        return (
+                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        );
+                                                    })}
+                                                        {/* <li><Link to="/study/thesistopic/1">Investigation of alternative reducing agents for the production of ferroalloys</Link></li>
                                                         <li><Link to="/study/thesistopic/1">Modelling of Migration and Agglomeration of Particles in Aluminium Melt under Electromagnetically (EM)-Induced Flow</Link></li>
-                                                        <li><Link to="/study/thesistopic/1">Automatization of the molten salt electrolysis process to produce neodymium and praseodymium</Link></li>
+                                                        <li><Link to="/study/thesistopic/1">Automatization of the molten salt electrolysis process to produce neodymium and praseodymium</Link></li> */}
                                                     </ul>
                                                     </div>
                                                 </div>
@@ -168,7 +168,12 @@ class Study extends Component {
                                                 <div className="card-body text-left row">
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
-                                                        <li><a href="#">Extraction of High-Entropy Alloys (HEAs) using ATR</a></li>
+                                                    {bachelor.map((elm, index) => {
+                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        return (
+                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        );
+                                                    })}
                                                     </ul>
                                                     </div>
                                                 </div>
@@ -186,9 +191,12 @@ class Study extends Component {
                                                 <div className="card-body text-left row">
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
-                                                        <li><a href="#">Experimental determination of growth rate behaviour during fractional crystallization using Cold Finger method</a></li>
-                                                        <li><a href="#">Investigation of optimum vacuum distillation parameters to produce high purity magnesium</a></li>
-                                                        <li><a href="#">Plasma Technology in Hydrometallurgy</a></li>
+                                                    {mini.map((elm, index) => {
+                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        return (
+                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        );
+                                                    })}
                                                     </ul>
                                                     </div>
                                                 </div>
