@@ -28,7 +28,7 @@ export default class HiwiJobs extends ResponsiveComponent {
             let job = this.state.data.results;
             // console.log(job);
             hiwiText = this.props.content.map((elm, index) => (
-                <div className="hiwi-job row">
+                <div key={index} className="hiwi-job row">
                     <div className="py-2 col-12 col-sm-6">
                         <dl>
                             <dt>Description</dt>

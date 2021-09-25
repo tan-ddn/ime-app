@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import Db from '../../control/class.db';
+import ExamLogin from '../Exams/ExamLogin';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -145,7 +146,7 @@ class Study extends Component {
                                                     {master.map((elm, index) => {
                                                         if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
                                                         return (
-                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
                                                         );
                                                     })}
                                                         {/* <li><Link to="/study/thesistopic/1">Investigation of alternative reducing agents for the production of ferroalloys</Link></li>
@@ -194,7 +195,7 @@ class Study extends Component {
                                                     {mini.map((elm, index) => {
                                                         if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
                                                         return (
-                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
                                                         );
                                                     })}
                                                     </ul>
@@ -206,36 +207,7 @@ class Study extends Component {
                                     </div>
                                     <div id="exams" className="py-3 pb-5">
                                         <h2 className="heading">Exams</h2>
-                                        <div className="exams-wrap p-4 bg-grey">
-                                        <div className="row">
-                                            <div className="py-2 col-12 col-sm-4">
-                                            <p>Here you can download old tests or have a look at the results of new tests. Please ask for the necessary passwords in the lectures. </p>
-                                            </div>
-                                            <div className="py-2 col-12 col-sm-8">
-                                            <form className="exam-form">
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text" for="semesterSelect">Edition (Semester):</span>
-                                                    </div>
-                                                    <select className="custom-select" id="semesterSelect">
-                                                        <option value="17">Vertiefungsfach 1</option>
-                                                        <option value="19">Study Major</option>
-                                                        <option value="21">Hydrometallurgie</option>
-                                                        <option value="15">Basisfach</option>
-                                                        <option value="16">Basic Course</option>
-                                                    </select>
-                                                </div>
-                                                <div className="input-group mb-3">
-                                                    <div className="input-group-prepend">
-                                                        <span className="input-group-text" for="password">Password:</span>
-                                                    </div>
-                                                    <input type="password" className="form-control" id="password" placeholder="Password" />
-                                                </div>
-                                                <button type="submit" className="btn btn-primary">Login</button>
-                                            </form>
-                                            </div>
-                                        </div>
-                                        </div>
+                                        <ExamLogin />
                                     </div>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Box from '../Box';
 import './team.scss';
 import Db from '../../control/class.db';
+import TeamBox from './TeamBox';
 
 export default class TeamGroup extends ResponsiveComponent {
     constructor(props) {
@@ -45,23 +46,23 @@ export default class TeamGroup extends ResponsiveComponent {
     //     })
     // }
 
-    boxContainer(members) {
-        // console.log(members);
-        let boxContent = Array();
-        members.forEach((elm, index) => {
-            let title = '';
-            if (elm.t_titel != 16) title = elm.tt_titel;
-            boxContent[index] = {
-                id: elm.t_id,
-                link: "/team/" + elm.t_id,
-                name: title + ' ' + elm.t_vorname + ' ' + elm.t_name,
-                image: process.env.PUBLIC_URL + '/img/team/' + elm.t_bild,
-                url: elm.t_url,
-                description: '<p>Tel: ' + elm.t_tel + '<br/>Fax: ' + elm.t_fax + '<br/><a href="mailto:' + elm.t_mail + '">' + elm.t_mail + '</a></p>'
-            };
-        });
-        return boxContent;
-    }
+    // boxContainer(members) {
+    //     // console.log(members);
+    //     let boxContent = Array();
+    //     members.forEach((elm, index) => {
+    //         let title = '';
+    //         if (elm.t_titel != 16) title = elm.tt_titel;
+    //         boxContent[index] = {
+    //             id: elm.t_id,
+    //             link: "/team/" + elm.t_id,
+    //             name: title + ' ' + elm.t_vorname + ' ' + elm.t_name,
+    //             image: process.env.PUBLIC_URL + '/img/team/' + elm.t_bild,
+    //             url: elm.t_url,
+    //             description: '<p>Tel: ' + elm.t_tel + '<br/>Fax: ' + elm.t_fax + '<br/><a href="mailto:' + elm.t_mail + '">' + elm.t_mail + '</a></p>'
+    //         };
+    //     });
+    //     return boxContent;
+    // }
 
     render() {
         let groupTitle = this.state.group.einteilung_eng;
@@ -86,11 +87,15 @@ export default class TeamGroup extends ResponsiveComponent {
                 // console.log(leader);
                 groupDisplay = [leader, coworker, internee].map((subgroup, index) => {
                     if (subgroup.length == 0) return;
-                    let boxContent = this.boxContainer(subgroup);
-                    let boxContentDisplay = boxContent.map((elm, index) => (
-                        <div key={'team-'+elm.id} id={"team-"+elm.id} className="col-12 col-lg-4 d-flex">
-                            <Box content={elm} classNames="team-box rounded bg-darkblue0" type="team" />                            
-                        </div>
+                    // let boxContent = this.boxContainer(subgroup);
+                    // let boxContentDisplay = boxContent.map((elm, index) => (
+                    //     <div key={'team-'+elm.id} id={"team-"+elm.id} className="col-12 col-lg-4 d-flex">
+                    //         <Box content={elm} classNames="team-box rounded bg-darkblue0" type="team" />                            
+                    //     </div>
+                    // ))
+                    let boxContentDisplay = subgroup.map((elm, index) => (
+                        <div key={index} className="col-12 col-lg-4 d-flex">
+                        <TeamBox team={elm} /></div>
                     ))
                     return (<div key={"subgroup-"+index} className="py-2">
                         <h5 className="box-title m-0 p-0">{subgroup.title_eng}</h5>
@@ -99,14 +104,21 @@ export default class TeamGroup extends ResponsiveComponent {
                 });
                 // console.log(groupDisplay);
             } else {
-                boxContent = this.boxContainer(members);
+                // boxContent = this.boxContainer(members);
+                // groupDisplay = (<div className="row">
+                //     {boxContent.map((elm, index) => (
+                //         <div key={'team-'+elm.id} id={"team-"+elm.id} className="col-12 col-lg-4 d-flex">
+                //             <Box content={elm} classNames="team-box rounded bg-darkblue0" type="team" />                            
+                //         </div>
+                //     ))}
+                // </div>);     
                 groupDisplay = (<div className="row">
-                    {boxContent.map((elm, index) => (
-                        <div key={'team-'+elm.id} id={"team-"+elm.id} className="col-12 col-lg-4 d-flex">
-                            <Box content={elm} classNames="team-box rounded bg-darkblue0" type="team" />                            
+                    {members.map((elm, index) => (
+                        <div key={index} className="col-12 col-lg-4 d-flex">
+                            <TeamBox team={elm} />                     
                         </div>
                     ))}
-                </div>);             
+                </div>);           
             }
         
         }

@@ -14,12 +14,12 @@ export default class Association extends Component {
         super(props);
         this.state = {
             intro: intro,
-            data: Db.get('YearlyMeeting', 1).then(res => res)
+            data: Db.get('Album', 1).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get('YearlyMeeting', 1).then(res => {
+        Db.get('Album', 1).then(res => {
             this.setState({data: res});
         });
     }
@@ -28,7 +28,7 @@ export default class Association extends Component {
         let meetings = [];
         if (this.state.data.success) {
             meetings = this.state.data.results;
-            console.log(meetings);
+            // console.log(meetings);
         }
         return(
             <div className="association">
