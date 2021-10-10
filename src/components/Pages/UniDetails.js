@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import Box from '../Box';
-import StyledPopup from '../Popup/Popup';
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
+import Db from '../../control/class.db';
+import ProjectsAndEvents from '../UniCoop/ProjectsAndEvents';
 
 let intro = '<p></p>';
 let unis = [
@@ -104,42 +105,44 @@ class UniDetails extends Component {
         super(props);
         this.state = {
             id: 0,
-            unis: unis,
-            ppse: ppse,
-            publications: publications
+            // unis: unis,
+            // ppse: ppse,
+            publications: publications,
+            unis: Db.get('UniCoop', this.props.match.params.id).then(res => res),
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.fetchData(id);
-    }
-
-    fetchData = id => {
-        // console.log(id);
         this.setState({id: id});
+        Db.get('UniCoop', id).then((res) => {
+            this.setState({unis: res});
+        });
     }
     
     render() {
-        let uniId = this.props.match.params.id;
-        const uni = this.state.unis.find(elm => elm.id == uniId);
-        // console.log(uni);
-        let popupBoxes = [];
-        this.state.ppse.forEach((elm, index) => {
-            popupBoxes[index] = '<div class="p-3"><h4 class="box-title mb-4">Project/Event</h4><table class="table table-striped table-hover table-responsive"><tbody><tr>';
-            for (const[key, value] of Object.entries(elm)) {
-                if (key == 'id') {
-                } else if (key == 'website') {
-                    popupBoxes[index] += '<th class="text-capitalize">'+key+'</th><td><a rel="noopener noreferrer" target="_blank" href="'+value+'">'+value+'</a></td></tr><tr>';
-                } else {
-                    popupBoxes[index] += '<th class="text-capitalize">'+key+'</th><td>'+value+'</td></tr><tr>';
-                }
-            }
-            popupBoxes[index] += '</tr></tbody></table></div>';
-        });
-        const contentStyle = {maxWidth: '50%'};
-        // console.log(popupBoxes);
-        return(
+        // let uniId = this.props.match.params.id;
+        // const uni = this.state.unis.find(elm => elm.id == uniId);
+        let uni = null;
+        if (this.state.unis.success) {
+            uni = this.state.unis.results[0];
+            console.log(uni);
+            uni.persons = [
+                {
+                    'title': uni.firstprofessorname,
+                    'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic1
+                },
+                {
+                    'title': uni.secondprofessorname,
+                    'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic2
+                },
+                {
+                    'title': uni.thirdprofessorname,
+                    'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic3
+                },
+            ]
+        }
+        return (uni == null) ? 'Loading...' : (
             <div className="uni-details">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/unikooperation/160210-IME-013.jpg'} transformY='13%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -174,41 +177,14 @@ class UniDetails extends Component {
                                         <h2 className="heading">Public Projects and Special Events </h2>
                                         <div className="row justify-content-center publications">
                                             <div className="col-12">
-                                                
-                                                <table className="table table-striped table-hover table-responsive">
-                                                    <colgroup>
-                                                        <col width="15%"></col>
-                                                        <col width="70%"></col>
-                                                        <col width="15%"></col>
-                                                    </colgroup>
-                                                    <thead className="thead-color1">
-                                                        <tr>
-                                                        <th>Options</th>
-                                                        <th>Title</th>
-                                                        <th>Period</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {this.state.ppse.map((elm, index) => (
-                                                            <tr key={index}>
-                                                                <td>{elm.options}</td>
-                                                                <td>
-                                                                    
-                                                                    <StyledPopup trigger={<span className="link" >{elm.title}</span>} className="small-size">
-                                                                        <div dangerouslySetInnerHTML={{__html: popupBoxes[index]}}/>
-                                                                    </StyledPopup>
-                                                                </td>
-                                                                <td>{elm.period}</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
+                                                <ProjectsAndEvents id={this.props.match.params.id} />
                                             </div>
                                         </div>
                                     </div>
                                     <div id="publications" className="py-3">
                                         <h2 className="heading">Joint Publications</h2>
-                                        <PublicationTable thead="1" publications={this.state.publications} />
+                                        {/* <PublicationTable thead="1" publications={this.state.publications} /> */}
+                                        <PublicationTable thead="1" uniId={this.props.match.params.id} />
                                     </div>
                                 </div>
                             </div>

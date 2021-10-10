@@ -44,6 +44,16 @@ export default class PublicationTable extends ResponsiveComponent {
             });
         // } else {
         //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
+        } else if (this.props.uniId > 0) {
+            Db.get('CoopUniPub', this.props.uniId, this.state.pageNo).then((res) => {
+                this.setState({
+                    data: res,
+                    publications: res.results,
+                    hasPag: true,
+                    totalPages: res.pagination.totalPages,
+                    itemsPerPage: res.pagination.itemsPerPage
+                });
+            });
         } else {
             // console.log(this.props.keywords);
             Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
@@ -68,6 +78,10 @@ export default class PublicationTable extends ResponsiveComponent {
             // } else {
             //     console.log(this.state.pageNo);
             //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
+            } else if (this.props.uniId > 0) {
+                Db.get('CoopUniPub', this.props.uniId, this.state.pageNo).then((res) => {
+                    this.setState({data: res, publications: res.results});
+                });
             } else {
                 Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
                     this.setState({

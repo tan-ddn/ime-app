@@ -7,6 +7,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '../Scss/box.scss';
 // import './research.scss';
+import Db from '../../control/class.db';
+import SanitizedHTML from 'react-sanitized-html';
+import StringHandle from '../../utility/stringHandle';
+import { Link } from 'react-router-dom';
 
 const areas = [
     {
@@ -84,6 +88,20 @@ const areas = [
 ]
 
 export default class LatestProjects extends ResponsiveComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: Db.get('AllResearch').then(res => res)
+        }
+    }
+
+    componentDidMount() {
+        Db.get('AllResearch').then((res) => {
+            this.setState({data: res});
+        });
+    }
+
     render() {
         let noColumns;
         switch (this.state.screenSize) {
@@ -123,11 +141,18 @@ export default class LatestProjects extends ResponsiveComponent {
         //     slidesToShow: 5,
         //     slidesToScroll: 2
         // };
-        areas.forEach(function(elm) {
-            elm.description = elm.description.substring(0, 90)+'...';
-            return elm;
-        });
-        return (
+        let areas = [];
+        if (this.state.data.success) {
+            areas = this.state.data.results;
+            console.log(areas);
+            areas.forEach(function(elm) {
+                elm.image = process.env.PUBLIC_URL + '/img/projects/' + elm.bild
+                elm.title = elm.title_eng;
+                elm.description = elm.description_eng.substring(0, 90)+'...';
+                return elm;
+            });
+        }
+        return (areas.length == 0) ? 'Loading...' : (
             <div id="" className="latest-projects box-slider" style={{height: `${this.props.height}`}}>
                 <Slider {...settings}>
                     {areas.map((item, index) => (

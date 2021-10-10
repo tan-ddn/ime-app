@@ -3,6 +3,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import './research.scss';
+import Db from '../../control/class.db';
+import SanitizedHTML from 'react-sanitized-html';
+import StringHandle from '../../utility/stringHandle';
+import { Link } from 'react-router-dom';
 
 const areas = [
     {
@@ -71,7 +75,26 @@ const areas = [
 ]
 
 export default class ResearchAreas extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: Db.get('AllResearch').then(res => res)
+        }
+    }
+
+    componentDidMount() {
+        Db.get('AllResearch').then((res) => {
+            this.setState({data: res});
+        });
+    }
+
   render() {
+      let areas = [];
+    if (this.state.data.success) {
+        areas = this.state.data.results;
+        console.log(areas);
+    }
     const settings = {
         centerMode: true,
         centerPadding: '0px',
@@ -90,20 +113,22 @@ export default class ResearchAreas extends Component {
     //     slidesToShow: 5,
     //     slidesToScroll: 2
     // };
-    return (
+    return (areas.length == 0) ? 'Loading...' : (
         <div id="" className="research-areas" style={{height: `${this.props.height}`}}>
             <Slider {...settings}>
                 {areas.map((item, index) => (
                 <div key={index} className="slide-content">
-                    <div className="slide-img" style={{ backgroundImage: `url('${item.image}') ` }}>
+                    <div className="slide-img" style={{ backgroundImage: `url('${process.env.PUBLIC_URL + '/img/projects/' + item.bild}') ` }}>
                         {/* <img src={process.env.PUBLIC_URL + '/img/team/faebiaen2_id_5920.jpg'} alt="" /> */}
                     </div>
                     <div className="slide-text">
-                        <h5 className="title">{item.title}</h5>
-                        <p>{item.description}</p>
-                        <button className="btn btn-primary read-more" >
-                            {item.button}
-                        </button>
+                        <h5 className="title">{item.title_eng}</h5>
+                        {/* <p>{item.description_eng}</p> */}
+                        <SanitizedHTML html={StringHandle.extract(item.description_eng, 50) + '...' } />
+                        <Link className="btn btn-primary read-more" to={'/research/'+item.id}>Read More</Link>
+                        {/* <button >
+                            
+                        </button> */}
                     </div>
                 </div>
                 ))}
