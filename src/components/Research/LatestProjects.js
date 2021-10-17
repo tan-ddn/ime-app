@@ -1,11 +1,10 @@
 import React from 'react';
 // import { useMediaQuery } from 'react-responsive';
 import ResponsiveComponent from '../ResponsiveComponent';
-import Box from '../Box';
+import Box from '../Boxes/Box';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import '../Scss/box.scss';
 // import './research.scss';
 import Db from '../../control/class.db';
 import SanitizedHTML from 'react-sanitized-html';
@@ -92,12 +91,12 @@ export default class LatestProjects extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('AllResearch').then(res => res)
+            data: Db.get('RecentResearchProject').then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('AllResearch').then((res) => {
+        Db.get('RecentResearchProject').then((res) => {
             this.setState({data: res});
         });
     }
@@ -144,11 +143,16 @@ export default class LatestProjects extends ResponsiveComponent {
         let areas = [];
         if (this.state.data.success) {
             areas = this.state.data.results;
-            console.log(areas);
+            // console.log(areas);
             areas.forEach(function(elm) {
-                elm.image = process.env.PUBLIC_URL + '/img/projects/' + elm.bild
-                elm.title = elm.title_eng;
-                elm.description = elm.description_eng.substring(0, 90)+'...';
+                if (elm.fp_bild !== '') {
+                    elm.image = process.env.PUBLIC_URL + '/img/projects/' + elm.fp_bild;
+                } else {
+                    elm.image = process.env.PUBLIC_URL + '/img/projects/' + elm.fdp_bild;
+                }                
+                elm.title = elm.fp_title_eng.substring(0, 55)+'...';
+                elm.description = elm.fp_description_eng.substring(0, 110)+'...';
+                elm.date = elm.fp_timeperiod;
                 return elm;
             });
         }
@@ -156,7 +160,7 @@ export default class LatestProjects extends ResponsiveComponent {
             <div id="" className="latest-projects box-slider" style={{height: `${this.props.height}`}}>
                 <Slider {...settings}>
                     {areas.map((item, index) => (
-                    <Box key={index} content={areas[index]} titleSize='small'/>
+                    <Box key={index} content={areas[index]} titleSize='small' linkTitle="1"/>
                     // <div key={index} className="events-box">
                     //     <div className="events-wrapper">
                     //         <h6 className="box-title">{item.title}</h6>

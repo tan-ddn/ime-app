@@ -2,7 +2,7 @@
 // import '../Scss/box.scss';
 import Box from '../Box';
 
-export default class NewsBox extends Box {
+export default class SocialBox extends Box {
     
 //   render() {
 //     let classText = "events-box " + this.props.classNames;

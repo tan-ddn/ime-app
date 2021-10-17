@@ -1,8 +1,11 @@
 import React from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import Db from '../../control/class.db';
 // import '../Scss/box.scss';
-import Box from '../Box';
+import Box from '../Boxes/Box';
+import NewsBox from '../Boxes/NewsBox';
+import NewsletterDetails from './NewsletterDetails';
 
 // const [numPages, setNumPages] = useState(null);
 // const [pageNumber, setPageNumber] = useState(1);
@@ -20,41 +23,83 @@ export default class Newsletter extends Box {
 
         this.state = {
             content: {
-                title: 'Newsletter',
-                description: '<div class="newsletter-sum">' + topics
-                + '</div>',
-                button: 'Read Pdf &#187;',
-            }
+                // title: 'Newsletter',
+                // description: '<div class="newsletter-sum">' + topics + '</div>',
+                // button: 'Read Pdf &#187;',
+            },
+            id: null,
+            data: Db.get('Newsletter').then(res => res)
         };
     }
+
+    componentDidMount() {
+        Db.get('Newsletter').then((res) => {
+            this.setState({
+                data: res,
+                id: res.results[0].id,
+            });
+        });
+    }
+
+    handleChange = (event) => {
+        this.setState({id: event.target.value}, () => {
+            console.log(this.state.id);
+        });
+        // console.log(event.target.value);
+    };
     
     render() {
         let classText = "events-box " + this.props.classNames;
-        // console.log(classText);
-
-        return (
-            <div id="news-1" className={classText} style={{height: `${this.props.height}`}}>
-                <div className="events-wrapper">
-                    <h5 className="box-title" dangerouslySetInnerHTML={{__html: this.state.content.title+selectDropdown}} />
-                    <div className="pdf-preview events-img">
-                        <a className="preview-btn btn btn-dark" href="#">View Pdf</a>
-                        <Document file={process.env.PUBLIC_URL + '/pdf/ime_aektuell_nr_id_7989.pdf'} renderMode="svg"
-                            // onLoadSuccess={onDocumentLoadSuccess}
-                        >
-                            {/* <Page pageNumber={pageNumber} /> */}
-                            <Page pageNumber={1} />
-                        </Document>
-                        {/* <p>Page {pageNumber} of {numPages}</p> */}
-                        
-                    </div>
-                    <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
-                    {/* <div className="select-dropdown"dangerouslySetInnerHTML={{__html: selectDropdown}} /> */}
-                    {/* <a className="anchor-style1" href="" dangerouslySetInnerHTML={{__html: this.state.content.button}} />
-                    {this.state.date != '0' &&
-                    <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
-                    } */}
-                </div>
-            </div>
+        let newsletter = '';
+        let selectDropdown = null;
+        let options = null;
+        if (this.state.data.success) {
+            newsletter = this.state.data.results;
+            // console.log(newsletter);
+            options = newsletter.map((elm, index) => {
+                if (index == 0) {
+                    return (<option key={elm.id} value={elm.id} selected>{elm.semester}</option>);
+                }
+                return (<option key={elm.id} value={elm.id}>{elm.semester}</option>);
+            });
+            selectDropdown = (<div>Newsletter<div style={{fontSize: '.7em', margin: '4px 0 0;'}}><select name="newsletter" id="newsletter" className="w-100" onChange={this.handleChange} value={this.state.newsletterId}><option value="" style={{fontWeight: 'bold'}}>Select Edition (Semester)</option>{options}</select></div></div>);
+            // console.log(selectDropdown);
+        }
+        return (newsletter == '') ? 'Loading...' : (
+            <NewsBox title={selectDropdown} height={this.props.height}>
+                <NewsletterDetails id={this.state.id} />
+            </NewsBox>
         )
+        // return (newsletter == '') ? 'Loading...' : (
+        //     <div id="news-1" className={classText} style={{height: `${this.props.height}`}}>
+        //         <div className="events-wrapper">
+        //             <h5 className="box-title">Newsletter
+        //                 <div style={{fontSize: '.7em', margin: '4px 0 0;'}}>
+        //                     <select name="newsletter" id="newsletter" className="w-100" onChange={this.handleChange} value={this.state.newsletterId}>
+        //                         <option value="" style={{fontWeight: 'bold'}}>Select Edition (Semester)</option>
+        //                         {options}
+        //                     </select>
+        //                 </div>
+        //             </h5>
+        //             {this.state.newsletterId &&
+        //             <NewsletterImage id={this.state.newsletterId} />
+        //             }
+        //             {/* <div className="pdf-preview events-img">
+        //                 <a className="preview-btn btn btn-dark" href="#">View Pdf</a>
+        //                 <Document file={process.env.PUBLIC_URL + '/pdf/ime_aektuell_nr_id_7989.pdf'} renderMode="svg"
+        //                     // onLoadSuccess={onDocumentLoadSuccess}
+        //                 >
+        //                     {/* <Page pageNumber={pageNumber} /> */}
+        //                     {/* <Page pageNumber={1} />
+        //                 </Document> */}
+        //                 {/* <p>Page {pageNumber} of {numPages}</p> */}
+                        
+        //             {/* </div> */}
+        //             <div className="events-sum">
+        //                 <div id="" className="newsletter-sum" dangerouslySetInnerHTML={{__html: topics}} />
+        //             </div>
+        //         </div>
+        //     </div>
+        // )
     }
 }

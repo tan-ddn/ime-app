@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
-import Box from '../Box';
+import Box from '../Boxes/Box';
 import StyledPopup from '../Popup/Popup';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 import Db from '../../control/class.db';

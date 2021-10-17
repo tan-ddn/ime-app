@@ -2,7 +2,7 @@ import React from 'react';
 // import { Component } from 'react';
 import ResponsiveComponent from '../ResponsiveComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Box from '../Box';
+import Box from '../Boxes/Box';
 import './team.scss';
 import Db from '../../control/class.db';
 import TeamBox from './TeamBox';

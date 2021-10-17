@@ -3,7 +3,7 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 // import NewsSlider from '../News/NewsSlider';
-import Box from '../Box';
+import Box from '../Boxes/Box';
 import Db from '../../control/class.db';
 // import '../Equipment/equipment.scss';
 

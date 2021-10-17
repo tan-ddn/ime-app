@@ -63,7 +63,7 @@ export default class PublicationTable extends ResponsiveComponent {
                     totalPages: res.pagination.totalPages,
                     itemsPerPage: res.pagination.itemsPerPage
                 });
-                console.log(this.state.totalPages);
+                // console.log(this.state.totalPages);
             });
         }
     }
@@ -90,14 +90,14 @@ export default class PublicationTable extends ResponsiveComponent {
                         totalPages: res.pagination.totalPages,
                         itemsPerPage: res.pagination.itemsPerPage
                     });
-                    console.log(this.state.totalPages);
+                    // console.log(this.state.totalPages);
                 });
             }
         });
     }
 
     updateInput = async (input) => {
-        console.log(input);
+        // console.log(input);
         this.setState({searchInput: input, pageNo: 1}, () => {
             let teamId = (this.props.teamId) ? this.props.teamId : -1;
             Db.get('AllPub', teamId, this.state.pageNo, input, this.state.keywords).then((res) => {
@@ -107,13 +107,13 @@ export default class PublicationTable extends ResponsiveComponent {
                     totalPages: res.pagination.totalPages,
                     itemsPerPage: res.pagination.itemsPerPage
                 });
-                console.log(this.state.totalPages);
+                // console.log(this.state.totalPages);
             });
         });
     }
 
     echoPublications(publications) {
-        console.log(publications);
+        // console.log(publications);
         if (publications == null || publications == undefined || publications == []) return (<tr><td colspan="2">No Results.</td></tr>);
         let publicationsHTML = publications.map((elm, index) => {
             let pdf = process.env.PUBLIC_URL + '/pdf/publications/' + elm.p_pdf;

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
-import './Scss/box.scss';
+import './box.scss';
 import Slider from "react-slick";
 import SanitizedHTML from 'react-sanitized-html';
-import StringHandle from '../utility/stringHandle';
+import StringHandle from '../../utility/stringHandle';
 
 export default class Box extends Component {
     constructor(props) {

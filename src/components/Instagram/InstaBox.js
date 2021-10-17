@@ -1,7 +1,7 @@
 // import React, { Component } from 'react';
 // import '../Scss/box.scss';
 import $ from 'jquery';
-import Box from '../Box';
+import Box from '../Boxes/Box';
 
 const instaUrl = 'https://www.instagram.com/ime_rwth/?__a=1';
 

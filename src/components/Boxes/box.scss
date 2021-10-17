@@ -63,7 +63,7 @@
             font-size: .9em;
             // padding: 8px 0;
             // border-top: 1px solid rgba($color2,.3);
-            border-bottom: 1px solid $color1;
+            // border-bottom: 1px solid $color1;
             margin: 0 0 10px;
             ul {
                 margin-bottom: 0;
@@ -88,6 +88,12 @@
             margin: 0;
             border: 0;
         }
+    }
+}
+
+.news-box {
+    .events-sum {
+        border-bottom: 1px solid $color1;
     }
 }
 

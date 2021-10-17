@@ -93,7 +93,7 @@ export default class ResearchAreas extends Component {
       let areas = [];
     if (this.state.data.success) {
         areas = this.state.data.results;
-        console.log(areas);
+        // console.log(areas);
     }
     const settings = {
         centerMode: true,

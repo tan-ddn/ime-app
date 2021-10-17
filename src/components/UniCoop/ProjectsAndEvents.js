@@ -47,7 +47,8 @@ export default class ProjectsAndEvents extends ResponsiveComponent {
             // console.log(popupBoxes);
         }
         return (ppse.length == 0) ? 'Loading...' : (
-            <table className="table table-striped table-hover table-responsive">
+            <div className="table-responsive">
+            <table className="table table-striped table-hover ">
                 <colgroup>
                     <col width="15%"></col>
                     <col width="70%"></col>
@@ -74,6 +75,7 @@ export default class ProjectsAndEvents extends ResponsiveComponent {
                     ))}
                 </tbody>
             </table>
+            </div>
         )
     }
 }

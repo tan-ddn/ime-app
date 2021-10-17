@@ -2,7 +2,7 @@ import React from 'react';
 import ResponsiveComponent from './ResponsiveComponent';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import NewsSlider from './News/NewsSlider';
-import NewsBox from './News/NewsBox';
+import Box from './Boxes/Box';
 import EventsBox from './Events/EventsBox';
 // import TeamCarousel from './Team/TeamCarousel';
 import LatestPublications from './Publications/LatestPublications';
@@ -257,16 +257,16 @@ export default class MainContent extends ResponsiveComponent {
               <h2 className="heading">Social Activities</h2>
               <div className="row justify-content-center">
                 <div className="col-12 col-sm-6 col-lg-3">
-                  <NewsBox classNames="style2" height="440px" content={assets[0]} date="0"/>
+                  <Box classNames="style2" height="440px" content={assets[0]} date="0" linkTitle="1"/>
                 </div>
                 <div className="col-12 col-sm-6 col-lg-3">
-                  <NewsBox classNames="style2" height="440px" content={assets[1]} date="0"/>
+                  <Box classNames="style2" height="440px" content={assets[1]} date="0" linkTitle="1"/>
                 </div>
                 <div className="col-12 col-sm-6 col-lg-3">
-                  <NewsBox classNames="style2" height="440px" content={assets[2]} date="0" image="contain"/>
+                  <Box classNames="style2" height="440px" content={assets[2]} date="0" image="contain" linkTitle="1"/>
                 </div>
                 <div className="col-12 col-sm-6 col-lg-3">
-                  <InstaBox classNames="style2" height="440px" content={assets[3]} date="0"/>
+                  <InstaBox classNames="style2" height="440px" content={assets[3]} date="0" linkTitle="1"/>
                 </div>
               </div>
             </div>
