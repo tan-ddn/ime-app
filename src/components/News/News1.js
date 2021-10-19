@@ -3,8 +3,9 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 // import '../Scss/box.scss';
 import Moment from 'react-moment';
 import NewsBox from '../Boxes/NewsBox';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class News1 extends NewsBox {
+class News1 extends NewsBox {
     constructor(props) {
         super(props);
 
@@ -25,14 +26,15 @@ export default class News1 extends NewsBox {
         if (this.props.news) {
             news = this.props.news.slice(0, 4).map((elm) => {
                 let link = "/news#"+elm.id;
+                let title = (localStorage.getItem('lang') === 'ge') ? elm.titel : elm.titel_eng;
                 return (<li key={elm.id} id={"news-"+elm.id}>
                     <b><Moment format="DD.MM.YYYY">{elm.datum}</Moment></b><br/>
-                    <Link to={link}>{elm.titel_eng}</Link>
+                    <Link to={link}>{title}</Link>
                 </li>);
             })
         }
         return (
-            <NewsBox title={'News'} height={this.props.height}>
+            <NewsBox title={this.props.webText.news.title} height={this.props.height}>
                 <ul id="" className="news1-list">
                     {news}
                 </ul>
@@ -72,3 +74,4 @@ export default class News1 extends NewsBox {
     //     )
     // }
 }
+export default withLangSwitchListener(News1);

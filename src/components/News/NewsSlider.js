@@ -6,6 +6,7 @@ import './slider-animations.css';
 import './news-slider.scss';
 import SanitizedHTML from 'react-sanitized-html';
 import StringHandle from '../../utility/stringHandle';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 // const slides = [
 //     {
@@ -34,7 +35,7 @@ import StringHandle from '../../utility/stringHandle';
 //     },
 // ]
 
-export default class NewsSlider extends Component {
+class NewsSlider extends Component {
   constructor(props) {
     super(props);
 
@@ -56,19 +57,24 @@ export default class NewsSlider extends Component {
                 {Slides.map((item, index) => {
                 // let textEngArray = item.text_eng.split(' ', 18);
                 // let textEng = textEngArray.join(' ');
-                let textEng = StringHandle.extract(item.text_eng, 18);
+                let title = item.titel_eng;
+                let text = StringHandle.extract(item.text_eng, 18);
                 let image = process.env.PUBLIC_URL + '/img/news/' + item.pic;
+                if (localStorage.getItem('lang') === 'ge') {
+                    title = item.titel;
+                    text = StringHandle.extract(item.text, 18);
+                }
                 return (
 				<div
 					key={index}
 					className="slider-content"
 					style={{ background: `url('${image}') no-repeat center center` }}>
 					<div className="inner">
-						<h1 className="title">{item.titel_eng}</h1>
+						<h1 className="title">{title}</h1>
 						{/* <p className="article-text" dangerouslySetInnerHTML={{__html: sanitizeHtml(textEng)+' ...'}} /> */}
-                        <SanitizedHTML className="article-text" html={ textEng+' ...' } />
+                        <SanitizedHTML className="article-text" html={ text+' ...' } />
                         <Link to={"/news#"+item.id} className="btn btn-primary" >
-                            Read More
+                            {this.props.webText.button.read_more}
                             {/* {item.button} */}
                         </Link>
 					</div>
@@ -80,3 +86,4 @@ export default class NewsSlider extends Component {
     )
   }
 }
+export default withLangSwitchListener(NewsSlider);

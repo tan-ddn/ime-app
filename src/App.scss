@@ -595,6 +595,7 @@ ol, ul {
           display: table-cell;
           img {
             height: $header_icon_height;
+            width: $header_icon_height;
             border-radius: 5px;
             overflow: hidden;
             opacity: .8;

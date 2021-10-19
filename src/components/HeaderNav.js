@@ -3,13 +3,17 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 import ResponsiveComponent from './ResponsiveComponent';
 // import MainNavToggle from './MainNavToggle';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import LangSwitcher from './Languages/LangSwitcher';
+import withLangSwitchListener from './Languages/LangSwitchListener';
 
-class HeaderNav extends ResponsiveComponent {
+class HeaderNav extends ResponsiveComponent{
   constructor(props) {
       super(props);
       this.state = {
+          ...this.state,
           clicked: false,
-          className: this.props.className + ' vertical'
+          className: this.props.className + ' vertical',
+          // webText: null,
       };
       this.handleClick = this.handleClick.bind(this);
   }
@@ -21,6 +25,10 @@ class HeaderNav extends ResponsiveComponent {
       this.setState({clicked: false});
       this.state.className = this.state.className.replaceAll(' active', ' ');window.scrollTo({top: 0, left: 0, behavior: 'auto'});
     });
+    // const context = this.context;
+    // console.log(context);
+    // let webText = JSON.parse(localStorage.getItem(this.context.lang+'Text'));
+    // this.setState({webText: webText});
   }
 
   componentWillUnmount() {
@@ -59,7 +67,8 @@ class HeaderNav extends ResponsiveComponent {
       this.state.className = this.state.className.replaceAll(' horizontal', ' vertical');
     }
 
-    return (
+    // console.log(this.props.webText);
+    return (this.state.webText === null) ? '' : (
       <div id={this.props.id} role="navigation" className={this.state.className}>
         {/* <div className="ime-logo-container">
           <div className="ime-logo">
@@ -76,29 +85,29 @@ class HeaderNav extends ResponsiveComponent {
           
           <ol className="toc style2">
             <li className="rwth_jsopen">
-              <Link to="/" className="panel" title="Home (Main Navigation)" aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">Home</Link>
+              <Link to="/" className="panel" title={this.props.webText.home.title+" (Main Navigation)"} aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">{this.props.webText.home.title}</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/about" className="panel" title="About Us (Main Navigation)" aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">About Us</Link>
+              <Link to="/about" className="panel" title={this.props.webText.about.title+" (Main Navigation)"} aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">{this.props.webText.about.title}</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/team" className="panel" title="Team (Main Navigation)" aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">Team</Link>
+              <Link to="/team" className="panel" title={this.props.webText.team.title+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.team.title}</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/research" className="panel" title="Research (Main Navigation)" aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">Research</Link>
+              <Link to="/research" className="panel" title={this.props.webText.research.title+" (Main Navigation)"} aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">{this.props.webText.research.title}</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/equipment" className="panel" title="Equipment (Main Navigation)" aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">Equipment</Link>
+              <Link to="/equipment" className="panel" title={this.props.webText.equipment.title+" (Main Navigation)"} aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">{this.props.webText.equipment.title}</Link>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/study" className="panel" title="Study (Main Navigation)" aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">Study</Link>
+              <Link to="/study" className="panel" title={this.props.webText.study.title+" (Main Navigation)"} aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">{this.props.webText.study.title}</Link>
             </li>
             {this.props.type === 'mobile-nav' && <>
             <li className="rwth_jsopen">
-              <a className="panel" title="News (Main Navigation)" aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">News</a>
+              <a className="panel" title={this.props.webText.news.title+" (Main Navigation)"} aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">{this.props.webText.news.title}</a>
             </li>
             <li className="rwth_jsopen">
-              <a className="panel" title="Publications (Main Navigation)" aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">Publications</a>
+              <a className="panel" title={this.props.webText.publications.title+" (Main Navigation)"} aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">{this.props.webText.publications.title}</a>
             </li>
             {/* <li className="rwth_jsopen">
               <a className="panel" title="Research Areas (Main Navigation)" aria-controls="nav-section-8" tabIndex={8} aria-expanded="false" role="button" data-href="#">Research Areas</a>
@@ -125,9 +134,10 @@ class HeaderNav extends ResponsiveComponent {
                                     </a>
                                 </li>
                                 <li className="menu-item" title="Language">
-                                    <a href="language">
+                                    {/* <a href="language">
                                     <img alt="Language icon" src={process.env.PUBLIC_URL + '/img/icons/flag_usa.png'} />
-                                    </a>
+                                    </a> */}
+                                    <LangSwitcher />
                                 </li>
                                 <li className="menu-item" title="Staff login">
                                     <a href="login">
@@ -517,7 +527,8 @@ class HeaderNav extends ResponsiveComponent {
   }
 }
 
-export default withRouter(HeaderNav);
+// export default withRouter(HeaderNav);
+export default withRouter(withLangSwitchListener(HeaderNav));
 
 HeaderNav.defaultProps = {
   id: 'nav-global',

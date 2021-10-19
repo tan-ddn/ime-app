@@ -13,6 +13,7 @@ import News1 from './News/News1';
 import Newsletter from './News/Newsletter';
 import FullscreenWidth from './FullscreenWidth';
 import Db from '../control/class.db';
+import withLangSwitchListener from './Languages/LangSwitchListener';
 
 // const newsBoxes = [
 //   {
@@ -96,7 +97,7 @@ const assets = [
   }
 ];
 
-export default class MainContent extends ResponsiveComponent {
+class MainContent extends ResponsiveComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,7 +130,7 @@ export default class MainContent extends ResponsiveComponent {
     return (
         <div className="content" role="article">
             <div id="home-news" className="py-3">
-              <h2 className="heading"><Link to="/news">Latest News</Link></h2>
+              <h2 className="heading"><Link to="/news">{this.props.webText.news.latest_news}</Link></h2>
               <FullscreenWidth>
               {/* <div className="fullscreen-width px-3"> */}
                 <div className="main-row row justify-content-center" >
@@ -274,3 +275,5 @@ export default class MainContent extends ResponsiveComponent {
     )
   }
 }
+
+export default withLangSwitchListener(MainContent);

@@ -5,8 +5,9 @@ import Box from '../Boxes/Box';
 import NewsBox from '../Boxes/NewsBox';
 import ResponsiveComponent from '../ResponsiveComponent';
 import SanitizedHTML from 'react-sanitized-html';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class EventsBox extends ResponsiveComponent {
+class EventsBox extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -45,7 +46,7 @@ export default class EventsBox extends ResponsiveComponent {
         }
         return (description == '') ? 'Loading...' : (
             <div className="">
-                <NewsBox title={'Activities and Events'} height={this.props.height}>
+                <NewsBox title={this.props.webText.news.activities_events} height={this.props.height}>
                     {/* <SanitizedHTML html={description} /> */}
                     <div className="" dangerouslySetInnerHTML={{__html: description}} />
                 </NewsBox>
@@ -53,3 +54,4 @@ export default class EventsBox extends ResponsiveComponent {
         )
     }
 }
+export default withLangSwitchListener(EventsBox);

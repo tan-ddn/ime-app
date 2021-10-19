@@ -1,0 +1,50 @@
+{
+  "home": {
+    "title": "Home"
+  },
+  "about": {
+    "title": "Über Uns"
+  },
+  "team": {
+    "title": "Team",
+    "our_team": "Unser Team"
+  },
+  "research": {
+    "title": "Forschung",
+    "research_areas": "Research Areas"
+  },
+  "publications": {
+    "title": "Publications",
+    "latest_publications": "Latest Publications"
+  },
+  "project": {
+    "title": "Projects",
+    "latest_pfprojects": "Latest Public Funded Projects"
+  },
+  "equipment": {
+    "title": "Ausrüstung"
+  },
+  "study": {
+    "title": "Studium"
+  },
+  "news": {
+    "title": "News",
+    "latest_news": "Latest News",
+    "newsletter": "Newsletter",
+    "activities_events": "Activities and Events"
+  },
+  "social": {
+    "title": "Social Activities",
+    "ime_society": "IME Society",
+    "excursion": "Excursion",
+    "network_partners": "Network & Partners",
+    "now_in_instagram": "Now in Instagram"
+  },
+  "button": {
+    "read_more": "Read More",
+    "view_pdf": "View PDF",
+    "view_all_news": "View All News",
+    "see_all": "See All",
+    "see_more": "See More"
+  }
+}

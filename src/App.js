@@ -6,8 +6,25 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import PageLayout from './PageLayout';
+import GlobalLangStateProvider, {useLangGlobalState} from './UserContext';
 
+
+//Fetch language json files and import to localStorage
+fetch('lang/en.json')
+.then((r) => r.json())
+.then((data) =>{
+  localStorage.setItem('enText', JSON.stringify(data));
+})
+fetch('lang/ge.json')
+.then((r) => r.json())
+.then((data) =>{
+  localStorage.setItem('geText', JSON.stringify(data));
+})
+
+
+//Add icons
 library.add(fas, faBars, faTimes);
+//Smooth scroll to element
 window.useScrollTo = function() {
   let id = window.location.hash.substring(1);
   // console.log(id);
@@ -19,18 +36,40 @@ window.useScrollTo = function() {
   }
 }
 
+
 class App extends Component {
+
+  componentDidMount() {
+    
+  }
 
   render() {    
     return (
       // <div id='wrapper'>
       <div className="App">
-        <Router>
-          <PageLayout/>
-        </Router>
+        <GlobalLangStateProvider>
+          <Router>
+            <PageLayout/>
+          </Router>
+        </GlobalLangStateProvider>
       </div>
     )
   }
 }
+
+// const App = () => {
+//   const [state, dispatch] = useLangGlobalState();
+//   window.addEventListener( "storage", () => dispatch({ webText: (localStorage.getItem('lang') === 'en') ? en : ge }) );
+//   return (
+//     // <div id='wrapper'>
+//     <div className="App">
+//       <GlobalLangStateProvider value={state}>
+//         <Router>
+//           <PageLayout/>
+//         </Router>
+//       </GlobalLangStateProvider>
+//     </div>
+//   )
+// }
 
 export default App;
