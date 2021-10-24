@@ -6,8 +6,9 @@ import ResponsiveComponent from '../ResponsiveComponent';
 import PublicationAuthor from './PublicationAuthor';
 import ReactPaginate from 'react-paginate';
 import SearchBar from '../Search/SearchBar';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class PublicationTable extends ResponsiveComponent {
+class PublicationTable extends ResponsiveComponent {
     constructor(props) {
         super(props);
         this.updateInput = this.updateInput.bind(this);
@@ -24,7 +25,7 @@ export default class PublicationTable extends ResponsiveComponent {
         }
     }
 
-    componentDidMount() {
+    fetchData = () => {
         if (this.props.recent == "1") {
             Db.get('RecentPub').then((res) => {
                 this.setState({
@@ -66,6 +67,17 @@ export default class PublicationTable extends ResponsiveComponent {
                 // console.log(this.state.totalPages);
             });
         }
+    }
+
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.fetchData();
+        }
+      }
+
+    componentDidMount() {
+        this.fetchData();
     }
 
     handlePageClick = (obj) => {
@@ -114,13 +126,13 @@ export default class PublicationTable extends ResponsiveComponent {
 
     echoPublications(publications) {
         // console.log(publications);
-        if (publications == null || publications == undefined || publications == []) return (<tr><td colspan="2">No Results.</td></tr>);
+        if (publications == null || publications == undefined || publications == []) return (<tr><td colspan="2">{this.props.webText.publications.no_results}</td></tr>);
         let publicationsHTML = publications.map((elm, index) => {
             let pdf = process.env.PUBLIC_URL + '/pdf/publications/' + elm.p_pdf;
             return <tr key={index}>
             <th scope="row">{elm.p_jahr}</th>
             <td>
-                <p className="tag">{elm.pt_typ_eng}</p>
+                <p className="tag">{(localStorage.getItem('lang') === 'ge') ? elm.pt_typ : elm.pt_typ_eng}</p>
                 <h6 className="title"><a href={pdf}>{elm.p_titel}</a></h6>
                 <p className="meta">{elm.p_quelle}</p>
                 <PublicationAuthor pubId={elm.p_id} />
@@ -151,7 +163,8 @@ export default class PublicationTable extends ResponsiveComponent {
             publications = this.state.publications.splice(0, limit);
         }
         publicationsHTML = this.echoPublications(publications);
-        // console.log(totalPages + ' ' + itemsPerPage);
+        console.log(publications);
+        console.log(this.props.webText);
         let pagiHTML = null;
         if (this.state.hasPag && this.state.totalPages>1) {
             let forcePage = Number(this.state.pageNo) - 1;
@@ -188,8 +201,8 @@ export default class PublicationTable extends ResponsiveComponent {
                     {this.props.thead === '1' &&
                         <thead className="thead-color1">
                             <tr>
-                            <th scope="col">Year</th>
-                            <th scope="col">Publications</th>
+                            <th scope="col">{this.props.webText.publications.year}</th>
+                            <th scope="col">{this.props.webText.publications.title}</th>
                             </tr>
                         </thead>
                     }
@@ -203,3 +216,4 @@ export default class PublicationTable extends ResponsiveComponent {
         )
     };
 }
+export default withLangSwitchListener(PublicationTable);

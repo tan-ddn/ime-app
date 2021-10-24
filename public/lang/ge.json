@@ -14,8 +14,10 @@
     "research_areas": "Research Areas"
   },
   "publications": {
-    "title": "Publications",
-    "latest_publications": "Latest Publications"
+    "title": "Publikationen",
+    "latest_publications": "Latest Publications",
+    "year": "Jahre",
+    "no_results": "No results"
   },
   "project": {
     "title": "Projects",

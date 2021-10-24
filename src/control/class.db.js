@@ -20,7 +20,7 @@ class Db {
     async querySelect() {
         let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/select.php");
         url.search = this.search;
-        // console.log(url);
+        console.log(url);
         let response = await fetch(url)
         .then((res) => {
             // console.log(res);

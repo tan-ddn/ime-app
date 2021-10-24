@@ -15,7 +15,9 @@
   },
   "publications": {
     "title": "Publications",
-    "latest_publications": "Latest Publications"
+    "latest_publications": "Latest Publications",
+    "year": "Year",
+    "no_results": "No results"
   },
   "project": {
     "title": "Projects",

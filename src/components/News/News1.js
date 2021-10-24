@@ -75,3 +75,4 @@ class News1 extends NewsBox {
     // }
 }
 export default withLangSwitchListener(News1);
+// export default News1;
