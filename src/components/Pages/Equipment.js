@@ -6,34 +6,44 @@ import NewsSlider from '../News/NewsSlider';
 import Box from '../Boxes/Box';
 import '../Equipment/equipment.scss';
 import Db from '../../control/class.db';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-let intro = '<p>IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures below. </p>';
+let intro_eng = '<p>IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures below. </p>';
+let intro = '<p>Das IME verf&uuml;gt &uuml;ber eine umfangreiche und moderne Anlagenausstattung. Ein virtueller Rundgang ist momentan in Arbeit. Um sich &uuml;ber konkrete Ausstattungsbereiche zu informieren, besteht hier die M&ouml;glichkeit, unsere Flyer herunterzuladen.</p>';
 
 const slides = [
     {
-        title: 'Flyer',
-        description: 'IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures here.',
+        titel_eng: 'Flyer',
+        text_eng: 'IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures here.',
+        titel: 'Flyer',
+        text: 'Das IME verf&uuml;gt &uuml;ber eine umfangreiche und moderne Anlagenausstattung. Ein virtueller Rundgang ist momentan in Arbeit. Um sich &uuml;ber konkrete Ausstattungsbereiche zu informieren, besteht hier die M&ouml;glichkeit, unsere Flyer herunterzuladen.',
         button: '',
         buttonUrl: '',
         image: process.env.PUBLIC_URL + '/img/equipment/ausstattung.png'
     },
     {
-        title: 'IME (Introduction)',
-        description: '',
+        titel_eng: 'IME (Introduction)',
+        text_eng: '',
+        titel: 'IME (Introduction)',
+        text: '',
         button: 'Download',
         buttonUrl: process.env.PUBLIC_URL + '/img/equipment/IME_Eng.pdf',
         image: process.env.PUBLIC_URL + '/img/equipment/IME_Eng.jpg'
     },
     {
-        title: 'Vacuum Metallurgy',
-        description: '',
+        titel_eng: 'Vacuum Metallurgy',
+        text_eng: '',
+        titel: 'Vacuum Metallurgy',
+        text: '',
         button: 'Download',
         buttonUrl: process.env.PUBLIC_URL + '/img/equipment/vacuum_flyer.pdf',
         image: process.env.PUBLIC_URL + '/img/equipment/vacuum_flyer.jpg'
     },
     {
-        title: 'Recyclingmetallurgy',
-        description: '',
+        titel_eng: 'Recyclingmetallurgy',
+        text_eng: '',
+        titel: 'Recyclingmetallurgy',
+        text: '',
         button: 'Download',
         buttonUrl: process.env.PUBLIC_URL + '/img/equipment/recyclingmetallurgy.pdf',
         image: process.env.PUBLIC_URL + '/img/equipment/recyclingmetallurgy.jpg'
@@ -83,7 +93,7 @@ let equipment = [
     }
 ];
 
-export default class Equipment extends Component {
+class Equipment extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -114,10 +124,11 @@ export default class Equipment extends Component {
         let boxContent = [];
         if (this.state.data.success) {
             equipmentCat = this.state.data.results;
-            console.log(equipmentCat);
+            //console.log(equipmentCat);
             equipmentCat.forEach((elm, index) => {
                 boxContent[index] = {
-                    title: elm.typ_eng,
+                    title_eng: elm.typ_eng,
+                    title: elm.typ,
                     image: process.env.PUBLIC_URL + '/img/equipment/' + elm.bild,
                     button: elm.button,
                     buttonUrl: '/equipment/' + elm.id,
@@ -149,7 +160,7 @@ export default class Equipment extends Component {
                                                                 {slides.map((elm, index) => {
                                                                     if (index !== 0) {
                                                                         return (
-<li><a href={elm.buttonUrl}>{elm.title}</a></li>
+<li><a href={elm.buttonUrl}>{elm.titel_eng}</a></li>
                                                                         )
                                                                     }
                                                                 })}
@@ -198,3 +209,5 @@ export default class Equipment extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(Equipment);

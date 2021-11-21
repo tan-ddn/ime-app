@@ -5,9 +5,11 @@ import HeaderBanner from '../HeaderBanner';
 // import NewsSlider from '../News/NewsSlider';
 import Box from '../Boxes/Box';
 import Db from '../../control/class.db';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 // import '../Equipment/equipment.scss';
 
-let intro = '<p>We have an extensive network of partners. These include in particular strategic partner universities with whom we keep a very intense and diverse collaboration. This can be seen especially in high cooperative publication activity, in jointly organized events such as workshops and conferences, as well as a regular involvement with IME in public funded projects.</p>';
+let intro_eng = '<p>We have an extensive network of partners. These include in particular strategic partner universities with whom we keep a very intense and diverse collaboration. This can be seen especially in high cooperative publication activity, in jointly organized events such as workshops and conferences, as well as a regular involvement with IME in public funded projects.</p>';
+let intro = '<p>Wir pflegen ein umfangreiches Netzwerk an Partnern. Hierzu gehören insbesondere strategische Partneruniversitäten, mit denen eine sehr intensive und vielfältige Zusammenarbeit gelebt wird.  Dies zeigt sich insbes. an reger kooperativer Publikationsaktivität, an gemeinsam organisierten Veranstaltungen wie Workshops und Konferenzen sowie an einer regelmäßigen Einbindung des IME in öffentlich geförderte Projekte.</p>';
 
 // let unis = [
 //     {
@@ -60,11 +62,10 @@ let intro = '<p>We have an extensive network of partners. These include in parti
 //     }
 // ];
 
-export default class NetworkPartners extends Component {
+class NetworkPartners extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
             // unis: unis
             unis: Db.get('UniCoop', -1).then(res => res)
         }
@@ -84,6 +85,7 @@ export default class NetworkPartners extends Component {
             // console.log(unis);
             unis.forEach((elm, index) => {
                 boxContent[index] = {
+                    title_eng: elm.universityname,
                     title: elm.universityname,
                     image: process.env.PUBLIC_URL + '/img/unikooperation/' + elm.universitypic,
                     button: '',
@@ -104,19 +106,19 @@ export default class NetworkPartners extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading"> Uni Cooperation</h2>
+                                        <h2 className="heading">{(localStorage.getItem('lang') === 'ge') ? 'Uni Kooperation' : 'Uni Cooperation'}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-12">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') === 'ge') ? intro : intro_eng}} />
                                                 </div>
                                             </div>
                                         </div>
                                         </div>
                                     </div>
                                     <div id="topics" className="py-3">
-                                        <h2 className="heading"> Uni Parnters</h2>
+                                        <h2 className="heading"> Uni Partners</h2>
                                         <div className="">
                                             <div className="row">
                                                 {boxContent.map((elm, index) => (
@@ -138,3 +140,5 @@ export default class NetworkPartners extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(NetworkPartners);

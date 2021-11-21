@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import Db from '../../control/class.db';
 import StringHandle from '../../utility/stringHandle';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 class ProfileDetails extends Component {
     constructor(props) {
@@ -22,8 +22,9 @@ class ProfileDetails extends Component {
         Db.get('ResearchTopicFromProfile', this.props.id).then((res) => {
             this.setState({topic: res});
         });
+        //this.updateLang();
     }
-
+  
     render() {
         let profile = null, groupTitle = '', topicHtml = '';
         if (this.props.data.success) {
@@ -37,12 +38,12 @@ class ProfileDetails extends Component {
         if (this.state.group.success) {
             let group = this.state.group.results[0];
             // console.log(group);
-            groupTitle = group.te_einteilung_eng;
+            groupTitle = (localStorage.getItem('lang') == 'ge') ? group.te_einteilung : group.te_einteilung_eng;
         }
         if (this.state.topic.success) {
             let topic = this.state.topic.results[0];
             // console.log(group);
-            topicHtml = <Link to={'/research/'+topic.frdp_id} >{topic.frdp_title_eng}</Link>;
+            topicHtml = <Link to={'/research/'+topic.frdp_id} >{(localStorage.getItem('lang') == 'ge') ? topic.frdp_title : topic.frdp_title_eng}</Link>;
         }
         return(
             <div className="">
@@ -63,14 +64,14 @@ class ProfileDetails extends Component {
                                     <div className="py-2 col-12 col-sm-6">
                                         <dl>
                                             <dt>Job:</dt>
-                                            <dd>{StringHandle.capitalize(profile.t_beruf_eng)}</dd>
+                                            <dd>{(localStorage.getItem('lang') == 'ge') ? StringHandle.capitalize(profile.t_beruf) : StringHandle.capitalize(profile.t_beruf_eng)}</dd>
                                         </dl>
                                         <dl>
                                             <dt>Topic: {topicHtml}</dt>
-                                            <dd dangerouslySetInnerHTML={{__html: profile.t_gebiet1_eng}} />
+                                            <dd dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? profile.t_gebiet1 : profile.t_gebiet1_eng}} />
                                         </dl>
                                         {profile.t_gebiet2_eng &&
-                                        <dl><dt>Supervision:</dt><dd dangerouslySetInnerHTML={{__html: profile.t_gebiet2_eng}} /></dl>
+                                        <dl><dt>Supervision:</dt><dd dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? profile.t_gebiet2 : profile.t_gebiet2_eng}} /></dl>
                                         }
                                     </div>
                                     <div className="py-2 col-12 col-sm-6">
@@ -112,4 +113,4 @@ class ProfileDetails extends Component {
         );
     }
 }
-export default withRouter(ProfileDetails);
+export default withLangSwitchListener(ProfileDetails);

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 // import { Component } from 'react';
 import ResponsiveComponent from '../ResponsiveComponent';
 
-export default class EquipmentSingle extends ResponsiveComponent {
+class EquipmentSingle extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -17,7 +18,7 @@ export default class EquipmentSingle extends ResponsiveComponent {
         let className = "equipment-box col-12 col-md-6 py-3 " + this.props.className;
         return(
             <div id={this.props.id} className={className} style={{height: `${this.props.height}`}} >
-                <h6 className="title"><b>{this.state.content.e_name_eng}</b></h6>
+                <h6 className="title"><b>{(localStorage.getItem('lang') == 'ge') ? this.state.content.e_name : this.state.content.e_name_eng}</b></h6>
                 <div className="row">
                 <div className="col-12 col-md-40">
                     <div className="equipment-image">
@@ -29,13 +30,13 @@ export default class EquipmentSingle extends ResponsiveComponent {
                     <div className="col-12 col-md-60">
                         <dl>
                             <dt>Application area:</dt>
-                            <dd dangerouslySetInnerHTML={{__html: this.state.content.e_einsatz_eng}} />
+                            <dd dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? this.state.content.e_einsatz : this.state.content.e_einsatz_eng}} />
                         </dl>
                     </div>
                     <div className="col-12 col-md-60">
                         <dl>
                             <dt>Performance data</dt>
-                            <dd dangerouslySetInnerHTML={{__html: this.state.content.e_daten_eng}} />
+                            <dd dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? this.state.content.e_daten : this.state.content.e_daten_eng}} />
                             <dt>Contact person</dt>
                             <dd >
                                 <Link to={'/team/' + this.state.content.e_kontakt}>{this.state.content.contact}</Link>
@@ -49,3 +50,5 @@ export default class EquipmentSingle extends ResponsiveComponent {
         )
     };
 }
+
+export default withLangSwitchListener(EquipmentSingle);

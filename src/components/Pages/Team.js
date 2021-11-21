@@ -4,8 +4,10 @@ import HeaderBanner from '../HeaderBanner';
 import TeamGroup from '../Team/TeamGroup';
 import Db from '../../control/class.db';
 import withGetDb from '../../control/withGetDb';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-let intro = '<p>Here you find all employees working currently at the IME - "metallurgy and metal recycling" - ordered by their fields of work.</p><p>If you are searching for a proper contact person, you have the opportunity to get into contact directly per web form. An up to date list of all employees you will find here.</p><p>To get an overview on the institutes organisation and team, you can have a look at this flowchart. </p>';
+let intro_eng = '<p>Here you find all employees working currently at the IME - "metallurgy and metal recycling" - ordered by their fields of work.</p><p>If you are searching for a proper contact person, you have the opportunity to get into contact directly per web form. An up to date list of all employees you will find here.</p><p>To get an overview on the institutes organisation and team, you can have a look at this flowchart. </p>';
+let intro = '<p>Hier finden Sie alle Mitarbeiter die im IME- &quot;Metallurgische Prozesstechnik und Metallrecycling&quot; zur Zeit arbeiten, nach den jeweiligen Arbeitsgebieten sortiert aufgelistet.</p><p>Sollten Sie auf der Suche nach einem geeignetem Ansprechpartner sein, besteht hier die M&ouml;glichkeit der direkten Kontaktaufnahme, per Webformular.</p><p>Eine immer aktuelle Liste aller Mitarbeiter finden Sie hier.</p>';
 
 const TeamGroupGetDb = withGetDb(
     TeamGroup,
@@ -13,7 +15,7 @@ const TeamGroupGetDb = withGetDb(
     (Db, props) => Db.get('MemberFromTeamGroup', props.group.id)
 );
 
-export default class Team extends Component {
+class Team extends Component {
 
     constructor(props) {
         super(props);
@@ -23,6 +25,25 @@ export default class Team extends Component {
         };
     }    
 
+    componentDidMount() {
+        this.updateIntro();
+    }
+    
+      componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.updateIntro();
+        }
+      }
+    
+    updateIntro() {
+        if (localStorage.getItem('lang') === 'ge') {
+            this.setState({intro: intro});
+        } else {
+            this.setState({intro: intro_eng});
+        }
+    }
+    
     // componentDidMount() {
         // let db = new Db('team_einteilung');
         // db.query().then((data) => {
@@ -113,3 +134,5 @@ export default class Team extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(Team);

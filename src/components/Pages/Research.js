@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import TopicGrid from '../Research/TopicGrid';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-let intro = '<p>Through being an experimentally oriented institute, IME constantly handles public and industrial research. Here we offer you a short description for a choice of projects. Either you can search for catchwords or rummage in the discrete topics. </p>';
+let intro_eng = '<p>Through being an experimentally oriented institute, IME constantly handles public and industrial research. Here we offer you a short description for a choice of projects. Either you can search for catchwords or rummage in the discrete topics. </p>';
+let intro = '<p>Das IME bearbeitet als Experimentalinstitut laufend &ouml;ffentliche und  industrielle Forschungsprojekte. An dieser Stelle bieten wir Ihnen zu  einer Auswahl von Projekten eine kurze Beschreibung an. Sie haben die  M&ouml;glichkeit nach Schlagw&ouml;rtern zu suchen oder in den einzelnen  Themengebieten zu st&ouml;bern.</p>';
 // let topics = [
 //     {
 //         id: 1,
@@ -79,7 +81,7 @@ let intro = '<p>Through being an experimentally oriented institute, IME constant
 //     },
 // ];
 
-export default class Research extends Component {
+class Research extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -87,6 +89,25 @@ export default class Research extends Component {
             // topics: topics
         }
     }    
+    
+    componentDidMount() {
+        this.updateIntro();
+    }
+    
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.updateIntro();
+        }
+    }
+    
+    updateIntro() {
+        if (localStorage.getItem('lang') === 'ge') {
+            this.setState({intro: intro});
+        } else {
+            this.setState({intro: intro_eng});
+        }
+    }
     
     render() {
         return(
@@ -129,3 +150,5 @@ export default class Research extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(Research);

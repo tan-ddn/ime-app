@@ -153,6 +153,10 @@ export default class LatestProjects extends ResponsiveComponent {
                 elm.title = elm.fp_title_eng.substring(0, 55)+'...';
                 elm.description = elm.fp_description_eng.substring(0, 110)+'...';
                 elm.date = elm.fp_timeperiod;
+                if (localStorage.getItem('lang') === 'ge') {
+                    elm.title = elm.fp_title.substring(0, 55)+'...';
+                    elm.description = elm.fp_description.substring(0, 110)+'...';
+                }
                 return elm;
             });
         }

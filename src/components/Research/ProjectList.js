@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 import Db from '../../control/class.db';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 class projectList extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class projectList extends Component {
             projects = this.state.data.results;
             console.log(projects);
             projectsHTML = projects.map((elm) => (
-                <li className="py-2"><Link to={'/research/project/'+elm.id}>{elm.title}</Link></li>
+                <li className="py-2"><Link to={'/research/project/'+elm.id}>{(localStorage.getItem('lang') == 'ge') ? elm.title : elm.title_eng}</Link></li>
             ))
         }
         return(
@@ -39,4 +40,4 @@ class projectList extends Component {
         );
     }
 }
-export default withRouter(projectList);
+export default withLangSwitchListener(withRouter(projectList));

@@ -3,8 +3,9 @@ import React from 'react';
 import ResponsiveComponent from '../ResponsiveComponent';
 import Db from '../../control/class.db';
 import StyledPopup from '../Popup/Popup';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class ProjectsAndEvents extends ResponsiveComponent {
+class ProjectsAndEvents extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -27,8 +28,8 @@ export default class ProjectsAndEvents extends ResponsiveComponent {
             ppse = this.state.ppse.results;
             // console.log(ppse);
             ppse.forEach((elm, index) => {
-                elm['title'] = elm.sna_Sonderaktiontitel_eng;
-                elm['options'] = elm.sa_options_eng;
+                elm['title'] = (localStorage.getItem('lang') === 'ge') ? elm.sna_Sonderaktiontitel_de : elm.sna_Sonderaktiontitel_eng;
+                elm['options'] = (localStorage.getItem('lang') === 'ge') ? elm.sa_options_de : elm.sa_options_eng;
                 elm['university'] = elm.sna_university;
                 elm['period'] = elm.sna_zeitraum;
                 elm['website'] = elm.sna_universitylink;
@@ -56,9 +57,9 @@ export default class ProjectsAndEvents extends ResponsiveComponent {
                 </colgroup>
                 <thead className="thead-color1">
                     <tr>
-                        <th>Options</th>
-                        <th>Title</th>
-                        <th>Period</th>
+                        <th>{(localStorage.getItem('lang') === 'ge') ? 'Option' : 'Options'}</th>
+                        <th>{(localStorage.getItem('lang') === 'ge') ? 'Titel' : 'Title'}</th>
+                        <th>{(localStorage.getItem('lang') === 'ge') ? 'Zeitraum' : 'Period'}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,3 +80,5 @@ export default class ProjectsAndEvents extends ResponsiveComponent {
         )
     }
 }
+
+export default withLangSwitchListener(ProjectsAndEvents);

@@ -163,8 +163,8 @@ class PublicationTable extends ResponsiveComponent {
             publications = this.state.publications.splice(0, limit);
         }
         publicationsHTML = this.echoPublications(publications);
-        console.log(publications);
-        console.log(this.props.webText);
+        // console.log(publications);
+        // console.log(this.props.webText);
         let pagiHTML = null;
         if (this.state.hasPag && this.state.totalPages>1) {
             let forcePage = Number(this.state.pageNo) - 1;

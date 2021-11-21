@@ -116,22 +116,29 @@ export default class ResearchAreas extends Component {
     return (areas.length == 0) ? 'Loading...' : (
         <div id="" className="research-areas" style={{height: `${this.props.height}`}}>
             <Slider {...settings}>
-                {areas.map((item, index) => (
-                <div key={index} className="slide-content">
-                    <div className="slide-img" style={{ backgroundImage: `url('${process.env.PUBLIC_URL + '/img/projects/' + item.bild}') ` }}>
-                        {/* <img src={process.env.PUBLIC_URL + '/img/team/faebiaen2_id_5920.jpg'} alt="" /> */}
+                {areas.map((item, index) => {
+                    let title = item.title_eng;
+                    let description = item.description_eng;
+                    if (localStorage.getItem('lang') === 'ge') {
+                        title = item.title;
+                        description = item.description;
+                    }
+                    return(
+                    <div key={index} className="slide-content">
+                        <div className="slide-img" style={{ backgroundImage: `url('${process.env.PUBLIC_URL + '/img/projects/' + item.bild}') ` }}>
+                            {/* <img src={process.env.PUBLIC_URL + '/img/team/faebiaen2_id_5920.jpg'} alt="" /> */}
+                        </div>
+                        <div className="slide-text">
+                            <h5 className="title">{title}</h5>
+                            {/* <p>{item.description_eng}</p> */}
+                            <SanitizedHTML html={StringHandle.extract(description, 50) + '...' } />
+                            <Link className="btn btn-primary read-more" to={'/research/'+item.id}>Read More</Link>
+                            {/* <button >
+                                
+                            </button> */}
+                        </div>
                     </div>
-                    <div className="slide-text">
-                        <h5 className="title">{item.title_eng}</h5>
-                        {/* <p>{item.description_eng}</p> */}
-                        <SanitizedHTML html={StringHandle.extract(item.description_eng, 50) + '...' } />
-                        <Link className="btn btn-primary read-more" to={'/research/'+item.id}>Read More</Link>
-                        {/* <button >
-                            
-                        </button> */}
-                    </div>
-                </div>
-                ))}
+                )})}
             </Slider>
         </div>
     )

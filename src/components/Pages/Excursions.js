@@ -9,8 +9,11 @@ import StyledPopup from '../Popup/Popup';
 import Db from '../../control/class.db';
 import TeamBox from '../Team/TeamBox';
 import SanitizedHTML from 'react-sanitized-html';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-let intro = '<p>The IME organizes several excursions yearly. Beside of one-day excursions, which belong to certain lectures, there is also a two-week excursion every autumn. During those we visit several companies working in the field of non-ferrous metallurgy and related industries.</p><p>The goal of the excursions is, that students, but also institute employees can gain extensive insight into the diversity of metallurgical appliances.</p><p>In addition to technical aspects, getting to know new interesting countries or regions with their differing cultures is emphasized. That way, the two-week-excursions regularly go abroad. to European- and non-European countries.</p><p>For students participation is low-priced. For further information, ask the organising teams of the next excursion.';
+let intro_eng = '<p>The IME organizes several excursions yearly. Beside of one-day excursions, which belong to certain lectures, there is also a two-week excursion every autumn. During those we visit several companies working in the field of non-ferrous metallurgy and related industries.</p><p>The goal of the excursions is, that students, but also institute employees can gain extensive insight into the diversity of metallurgical appliances.</p><p>In addition to technical aspects, getting to know new interesting countries or regions with their differing cultures is emphasized. That way, the two-week-excursions regularly go abroad. to European- and non-European countries.</p><p>For students participation is low-priced. For further information, ask the organising teams of the next excursion.';
+let intro = '<p>Das IME organisiert j&auml;hrlich mehrere Exkursionen. Neben Tagesexkursionen im Rahmen bestimmter Lehrveranstaltungen findet j&auml;hrlich im Herbst eine zweiw&ouml;chige Exkursion zu einer gro&szlig;en Auswahl von Unternehmen aus dem Bereich der Nichteisenmetallurgie statt.</p><p>Ziel dieser Exkursion ist es Studierenden, aber auch den Mitarbeitern des Instituts, einen umfassenden Einblick in die Vielfalt der metallurgischen Anwendungen zu erm&ouml;glichen. Neben technischen Aspekten erfolgt gleichzeitig auch immer ein Kennen lernen anderer interessanter L&auml;nder und Regionen mit ihren unterschiedlichen Kulturen. So f&uuml;hrt die zweiw&ouml;chige Exkursion regelm&auml;&szlig;ig ins europ&auml;ische sowie au&szlig;ereurop&auml;ische Ausland.</p><p>F&uuml;r Studierende ist die Teilnahme zu kosteng&uuml;nstigen Konditionen m&ouml;glich. N&auml;here Information sind bei den Organisationsteams der Exkursion zu erhalten.</p>';
+
 let contacts = [
     {
     'id': 284,
@@ -23,11 +26,10 @@ let contacts = [
 }
 ];
 
-export default class Excursions extends Component {
+class Excursions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
             info: Db.get('ExcursionInfo').then(res => res),
             data: Db.get('Album', 4).then(res => res)
         }
@@ -58,8 +60,8 @@ export default class Excursions extends Component {
             let info = this.state.info.results[0];
             infoHtml = (
                 <div id="excursion-info" className="py-3 col-12 col-sm-4">
-                    <h2 className="heading">{info.titel_eng}</h2>
-                    <SanitizedHTML html={info.text_eng} />
+                    <h2 className="heading">{(localStorage.getItem('lang') == 'ge') ? info.titel : info.titel_eng}</h2>
+                    <SanitizedHTML html={(localStorage.getItem('lang') == 'ge') ? info.text : info.text_eng} />
                     <div className="team-group " style={{'padding': '0'}}>
                         <TeamBox id={info.ansprech} />
                         {/* {contactsInfo.map((elm, index) => (
@@ -89,12 +91,12 @@ export default class Excursions extends Component {
                                 <div className="content" role="article">
                                     <div className="row">
                                         <div id="intro" className="py-3 col-sm-8">
-                                            <h2 className="heading">Excursions</h2>
+                                            <h2 className="heading">{(localStorage.getItem('lang')) == 'ge' ? 'Exkursionen' : 'Excursions'}</h2>
                                             <div className="intro-wrap0 p-40 bg-grey0">
                                             <div className="px-20">
                                                 <div className="row">
                                                     <div className="py-20 col-12 col-sm-12">
-                                                        <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                        <div className="" dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang')) == 'ge' ? intro : intro_eng}} />
                                                     </div>
                                                     {/* <div className="py-2 col-12 col-sm-4">
                                                         <div className="mb-3"><img src={process.env.PUBLIC_URL + '/img/association/logo.png'} alt="IME-Society" /></div>            
@@ -117,7 +119,7 @@ export default class Excursions extends Component {
                                             if (elm.pics == undefined) return;
                                             return (
                                             <div key={elm.id} className="past-excursions-wrap py-2 bg-grey0">
-                                            <h4 className="box-title">{elm.name_eng}</h4>
+                                            <h4 className="box-title">{(localStorage.getItem('lang') == 'ge') ? elm.name : elm.name_eng}</h4>
                                             <div className="row">
                                                 <div className="py-2 col-12">
                                                     <p className="gallery-row">
@@ -201,3 +203,5 @@ export default class Excursions extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(Excursions);

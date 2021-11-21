@@ -7,6 +7,7 @@ import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
 import Db from '../../control/class.db';
 import ProjectsAndEvents from '../UniCoop/ProjectsAndEvents';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 let intro = '<p></p>';
 let unis = [
@@ -130,14 +131,17 @@ class UniDetails extends Component {
             uni.persons = [
                 {
                     'title': uni.firstprofessorname,
+                    'title_eng': uni.firstprofessorname,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic1
                 },
                 {
                     'title': uni.secondprofessorname,
+                    'title_eng': uni.secondprofessorname,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic2
                 },
                 {
                     'title': uni.thirdprofessorname,
+                    'title_eng': uni.thirdprofessorname,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic3
                 },
             ]
@@ -197,4 +201,4 @@ class UniDetails extends Component {
         );
     }
 }
-export default withRouter(UniDetails);
+export default withLangSwitchListener(withRouter(UniDetails));

@@ -4,52 +4,78 @@ import './box.scss';
 import Slider from "react-slick";
 import SanitizedHTML from 'react-sanitized-html';
 import StringHandle from '../../utility/stringHandle';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class Box extends Component {
+class Box extends Component {
     constructor(props) {
         super(props);
         this.state = {
             content: this.props.content,
             type: this.props.type,
-            linkTitle: this.props.linkTitle
+            linkTitle: this.props.linkTitle,
+            lang: 2,
         };
     }
 
+    componentDidMount() {
+        this.changeLang();
+    }
+    
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.changeLang();
+        }
+    }
+    
+    changeLang() {
+        if (localStorage.getItem('lang') === 'ge') {
+            this.setState({lang: 1});
+        } else {
+            this.setState({lang: 2});
+        }
+    }
+    
     renderTitle(linkTitle) {
+        let title = (this.state.lang == 1) ? this.state.content.title : this.state.content.title_eng;
+        console.log(this.state.lang);
         switch(linkTitle) {
             case '1':
                 return (
                     <Link to={this.state.content.buttonUrl}>
-                        {this.state.content.title}
+                        {title}
                     </Link>
                 );
             default:
-                return this.state.content.title;
+                return title;
         }
     }
 
     teamSummary() {
         // console.log('teamSummary');
+        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
         return (
             <div className="events-sum">
                 <h6 className="team-name"><Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link></h6>
-                <div dangerouslySetInnerHTML={{__html: this.state.content.description}} />
+                <div dangerouslySetInnerHTML={{__html: des}} />
             </div>
         );
     }
     researchSummary() {
         let link = "/research/" + this.state.content.id;
         // console.log(link);
+        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
         return (
             <div className="events-sum">
                 {/* <p>{this.state.content.description}</p> */}
-                <SanitizedHTML className="mb-3" html={StringHandle.extract(this.state.content.description, 50) + '...' } />
+                <SanitizedHTML className="mb-3" html={StringHandle.extract(des, 50) + '...' } />
                 <Link className="btn btn-primary" to={link}>{this.state.content.button}</Link>
             </div>
         );
     }
 
     renderSummary(type) {
+        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
         switch(type) {
             case 'team':
                 return this.teamSummary();
@@ -58,7 +84,7 @@ export default class Box extends Component {
             case 'equipment':
                 return null;
             default:
-                return <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />;
+                return <div className="events-sum" dangerouslySetInnerHTML={{__html: des}} />;
         }
     }
 
@@ -115,3 +141,4 @@ export default class Box extends Component {
         )
     }
 }
+export default withLangSwitchListener(Box);

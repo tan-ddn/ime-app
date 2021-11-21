@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 import Db from '../../control/class.db';
 import StringHandle from '../../utility/stringHandle';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 class ResearchDetails extends Component {
     constructor(props) {
@@ -42,10 +43,10 @@ class ResearchDetails extends Component {
         //     profile.name = title + ' ' + profile.t_vorname + ' ' + profile.t_name;
         //     profile.image = process.env.PUBLIC_URL + '/img/team/' + profile.t_bild;
         // }
-        let data = 'Loading...';
+        let data = {};
         if (this.state.data.success) {
             data = this.state.data.results[0];
-            // console.log(data);
+            //console.log(data);
         }
         let contactHTML = [];
         let alumniHTML = [];
@@ -64,15 +65,15 @@ class ResearchDetails extends Component {
         //     // console.log(group);
         //     topicHtml = <Link to={'/research/'+topic.frdp_id} >{topic.frdp_title_eng}</Link>;
         // }
-        return(
+        return (Object.keys(data).length === 0) ? 'Loading...' : (
             <div id="intro" className="py-3">
                 {/* {this.state.id} */}
-                <h2 className="heading"><Link className="d-inline-block " to="/research">Research</Link> <span className="text-dark">&#187; {data.title_eng}</span> </h2>
+                <h2 className="heading"><Link className="d-inline-block " to="/research">Research</Link> <span className="text-dark">&#187; {(localStorage.getItem('lang') == 'ge') ? data.title : data.title_eng}</span> </h2>
                 <div className="intro-wrap p-4 bg-grey text-left">
                     <div className="px-2">
                         <div className="row">
                             <div className="py-2 col-12 col-sm-12">
-                                <SanitizedHTML html={data.description_eng} />
+                                <SanitizedHTML html={(localStorage.getItem('lang') == 'ge') ? data.description : data.description_eng} />
                             </div>
                             <div className="py-2 col-12 col-sm-4">
                                 <p><b>Contact:</b></p>
@@ -106,4 +107,4 @@ class ResearchDetails extends Component {
         );
     }
 }
-export default withRouter(ResearchDetails);
+export default withLangSwitchListener(withRouter(ResearchDetails));

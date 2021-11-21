@@ -5,8 +5,9 @@ import ResponsiveComponent from '../ResponsiveComponent';
 import SanitizedHTML from 'react-sanitized-html';
 import Db from '../../control/class.db';
 import ExamList from './ExamList';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class ExamLogin extends ResponsiveComponent {
+class ExamLogin extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -63,7 +64,10 @@ export default class ExamLogin extends ResponsiveComponent {
             <div className={className}>
             <div className="row">
                 <div className="py-2 col-12 col-sm-4">
-                <p>Here you can download old tests or have a look at the results of new tests. Please ask for the necessary passwords in the lectures. </p>
+                {localStorage.getItem('lang') == 'ge'
+                ? <p>Hier bieten wir Ihnen die M&ouml;glichkeit alte Klausuren runterzuladen bzw. Ergebnisse neuer Klausuren einzusehen. Die entsprechenden Passw&ouml;rter erfragen Sie bitte in der Vorlesung.</p>
+                : <p>Here you can download old tests or have a look at the results of new tests. Please ask for the necessary passwords in the lectures. </p>
+                }
                 </div>
                 <div className="py-2 col-12 col-sm-8">
                 <form className="exam-form">
@@ -106,3 +110,5 @@ export default class ExamLogin extends ResponsiveComponent {
         )
     };
 }
+
+export default withLangSwitchListener(ExamLogin);

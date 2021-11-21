@@ -4,12 +4,13 @@ import Db from '../../control/class.db';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 import StyledPopup from '../Popup/Popup';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<h4>Ziele des Vereins</h4><p>Förderung der Qualität von Ausbildung und Forschung am IME Metallurgische Prozesstechnik und Metallrecycling (Institut und Lehrstuhl der RWTH Aachen), insbes. auf dem Gebiet der Nichteisenmetallurgie</p><h4>Durch</h4><ul><li>Unterstützung bei der Sicherstellung einer praxisbezogenen Lehre und Ausbildung.</li><li>Finanzielle Unterstützung der IME- Fachexkursionen.</li><li>Anwerbung, Betreuung und Förderung von Studenten.</li><li>Anbindung der IME Absolventen/innen an das Institut.</li><li>Organisation wissenschaftlicher Veranstaltungen. (z.B. Industrieseminare).</li><li>Verbesserung der Institutsausstattung, insbes. für die Außenwirkung.</li></ul>';
 
-export default class Association extends Component {
+class Association extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -66,51 +67,91 @@ export default class Association extends Component {
                                         <h2 className="heading">Personalia</h2>
                                         <div className="row">
                                             <div className="py-2 col-12">
-                                                <table className="table table-striped table-bordered">
-                                                    <tbody>
-                                                        <tr>
-                                                        <th>Chairman</th>
-                                                        <td>Dr.-Ing. Urban Meurer<br/>
-                                                        <a href="mailto:umeurer@berzelius.de">umeurer@berzelius.de</a>
-                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                        <th>Assistant Chair </th>
-                                                        <td>Prof. Dr. Bernd Friedrich<br/>
-                                                        <a href="mailto:bfriedrich@ime-aachen.de">bfriedrich@ime-aachen.de</a>
-                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                        <th>Manager</th>
-                                                        <td>Alex Birich, M.Sc.<br/>
-                                                        <a href="mailto:abirich@ime-aachen.de">abirich@ime-aachen.de</a>
-                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                        <th>Treasurer</th>
-                                                        <td>Dr. Ing. Marco Zander<br/>
-                                                        <a href="mailto:"></a>
-                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                        <th>Info / Contact</th>
-                                                        <td>Mrs. Nadine Hellmann<br/>
-                                                        <a href="mailto: 	ikoren@ime-aachen.de"> 	ikoren@ime-aachen.de</a>
-                                                        </td>
-                                                        </tr>
-                                                    </tbody>
+                                                {localStorage.getItem('lang') == 'ge'
+                                                ? <table className="table table-striped table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                    <th>Vorsitzender</th>
+                                                    <td>Dr.-Ing. Urban Meurer<br/>
+                                                    <a href="mailto:umeurer@berzelius.de">umeurer@berzelius.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>stell.-Vorsitzender</th>
+                                                    <td>Prof. Dr. Bernd Friedrich<br/>
+                                                    <a href="mailto:bfriedrich@ime-aachen.de">bfriedrich@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Geschäftsführer</th>
+                                                    <td>Alex Birich, M.Sc.<br/>
+                                                    <a href="mailto:abirich@ime-aachen.de">abirich@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Schatzmeister</th>
+                                                    <td>Dr. Ing. Marco Zander<br/>
+                                                    <a href="mailto:"></a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Info / Kontakt</th>
+                                                    <td>Mrs. Nadine Hellmann<br/>
+                                                    <a href="mailto: 	ikoren@ime-aachen.de"> 	ikoren@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
                                                 </table>
+                                                : <table className="table table-striped table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                    <th>Chairman</th>
+                                                    <td>Dr.-Ing. Urban Meurer<br/>
+                                                    <a href="mailto:umeurer@berzelius.de">umeurer@berzelius.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Assistant Chair </th>
+                                                    <td>Prof. Dr. Bernd Friedrich<br/>
+                                                    <a href="mailto:bfriedrich@ime-aachen.de">bfriedrich@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Manager</th>
+                                                    <td>Alex Birich, M.Sc.<br/>
+                                                    <a href="mailto:abirich@ime-aachen.de">abirich@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Treasurer</th>
+                                                    <td>Dr. Ing. Marco Zander<br/>
+                                                    <a href="mailto:"></a>
+                                                    </td>
+                                                    </tr>
+                                                    <tr>
+                                                    <th>Info / Contact</th>
+                                                    <td>Mrs. Nadine Hellmann<br/>
+                                                    <a href="mailto: 	ikoren@ime-aachen.de"> 	ikoren@ime-aachen.de</a>
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
+                                                </table>
+                                                }
+                                                
                                             </div>
                                         </div>
                                     </div>
                                     <div id="annual-meeting" className="py-3 pb-5">
-                                        <h2 className="heading">Yearly Meetings </h2>
-                                        <p>Traditionally, the IME graduate meeting takes place every first Friday in November. This gives an opportunity to do a round-trip through the institute and to participate in the annual meeting of the association "Friends of IME e.V.". In the evening, the research funding awards and the prizes for excellent master thesis of Aurubis AG and the association are presented as well. </p>
+                                        <h2 className="heading">{(localStorage.getItem('lang')) == 'ge' ? 'Jahrestreffen' : 'Yearly Meetings'}</h2>
+                                        {localStorage.getItem('lang') == 'ge'
+                                        ? <p>Traditionell findet jeden ersten Freitag im November das Absolvententreffen des IME statt. Dieses bietet Gelegenheit für einen Institutsrundgang und zur Teilnahme an der Mitgliederversammlung des Vereins „Freunde des IME e.V.“. Am Abend erfolgt die Verleihung der Studienförderpreise und der Preise für exzellente Masterarbeit der Aurubis AG und des Vereins. </p>
+                                        : <p>Traditionally, the IME graduate meeting takes place every first Friday in November. This gives an opportunity to do a round-trip through the institute and to participate in the annual meeting of the association "Friends of IME e.V.". In the evening, the research funding awards and the prizes for excellent master thesis of Aurubis AG and the association are presented as well. </p>
+                                        }                                    
                                         {meetings.map((elm) => {
                                             if (elm.pics == undefined) return;
                                             return (
                                             <div key={elm.id} className="annual-meeting-wrap py-2 bg-grey0">
-                                            <h4 className="box-title">{elm.name_eng}</h4>
+                                            <h4 className="box-title">{(localStorage.getItem('lang')) == 'ge' ? elm.name : elm.name_eng}</h4>
                                             <div className="row">
                                                 <div className="py-2 col-12">
                                                     <p className="gallery-row">
@@ -203,3 +244,5 @@ export default class Association extends Component {
         );
     }
 }
+
+export default withLangSwitchListener(Association);

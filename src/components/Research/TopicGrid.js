@@ -5,8 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Box from '../Boxes/Box';
 import Db from '../../control/class.db';
 import StringHandle from '../../utility/stringHandle';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class TopicGrid extends ResponsiveComponent {
+class TopicGrid extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -27,12 +28,14 @@ export default class TopicGrid extends ResponsiveComponent {
             this.state.data.results.forEach((elm, index) => {
                 boxContent[index] = {
                     id: elm.id,
-                    title: elm.title_eng,
+                    title_eng: elm.title_eng,
+                    title: elm.title,
                     image: process.env.PUBLIC_URL + '/img/projects/' + elm.bild,
                     button: 'Read More',
                     buttonUrl: '/research/'+elm.id,
                     // description: '<p>' + elm.description + '</p><a class="btn btn-primary" href="">Read more</a>'
-                    description: elm.description_eng
+                    description_eng: elm.description_eng,
+                    description: elm.description
                 };
             });
         }
@@ -51,3 +54,5 @@ export default class TopicGrid extends ResponsiveComponent {
         );
     }
 }
+
+export default withLangSwitchListener(TopicGrid);

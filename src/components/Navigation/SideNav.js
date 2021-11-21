@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 // import { Component } from 'react';
 import ResponsiveComponent from '../ResponsiveComponent';
 
-export default class SideNav extends ResponsiveComponent {
+class SideNav extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -18,7 +19,7 @@ export default class SideNav extends ResponsiveComponent {
                     {this.props.content.map((elm, index) => (
                         <li className="nav-item">
                             <Link className="nav-link" to={elm.url}>
-                                {elm.title_eng}
+                                {(localStorage.getItem('lang') == 'ge') ? elm.title : elm.title_eng}
                             </Link>
                         </li>
                     ))}
@@ -27,6 +28,8 @@ export default class SideNav extends ResponsiveComponent {
         )
     }
 }
+
+export default withLangSwitchListener(SideNav);
 
 SideNav.defaultProps = {
     heading: 'Navigation',

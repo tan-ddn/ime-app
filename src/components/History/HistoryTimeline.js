@@ -1,13 +1,17 @@
 import React from 'react';
+import Db from '../../control/class.db';
 import ResponsiveComponent from '../ResponsiveComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 import './history.scss';
 
-export default class History extends ResponsiveComponent {
+class History extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
         this.state = {
+            lang: 2,
+            data: Db.get('HistoryTxt').then(res => res),
             timeline: [
                 {
                     img: process.env.PUBLIC_URL + '/img/about/ernst_duerre.png',
@@ -48,9 +52,45 @@ export default class History extends ResponsiveComponent {
             ]
         };
     }
+    
+    componentDidMount() {
+        this.changeLang();
+        Db.get('HistoryTxt').then((res) => {
+          this.setState({data: res});
+        });
+      }
+    
+      componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.changeLang();
+        }
+      }
+    
+      changeLang() {
+        if (localStorage.getItem('lang') === 'ge') {
+            this.setState({lang: 1});
+        } else {
+            this.setState({lang: 2});
+        }
+    }
 
   render() {
     let timeline = this.state.timeline;
+    let ids = [];
+    if (this.state.data.success) {
+        let data = this.state.data.results;
+        //console.log(data);
+        if (this.state.lang == 1) {
+            ids = [16,17,18,19,20,28];
+        } else {
+            ids = [33,31,30,35,34,32];
+        }
+        timeline.forEach((elm, index) => {
+            let obj = data.filter(e => e.id == ids[index]);
+            elm.text = obj[0].txt;
+        });
+    }
     return (
         <div className="history" id={this.props.id}>
             <div className="timeline-wrapper">
@@ -136,3 +176,5 @@ export default class History extends ResponsiveComponent {
 History.defaultProps = {
 
 }
+
+export default withLangSwitchListener(History);

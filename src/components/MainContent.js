@@ -11,6 +11,7 @@ import LatestProjects from './Research/LatestProjects';
 import InstaBox from './Instagram/InstaBox';
 import News1 from './News/News1';
 import Newsletter from './News/Newsletter';
+import HomeTxt from './Pages/Text';
 import FullscreenWidth from './FullscreenWidth';
 import Db from '../control/class.db';
 import withLangSwitchListener from './Languages/LangSwitchListener';
@@ -63,22 +64,28 @@ import withLangSwitchListener from './Languages/LangSwitchListener';
 
 const assets = [
   {
+    title_eng: 'IME-Society',
+    description_eng: 'Förderung der Qualität von Ausbildung und ...',
     title: 'IME-Society',
-    description: 'RemovAl-Removing the Waste Streams from the Primary Aluminum Production and Other Metal Sectrosin Europe ...',
+    description: 'Förderung der Qualität von Ausbildung und ...',
     button: 'see more &#187;',
     buttonUrl: '/association',
     image: process.env.PUBLIC_URL + '/img/social/dsc06366_id_8980.jpg'
   },
   {
-    title: 'Excursions',
-    description: 'The IME organizes several excursions yearly. Beside of one-day excursions, ...',
+    title_eng: 'Excursions',
+    description_eng: 'The IME organizes several excursions yearly...',
+    title: 'Exkursionen',
+    description: 'Das IME organisiert jährlich mehrere Exkursionen...',
     button: 'see more &#187;',
     buttonUrl: '/excursions',
     image: process.env.PUBLIC_URL + '/img/social/gruppenfoto_bri_id_6191.jpg'
   },
   {
+    title_eng: 'Network & Partners',
+    description_eng: 'We have an extensive network of partners...',
     title: 'Network & Partners',
-    description: 'We have an extensive network of partners. These include i...',
+    description: 'Wir pflegen ein umfangreiches Netzwerk an Partnern...',
     button: 'see more &#187;',
     buttonUrl: '/network',
     image: [process.env.PUBLIC_URL + '/img/partners/ntua_id_8109.jpg',
@@ -89,6 +96,8 @@ const assets = [
       process.env.PUBLIC_URL + '/img/partners/ntnu_w_id_3627.png']
   },
   {
+    title_eng: 'Now in Instagram',
+    description_eng: '',
     title: 'Now in Instagram',
     description: '',
     button: 'see more &#187;',
@@ -124,7 +133,6 @@ class MainContent extends ResponsiveComponent {
   }
 
   render() {
-    let greenLogoAlign = (this.state.screenSize === 'xs') ? 'center' : 'right';
     let recentNews = null;
     if (this.state.news) recentNews = this.state.news.slice(0,5);
     return (
@@ -221,17 +229,7 @@ class MainContent extends ResponsiveComponent {
             </div>
             {/* <div class="horizontal-sep"></div> */}
             <div id="intro" className="py-3">
-              <h2 className="heading">The world of Green Metallurgy</h2>
-              <div className="row" style={{marginTop: '30px'}} >
-                <div className="col-12 col-sm-9">
-                <p>The activity of the Institute IME Process Metallurgically and Metal Recycling (Professor Dr.-Ing Dr. h.c. Bernd Friedrich)&nbsp; consists of applied research and  education/teaching in the fields of extractive metallurgy (pyrometallurgy and  hydrometallurgy), metal refining and electrolysis, as well as recycling of metals and residues. IME-RWTH is also a leading institute in field of process design and optimization in terms of resources efficiencies with special focus on critical waste streams aiming to support the sustainability on Circular Economy. We are involved in production technologies of complex alloys under vacuum up to demo-scale and powder synthesis in nano-scale.</p>
-                </div>
-                <div className="col-12 col-sm-3">
-                <p style={{textAlign: greenLogoAlign}}>
-                  <img src={process.env.PUBLIC_URL + '/img/green.gif'} alt="Logo Green Metallurgy" />
-                </p>
-                </div>
-              </div>
+              <HomeTxt/>
             </div>
             <div id="" className="py-2">
               <div className="row">

@@ -7,15 +7,16 @@ import ExamLogin from '../Exams/ExamLogin';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
 import HiwiJobs from '../Jobs/HiwiJob';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-let intro = '<p>You can have a look at all lectures and courses which are given at the IME in the current semester in RWTHonline. Access is only given for matriculated students of RWTH Aachen or employers of the university. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&amp;$skip=0&amp;$top=20&amp;objTermId=187&amp;orgId=14507&amp;q=" target="_blank">Here</a> you find a direct link to the courses.</p><p><b>Notification: online lectures at IME. </b></p><p>Due to the current situation, the IME has created an online contingency plan (Download note: due to the uncertain situation, this can change at any time). The big courses take place online this semester. We hope that lectures on a smaller scale (<20 students) will be held physically at the end of May, for which all measures regarding hygiene and safety distance will be specially followed. The lectures of larger dimensions will be broadcasted via zoom. Students are provided with the lecture manuscript as well as the exercise documents and exercise videos in Moodle. Since we do not want to do the practical course online, these will take place to a limited extent in compliance with the hygiene measures and the safety distance.</p>';
+let intro_eng = '<p>You can have a look at all lectures and courses which are given at the IME in the current semester in <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/login" target="_blank">RWTHonline</a>. Access is only given for matriculated students of RWTH Aachen or employers of the university. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&$skip=0&$top=20&objTermId=187&orgId=14507&q=" target="_blank">Here</a> you find a direct link to the courses.</br></br> <b>Notification: online lectures at IME. </b></br></br>Due to the current situation, the IME has created an online contingency plan (<a href="http://www.metallurgie.rwth-aachen.de/data/Others/online_Lehrplan_IME.pdf">Download</a> note: due to the uncertain situation, this can change at any time). The big courses take place online this semester. We hope that lectures on a smaller scale (<20 students) will be held physically at the end of May, for which all measures regarding hygiene and safety distance will be specially followed. The lectures of larger dimensions will be broadcasted via zoom. Students are provided with the lecture manuscript as well as the exercise documents and exercise videos in Moodle. Since we do not want to do the practical course online, these will take place to a limited extent in compliance with the hygiene measures and the safety distance.</p>';
+let intro = '<p>Alle Lehrveranstaltungen die das IME im aktuellen Semester anbietet, k&ouml;nnen Sie bei <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/login" target="_blank">RWTHonline</a> abrufen. Der Zugang ist jedoch nur f&uuml;r immatrikulierte Studenten der RWTH Aachen oder Hochschulangestellten gestattet. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&$skip=0&$top=20&objTermId=187&orgId=14507&q=">Hier</a> finden Sie den Direktlink zu unseren Veranstaltungen.</b></br></br> Auch das sogenannte Speed-Dating der Fachgruppe zur Orientierung bezüglich der Vertiefungsrichtungen im Masterstudium wird in diesem Jahr online durchgeführt. Unter dem folgenden Link ist der ungekürzte Beitrag zur Vorstellung des IME abrufbar: (<a href="https://www.youtube.com/watch?v=9pMCLttRJCo">Video)</a></br></br><iframe width="560" height="315" src="https://www.youtube.com/embed/9pMCLttRJCo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></br></br> <b>Info: Aktuelle Situation in Bezug auf Covid-19 und online Lehre am IME </b></br></br> Aufgrund der derzeitigen Situation hat das IME einen online Lehrplan erstellt (<a href="http://www.metallurgie.rwth-aachen.de/data/Others/online_Lehrplan_IME.pdf">Download</a> Hinweis: durch die ungewisse Situation kann sich dieser jederzeit ändern). Die größeren Lehrveranstaltungen finden in diesem Semester online statt. Wir hoffen, dass Vorlesungen im kleineren Rahmen (< 20 Studenten) physisch Ende Mai abzuhalten sind, wofür alle Maßnahmen bzgl. Hygiene und Sicherheitsabstand eingehalten werden. Die Vorlesungen der größeren Veranstaltungen werden live mittels Zoom übertragen. Den Studierenden wird sowohl das Vorlesungsmanuskript als auch die Übungsunterlagen sowie Übungsvideos in Moodle zur Verfügung gestellt. Da wir in diesem Semester nicht auf unsere Praktika verzichten wollen, finden diese eingeschränkt unter Einhaltung der Hygienemaßnahmen und des Sicherheitsabstandes statt. </p>';
 
 class Study extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
             data: Db.get('Job').then(res => res)
         }
     }    
@@ -72,7 +73,7 @@ class Study extends Component {
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-8">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? intro : intro_eng}} />
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-4">
                                                 <img src={process.env.PUBLIC_URL + '/img/study/RWTHonline.png'} alt="RWTHonline" />
@@ -83,7 +84,32 @@ class Study extends Component {
                                     </div>
                                     <div id="hiwi" className="py-3">
                                         <h2 className="heading">HiWi Jobs</h2>
-                                        <div className="row">
+                                        {localStorage.getItem('lang') == 'ge'
+                                        ? <div className="row">
+                                            <div className="py-2 col-12">
+                                                <p>Am IME besteht die M&ouml;glichkeit als studentische Hilfskraft mit einem Arbeitsumfang von 5 bis 8 Stunden in der Woche sehr praxisnah zu arbeiten.</p>
+                                                <p>Alle Bewerbungen sollten bitte an untenstehenden kontakt gerichtet werden. Die Einstellung erfolgt je nach Bedarf des Insitutes.</p>
+                                            </div>
+                                            <div className="py-2 col-12 col-sm-6 text-left">
+                                                <h4 className="box-title">Voraussetzungen</h4>
+                                                <ul>
+                                                    <li>Student einer Ingenieurwissenschaft mit werkstofftechnischem Hintergrund</li>
+                                                    <li>Ab dem 3. Semester</li>
+                                                    <li>Interesse an praktischer T&auml;tigkeit im Bereich der Pyro- und Hydrometallurgie</li>
+                                                    <li>Sehr gute Deutschkenntnisse in Wort und Schrift</li>
+                                                    <li>Sehr gute Kenntnisse der MS Office Anwendungen</li>
+                                                </ul>
+                                            </div>
+                                            <div className="py-2 col-12 col-sm-6 text-left">
+                                                <h4 className="box-title">Was wir bieten</h4>
+                                                <ul>
+                                                    <li>Anspruchsvolle Aufgaben in einem dynamischen und internationalen Team</li>
+                                                    <li>Praxisnahe Erfahrungen durch die Mitwirkung an aktuellen Forschungsthemen aus der Industrie</li>
+                                                    <li>Kontakte f&uuml;r zuk&uuml;nftige Praktika bei renommierten Unternehmen</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        : <div className="row">
                                             <div className="py-2 col-12">
                                                 <p>At IME there is also the possibility of performing practical jobs as student assistant (HiWi) with a work scope of about 5 to 8 hours per week. If you don't find offers on this page, you may register in our interest list.</p>
                                                 <p>Please direct all applications to the email contact below. Hiring is decided according to the institute’s demand. </p>
@@ -106,7 +132,7 @@ class Study extends Component {
                                                     <li>Contacts to renowned companies for future practical trainings</li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </div>}
                                         <div className="py-2 accordion" id="hiwi-accordion">
                                             <div className="card">
                                                 <div className="card-header" id="hiwi-heading-1">
@@ -127,7 +153,10 @@ class Study extends Component {
                                         
                                         <div className="row">
                                             <div className="py-2 col-12">
-                                                <p>The IME offers thesis topics to students of engineering and material sciences with a processing background at any time. Here you may find a selection of current thesis topics. You may also want to take the chance to contact our employees in order to make a personal appointment. We find interesting and exciting topics for everyone.</p>
+                                                {localStorage.getItem('lang') == 'ge'
+                                                ? <div><p>Das IME bietet Studierenden der Ingenieur- und Materialwissenschaften mit prozesstechnischem Hintergrund jederzeit Themen für Bachelor- oder Masterarbeiten, sowie Hauptseminare an. Unten aufgeführt finden Sie eine Auswahl aktueller Arbeitsthemen.</p><p>Nutzen Sie darüber hinaus auch die Möglichkeit unsere wissenschaftlichen Mitarbeiter zu kontaktieren oder sich nach einem Beratungstermin zu erkundigen. Wir finden für jeden ein interessantes und spannendes Thema.</p><p>Alle Bachelorkandidaten sollten bestenfalls die Klausur für das Basisfach bestanden haben. Ohne das nötige Grundverständnis ist die Anfertigung einer wissenschaftlichen Arbeit in einem so kurzen Zeitraum nicht ohne weiteres möglich. Eine Ausnahme bilden jedoch Themen der Nanogruppe, da die Grundlagen der Nanotechnologie nicht im Basisfach &quot;Metallurgie und Recycling&quot; vermittelt werden.</p></div>
+                                                : <p>The IME offers thesis topics to students of engineering and material sciences with a processing background at any time. Here you may find a selection of current thesis topics. You may also want to take the chance to contact our employees in order to make a personal appointment. We find interesting and exciting topics for everyone.</p>
+                                                }
                                             </div>
                                         </div>
                                         <div className="py-2 accordion" id="thesis-accordion">
@@ -144,9 +173,11 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {master.map((elm, index) => {
-                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        if (text == '') {text = elm.j_ueberschrift;}
+                                                        if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
-                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{text}</Link></li>
                                                         );
                                                     })}
                                                         {/* <li><Link to="/study/thesistopic/1">Investigation of alternative reducing agents for the production of ferroalloys</Link></li>
@@ -170,9 +201,11 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {bachelor.map((elm, index) => {
-                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        if (text == '') {text = elm.j_ueberschrift;}
+                                                        if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
-                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{text}</Link></li>
                                                         );
                                                     })}
                                                     </ul>
@@ -193,9 +226,11 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {mini.map((elm, index) => {
-                                                        if (elm.j_ueberschrift_eng == '') elm.j_ueberschrift_eng = elm.j_ueberschrift
+                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        if (text == '') {text = elm.j_ueberschrift;}
+                                                        if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
-                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{elm.j_ueberschrift_eng}</Link></li>
+                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{text}</Link></li>
                                                         );
                                                     })}
                                                     </ul>
@@ -223,4 +258,4 @@ class Study extends Component {
         );
     }
 }
-export default withRouter(Study);
+export default withLangSwitchListener(withRouter(Study));

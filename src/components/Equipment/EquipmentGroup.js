@@ -26,7 +26,7 @@ export default class EquipmentGroup extends ResponsiveComponent {
         let equip = [];
         if (this.state.equip.success) {
             equip = this.state.equip.results;
-            console.log(equip);
+            //console.log(equip);
         }
         return(
             <div className="row">

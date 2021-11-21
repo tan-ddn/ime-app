@@ -38,7 +38,8 @@ export default class TeamBox extends ResponsiveComponent {
                 name: title + ' ' + elm.t_vorname + ' ' + elm.t_name,
                 image: process.env.PUBLIC_URL + '/img/team/' + elm.t_bild,
                 url: elm.t_url,
-                description: '<p>Tel: ' + elm.t_tel + '<br/>Fax: ' + elm.t_fax + '<br/><a href="mailto:' + elm.t_mail + '">' + elm.t_mail + '</a></p>'
+                description: '<p>Tel: ' + elm.t_tel + '<br/>Fax: ' + elm.t_fax + '<br/><a href="mailto:' + elm.t_mail + '">' + elm.t_mail + '</a></p>',
+                description_eng: '<p>Tel: ' + elm.t_tel + '<br/>Fax: ' + elm.t_fax + '<br/><a href="mailto:' + elm.t_mail + '">' + elm.t_mail + '</a></p>'
             }
         }
         return (content == null) ? 'Loading...' : (

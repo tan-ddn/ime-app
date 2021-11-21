@@ -6,6 +6,7 @@ import SideNav from '../Navigation/SideNav';
 import { Link } from 'react-router-dom';
 import Db from '../../control/class.db';
 import EquipmentSubcat from '../Equipment/EquipmentSubcat';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
 // let categories = [
 //     {
@@ -137,12 +138,13 @@ class EquipmentCategory extends Component {
             // console.log(categories);
             categories.forEach((elm, index) => {
                 elm.url = '/equipment/' + elm.id;
+                elm.title = elm.typ;
                 elm.title_eng = elm.typ_eng;
                 if (elm.id == this.state.id) {
                     cat = elm;
                 }
             })
-            // console.log(cat);
+            //console.log(cat);
         }
         // let subCat = Array();
         // this.state.category.subcat.forEach((elm, index) => {
@@ -171,7 +173,7 @@ class EquipmentCategory extends Component {
                                             <SideNav heading="Categories" content={categories} />
                                         </div>
                                         <div className="col-12 col-md-9">
-                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {cat.typ_eng}</span> </h2>
+                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {(localStorage.getItem('lang') == 'ge') ? cat.typ : cat.typ_eng}</span> </h2>
                                             <EquipmentSubcat cat={cat.typ} />
                                         </div>
                                     </div>
@@ -186,4 +188,4 @@ class EquipmentCategory extends Component {
         );
     }
 }
-export default withRouter(EquipmentCategory);
+export default withLangSwitchListener(withRouter(EquipmentCategory));

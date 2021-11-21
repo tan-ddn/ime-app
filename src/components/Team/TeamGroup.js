@@ -72,7 +72,7 @@ export default class TeamGroup extends ResponsiveComponent {
         let groupDisplay = null;
         if (this.props.data.success) {
         let members = this.props.data.results;
-        console.log(members);
+        // console.log(members);
         //Sort by position, name, and id
         members.sort((a, b) => {
             return a.t_position - b.t_position || a.t_name.localeCompare(b.t_name);

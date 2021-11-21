@@ -5,8 +5,9 @@ import ResponsiveComponent from '../ResponsiveComponent';
 import SanitizedHTML from 'react-sanitized-html';
 import './jobs.scss';
 import Db from '../../control/class.db';
+import withLangSwitchListener from '../Languages/LangSwitchListener';
 
-export default class HiwiJobs extends ResponsiveComponent {
+class HiwiJobs extends ResponsiveComponent {
     constructor(props) {
         super(props);
 
@@ -32,11 +33,11 @@ export default class HiwiJobs extends ResponsiveComponent {
                     <div className="py-2 col-12 col-sm-6">
                         <dl>
                             <dt>Description</dt>
-                            <dd>{elm.ja_jobart_eng}</dd>
+                            <dd>{(localStorage.getItem('lang') == 'ge') ? elm.ja_jobart : elm.ja_jobart_eng}</dd>
                             <dt>Topic</dt>
-                            <dd>{elm.j_ueberschrift_eng}</dd>
+                            <dd>{(localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng}</dd>
                             <dt>Background</dt>
-                            <dd><SanitizedHTML html={elm.j_problem_eng} /></dd>
+                            <dd><SanitizedHTML html={(localStorage.getItem('lang') == 'ge') ? elm.j_problem : elm.j_problem_eng} /></dd>
                         </dl>
                     </div>
                     <div className="py-2 col-12 col-sm-6">
@@ -46,7 +47,7 @@ export default class HiwiJobs extends ResponsiveComponent {
                             <dt>Start</dt>
                             <dd>Immediately</dd>
                             <dt>Job definition</dt>
-                            <dd><SanitizedHTML html={elm.j_aufgaben_eng} /></dd>
+                            <dd><SanitizedHTML html={(localStorage.getItem('lang') == 'ge') ? elm.j_aufgaben : elm.j_aufgaben_eng} /></dd>
                             <dt>Contact</dt>
                             <dd><Link to={"/team/"+elm.j_kontakt}>{job[index].tt_titel+' '+job[index].t_vorname+' '+job[index].t_name}</Link></dd>
                         </dl>
@@ -68,3 +69,5 @@ export default class HiwiJobs extends ResponsiveComponent {
         )
     };
 }
+
+export default withLangSwitchListener(HiwiJobs);
