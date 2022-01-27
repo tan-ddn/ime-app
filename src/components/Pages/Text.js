@@ -9,7 +9,7 @@ class HomeTxt extends ResponsiveComponent {
     constructor(props) {
       super(props);
       this.state = {
-        data: Db.get('HomeTxt', 1).then(res => res),
+        data: Db.get({action: 'HomeTxt', id: 1}).then(res => res),
       };
     }
   
@@ -29,7 +29,7 @@ class HomeTxt extends ResponsiveComponent {
       if (localStorage.getItem('lang') === 'en') {
         lang = 2;
       }
-      Db.get('HomeTxt', lang).then((res) => {
+      Db.get({action: 'HomeTxt', id: lang}).then((res) => {
         this.setState({data: res});
       });
     }

@@ -15,12 +15,12 @@ let intro = '<dl><dt>Job:</dt><dd>Professor</dd><dt>Topic:</dt><dd>Head of the i
 const ProfileDetailsGetDb = withGetDb(
     ProfileDetails,
     // (Db, props) => Db.getWithId('ProfileDetails', props.id)
-    (Db, props) => Db.get('ProfileDetails', props.id)
+    (Db, props) => Db.get({action: 'ProfileDetails', id: props.id})
 );
 const PubSocialGetDb = withGetDb(
     PubSocial,
     // (Db, props) => Db.getWithId('PubSocialLinks', props.id)
-    (Db, props) => Db.get('PubSocialLinks', props.id)
+    (Db, props) => Db.get({action: 'PubSocialLinks', id: props.id})
 );
 
 class TeamProfile extends Component {

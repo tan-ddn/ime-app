@@ -91,12 +91,12 @@ export default class LatestProjects extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('RecentResearchProject').then(res => res)
+            data: Db.get({action: 'RecentResearchProject'}).then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('RecentResearchProject').then((res) => {
+        Db.get({action: 'RecentResearchProject'}).then((res) => {
             this.setState({data: res});
         });
     }

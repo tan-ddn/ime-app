@@ -12,12 +12,12 @@ class TopicGrid extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('AllResearch').then(res => res)
+            data: Db.get({action: 'AllResearch'}).then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('AllResearch').then((res) => {
+        Db.get({action: 'AllResearch'}).then((res) => {
             this.setState({data: res});
         });
     }

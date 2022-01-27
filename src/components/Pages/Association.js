@@ -15,12 +15,12 @@ class Association extends Component {
         super(props);
         this.state = {
             intro: intro,
-            data: Db.get('Album', 1).then(res => res)
+            data: Db.get({action: 'Album', id: 1}).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get('Album', 1).then(res => {
+        Db.get({action: 'Album', id: 1}).then(res => {
             this.setState({data: res});
         });
     }

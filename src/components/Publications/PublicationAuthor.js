@@ -8,13 +8,13 @@ export default class PublicationAuthor extends Component {
         super(props);
 
         this.state = {
-            data: Db.get('AuthorFromPub', this.props.pubId).then((res) => res)
+            data: Db.get({action: 'AuthorFromPub', id: this.props.pubId}).then((res) => res)
         }
     }
 
     componentDidMount() {
         // Db.getWithId('AuthorFromPub', this.props.pubId).then((res) => {
-        Db.get('AuthorFromPub', this.props.pubId).then((res) => {
+        Db.get({action: 'AuthorFromPub', id: this.props.pubId}).then((res) => {
             this.setState({data: res});
         });
     }
@@ -36,12 +36,14 @@ export default class PublicationAuthor extends Component {
             // console.log(authors);
             pubAuthorHTML = authors.map((elm, index) => {
                 let name = this.pubAuthorName(elm);
-                if (elm.team_id >= 900) {
-                    return <span className="after-comma" key={index}>{name}</span>
+                let comma = (index === authors.length-1) ? "" : ", ";
+                if (elm.team_id >= 900 || elm.team_id === null) {
+                    return <span className="after-comma0" key={index}>
+                        {name+comma}</span>
                 } else {
                     let url = '/team/'+elm.team_id;
-                    return <span className="after-comma" key={index}><Link to={url}>{name}</Link></span>
-                }                
+                    return <span className="after-comma0" key={index}><Link to={url}>{name}</Link>{comma}</span>
+                }   
             });
         }
         return(

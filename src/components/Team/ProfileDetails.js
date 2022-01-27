@@ -8,18 +8,18 @@ class ProfileDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            group: Db.get('GroupTitleFromProfile', this.props.id).then((res) => res),
-            topic: Db.get('ResearchTopicFromProfile', this.props.id).then((res) => res),
+            group: Db.get({action: 'GroupTitleFromProfile', id: this.props.id}).then((res) => res),
+            topic: Db.get({action: 'ResearchTopicFromProfile', id: this.props.id}).then((res) => res),
         }
     }    
 
     componentDidMount() {
         // Db.getWithId('GroupTitleFromProfile', this.props.id).then((res) => {
-        Db.get('GroupTitleFromProfile', this.props.id).then((res) => {
+        Db.get({action: 'GroupTitleFromProfile', id: this.props.id}).then((res) => {
             this.setState({group: res});
         });
         // Db.getWithId('ResearchTopicFromProfile', this.props.id).then((res) => {
-        Db.get('ResearchTopicFromProfile', this.props.id).then((res) => {
+        Db.get({action: 'ResearchTopicFromProfile', id: this.props.id}).then((res) => {
             this.setState({topic: res});
         });
         //this.updateLang();

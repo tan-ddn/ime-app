@@ -11,12 +11,12 @@ export default class EquipmentGroup extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            equip: Db.get('EquipFromSubCat', this.props.cat).then(res => res)
+            equip: Db.get({action: 'EquipFromSubCat', id: this.props.cat}).then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('EquipFromSubCat', this.props.cat).then((res) => {
+        Db.get({action: 'EquipFromSubCat', id: this.props.cat}).then((res) => {
             this.setState({equip: res});
         });
         

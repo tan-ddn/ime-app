@@ -20,12 +20,12 @@ class EventsBox extends ResponsiveComponent {
                 // date: '',
                 // image: process.env.PUBLIC_URL + '/img/calendar-1990453_1280.jpg'
             // }
-            data: Db.get('CalendarDate').then(res => res)
+            data: Db.get({action: 'CalendarDate'}).then(res => res)
         };
     }
 
     componentDidMount() {
-        Db.get('CalendarDate').then((res) => {
+        Db.get({action: 'CalendarDate'}).then((res) => {
             this.setState({data: res})
         })
     }

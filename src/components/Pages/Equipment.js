@@ -99,12 +99,12 @@ class Equipment extends Component {
         this.state = {
             intro: intro,
             // equipment: equipment,
-            data: Db.get('EquipCat').then(res => res)
+            data: Db.get({action: 'EquipCat'}).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get('EquipCat').then((res) => {
+        Db.get({action: 'EquipCat'}).then((res) => {
             this.setState({data: res});
         });
     }

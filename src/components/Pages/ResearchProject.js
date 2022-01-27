@@ -67,7 +67,7 @@ class ResearchProject extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get('KeywordFromResearch', id).then((res) => {
+        Db.get({action: 'KeywordFromResearch', id: id}).then((res) => {
             this.setState({data: res, keywords: String(res.results[0].publicationKeywords)});
             console.log(this.state.keywords);
         })

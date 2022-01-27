@@ -10,13 +10,13 @@ export default class TeamBox extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('ProfileDetails', this.props.id).then(res => res)
+            data: Db.get({action: 'ProfileDetails', id: this.props.id}).then(res => res)
         }
     }
 
     componentDidMount() {
         if (this.props.id) {
-            Db.get('ProfileDetails', this.props.id).then((res) => {
+            Db.get({action: 'ProfileDetails', id: this.props.id}).then((res) => {
                 this.setState({data: res});
             });
         }

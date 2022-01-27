@@ -67,12 +67,12 @@ class NetworkPartners extends Component {
         super(props);
         this.state = {
             // unis: unis
-            unis: Db.get('UniCoop', -1).then(res => res)
+            unis: Db.get({action: 'UniCoop', id: -1}).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get('UniCoop', -1).then((res) => {
+        Db.get({action: 'UniCoop', id: -1}).then((res) => {
             this.setState({unis: res});
         });
     }

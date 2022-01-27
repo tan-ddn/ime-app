@@ -9,13 +9,13 @@ class NewsletterDetails extends Component {
         super(props);
 
         this.state = {
-            data: Db.get('NewsletterDetails', this.props.id).then(res => res)
+            data: Db.get({action: 'NewsletterDetails', id: this.props.id}).then(res => res)
         };
     }
 
     componentDidMount() {
         // console.log(this.props.id);
-        Db.get('NewsletterDetails', this.props.id).then((res) => {
+        Db.get({action: 'NewsletterDetails', id: this.props.id}).then((res) => {
             this.setState({data: res});
         })
     }
@@ -23,7 +23,7 @@ class NewsletterDetails extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.id !== this.props.id){
             // console.log(this.props.id);
-            Db.get('NewsletterDetails', this.props.id).then((res) => {
+            Db.get({action: 'NewsletterDetails', id: this.props.id}).then((res) => {
                 this.setState({data: res});
             })
         }

@@ -109,14 +109,14 @@ class UniDetails extends Component {
             // unis: unis,
             // ppse: ppse,
             publications: publications,
-            unis: Db.get('UniCoop', this.props.match.params.id).then(res => res),
+            unis: Db.get({action: 'UniCoop', id: this.props.match.params.id}).then(res => res),
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get('UniCoop', id).then((res) => {
+        Db.get({action: 'UniCoop', id}).then((res) => {
             this.setState({unis: res});
         });
     }

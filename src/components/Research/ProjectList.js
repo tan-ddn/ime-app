@@ -9,12 +9,12 @@ class projectList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: Db.get('ProjectFromResearch', this.props.id).then(res => res),
+            data: Db.get({action: 'ProjectFromResearch', id: this.props.id}).then(res => res),
         }
     }    
 
     componentDidMount() {
-        Db.get('ProjectFromResearch', this.props.id).then((res) => {
+        Db.get({action: 'ProjectFromResearch', id: this.props.id}).then((res) => {
             this.setState({data: res});
         });
     }

@@ -12,12 +12,12 @@ class HiwiJobs extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('HiwiJobContact', 6).then(res => res)
+            data: Db.get({action: 'HiwiJobContact', id: 6}).then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('HiwiJobContact', 6).then((res) => {
+        Db.get({action: 'HiwiJobContact', id: 6}).then((res) => {
             this.setState({data: res});
         });
     }

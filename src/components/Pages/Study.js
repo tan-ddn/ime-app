@@ -17,12 +17,12 @@ class Study extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: Db.get('Job').then(res => res)
+            data: Db.get({action: 'Job'}).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get('Job').then((res) => {
+        Db.get({action: 'Job'}).then((res) => {
             this.setState({data: res});
         });
     }

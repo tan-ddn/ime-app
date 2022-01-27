@@ -10,12 +10,12 @@ class EquipmentSubcat extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            subCat: Db.get('EquipSubCat', this.props.cat).then(res => res)
+            subCat: Db.get({action: 'EquipSubCat', id: this.props.cat}).then(res => res)
         }
     }
 
     componentDidMount() {
-        Db.get('EquipSubCat', this.props.cat).then((res) => {
+        Db.get({action: 'EquipSubCat', id: this.props.cat}).then((res) => {
             this.setState({subCat: res});
         });
         

@@ -29,18 +29,18 @@ class ThesisTopic extends Component {
             id: null,
             intro: intro,
             // masterThesis: masterThesis,
-            data: Db.get('Job', this.props.match.params.id).then(res => res),
-            contact: Db.get('JobContact', this.props.match.params.id).then(res => res)
+            data: Db.get({action: 'Job', id: this.props.match.params.id}).then(res => res),
+            contact: Db.get({action: 'JobContact', id: this.props.match.params.id}).then(res => res)
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get('Job', id).then((res) => {
+        Db.get({action: 'Job', id}).then((res) => {
             this.setState({data: res});
         });
-        Db.get('JobContact', id).then((res) => {
+        Db.get({action: 'JobContact', id}).then((res) => {
             this.setState({contact: res});
         });
     }

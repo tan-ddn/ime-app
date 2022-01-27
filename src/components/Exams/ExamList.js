@@ -10,12 +10,12 @@ export default class ExamList extends ResponsiveComponent {
         super(props);
 
         this.state = {
-            data: Db.get('ExamUploads', null).then(res => res)
+            data: Db.get({action: 'ExamUploads', id: null}).then(res => res)
         }
     }
 
     componentDidMount() {        
-        Db.get('ExamUploads', this.props.id).then((res) => {
+        Db.get({action: 'ExamUploads', id: this.props.id}).then((res) => {
             this.setState({data: res});
         });
     }

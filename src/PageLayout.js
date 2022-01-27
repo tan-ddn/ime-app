@@ -8,14 +8,15 @@ import ScrollTop from './components/ScrollTop';
 import PhpTestPage from './components/PhpTest/PhpTestPage';
 import Db from './control/class.db';
 import withGetDb from './control/withGetDb';
+// import Dashboard from './components/Dashboard';
 
 const TeamGetDb = withGetDb(
     Team,
-    (Db) => Db.get('TeamGroups')
+    (Db) => Db.get({action: 'TeamGroups'})
 );
 const NewsGetDb = withGetDb(
     News,
-    (Db) => Db.get('RecentNews')
+    (Db) => Db.get({action: 'RecentNews'})
 );
 
 class PageLayout extends Component {
@@ -62,6 +63,8 @@ class PageLayout extends Component {
             <Route path="/unidetails/:id" exact component={() => <UniDetails />} />
             <Route path="/imprint" exact component={() => <Imprint />} />
             <Route path="/news" exact component={() => <NewsGetDb />} />
+            
+            {/* <Route path="/dashboard" exact component={() => <Dashboard />} /> */}
           </Switch>
 
           <Footer/>

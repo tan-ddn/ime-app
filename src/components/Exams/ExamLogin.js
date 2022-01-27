@@ -15,7 +15,7 @@ class ExamLogin extends ResponsiveComponent {
             id: this.props.id,
             pass: this.props.pass,
             fach: null,
-            data: Db.get('FachDetails').then(res => res),
+            data: Db.get({action: 'FachDetails'}).then(res => res),
             passCorrect: null
         }
     }
@@ -30,7 +30,7 @@ class ExamLogin extends ResponsiveComponent {
       
     handleClick(e){
         e.preventDefault();
-        Db.get('FachId', this.state.id, null, this.state.pass).then((res) => {
+        Db.get({action: 'FachId', id: this.state.id, pageNo: null, search: this.state.pass}).then((res) => {
             this.setState({fach: res});
             // console.log(this.state.fach);
             if (this.state.fach.success) {
@@ -43,7 +43,7 @@ class ExamLogin extends ResponsiveComponent {
     }
 
     componentDidMount() {        
-        Db.get('FachDetails').then((res) => {
+        Db.get({action: 'FachDetails'}).then((res) => {
             this.setState({data: res});
         });
     }

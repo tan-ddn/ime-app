@@ -11,7 +11,7 @@ class History extends ResponsiveComponent {
 
         this.state = {
             lang: 2,
-            data: Db.get('HistoryTxt').then(res => res),
+            data: Db.get({action: 'HistoryTxt'}).then(res => res),
             timeline: [
                 {
                     img: process.env.PUBLIC_URL + '/img/about/ernst_duerre.png',
@@ -55,7 +55,7 @@ class History extends ResponsiveComponent {
     
     componentDidMount() {
         this.changeLang();
-        Db.get('HistoryTxt').then((res) => {
+        Db.get({action: 'HistoryTxt'}).then((res) => {
           this.setState({data: res});
         });
       }

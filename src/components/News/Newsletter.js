@@ -28,12 +28,12 @@ export default class Newsletter extends Box {
                 // button: 'Read Pdf &#187;',
             },
             id: null,
-            data: Db.get('Newsletter').then(res => res)
+            data: Db.get({action: 'Newsletter'}).then(res => res)
         };
     }
 
     componentDidMount() {
-        Db.get('Newsletter').then((res) => {
+        Db.get({action: 'Newsletter'}).then((res) => {
             this.setState({
                 data: res,
                 id: res.results[0].id,

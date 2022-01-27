@@ -30,16 +30,16 @@ class Excursions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            info: Db.get('ExcursionInfo').then(res => res),
-            data: Db.get('Album', 4).then(res => res)
+            info: Db.get({action: 'ExcursionInfo'}).then(res => res),
+            data: Db.get({action: 'Album', id: 4}).then(res => res)
         }
     }    
     
     componentDidMount() {
-        Db.get('ExcursionInfo').then(res => {
+        Db.get({action: 'ExcursionInfo'}).then(res => {
             this.setState({info: res});
         });
-        Db.get('Album', 4).then(res => {
+        Db.get({action: 'Album', id: 4}).then(res => {
             this.setState({data: res});
         });
     }

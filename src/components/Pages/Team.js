@@ -12,7 +12,7 @@ let intro = '<p>Hier finden Sie alle Mitarbeiter die im IME- &quot;Metallurgisch
 const TeamGroupGetDb = withGetDb(
     TeamGroup,
     // (Db, props) => Db.getWithId('MemberFromTeamGroup', props.group.id)
-    (Db, props) => Db.get('MemberFromTeamGroup', props.group.id)
+    (Db, props) => Db.get({action: 'MemberFromTeamGroup', id: props.group.id})
 );
 
 class Team extends Component {

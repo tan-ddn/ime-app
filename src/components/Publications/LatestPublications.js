@@ -36,7 +36,7 @@ export default class LatestPublications extends Component {
     }
 
     // componentDidMount() {
-    //     Db.get('RecentPub').then((res) => {
+    //     Db.get({action: 'RecentPub'}).then((res) => {
     //         this.setState({data: res})
     //     })
     // }

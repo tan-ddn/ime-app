@@ -107,10 +107,10 @@ class ProjectDetails extends Component {
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get('ProjectDetails', id).then((res) => {
+        Db.get({action: 'ProjectDetails', id: id}).then((res) => {
             this.setState({projectDetails: res})
         });
-        Db.get('AllResearch').then((res) => {
+        Db.get({action: 'AllResearch'}).then((res) => {
             this.setState({researchAreas: res})
         });
     }

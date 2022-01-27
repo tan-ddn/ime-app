@@ -16,7 +16,7 @@ class ProjectsAndEvents extends ResponsiveComponent {
     }
 
     componentDidMount() {
-        Db.get('UniProjAndEvents', this.props.id).then((res) => {
+        Db.get({action: 'UniProjAndEvents', id: this.props.id}).then((res) => {
             this.setState({ppse: res});
         });
     }

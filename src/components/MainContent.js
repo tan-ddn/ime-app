@@ -122,7 +122,7 @@ class MainContent extends ResponsiveComponent {
   componentDidMount() {
     // let db = new Db('news');
     // db.query().then((data) => {
-    Db.get('News').then((data) => {
+    Db.get({action: 'News'}).then((data) => {
       // console.log(data);
       if (data.success) {
         this.setState({news: data.results});

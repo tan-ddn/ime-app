@@ -8,13 +8,13 @@ export default class NewsletterImage extends Component {
         super(props);
 
         this.state = {
-            data: Db.get('NewsletterPdf', this.props.id).then(res => res)
+            data: Db.get({action: 'NewsletterPdf', id: this.props.id}).then(res => res)
         };
     }
 
     componentDidMount() {
         // console.log(this.props.id);
-        Db.get('NewsletterPdf', this.props.id).then((res) => {
+        Db.get({action: 'NewsletterPdf', id: this.props.id}).then((res) => {
             this.setState({data: res});
         })
     }
@@ -22,7 +22,7 @@ export default class NewsletterImage extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.id !== this.props.id){
             // console.log(this.props.id);
-            Db.get('NewsletterPdf', this.props.id).then((res) => {
+            Db.get({action: 'NewsletterPdf', id: this.props.id}).then((res) => {
                 this.setState({data: res});
             })
         }

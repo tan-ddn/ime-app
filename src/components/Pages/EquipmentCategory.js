@@ -115,14 +115,14 @@ class EquipmentCategory extends Component {
         this.state = {
             // category: category
             id: null,
-            categories: Db.get('EquipCat').then(res => res)
+            categories: Db.get({action: 'EquipCat'}).then(res => res)
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get('EquipCat').then((res) => {
+        Db.get({action: 'EquipCat'}).then((res) => {
             this.setState({categories: res});
         });
     }

@@ -27,14 +27,14 @@ class PublicationTable extends ResponsiveComponent {
 
     fetchData = () => {
         if (this.props.recent == "1") {
-            Db.get('RecentPub').then((res) => {
+            Db.get({action: 'RecentPub'}).then((res) => {
                 this.setState({
                     data: res,
                     publications: res.results,
                 });
             });
         } else if (this.props.teamId > 0) {
-            Db.get('PubFromProfile', this.props.teamId, this.state.pageNo).then((res) => {
+            Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
                 this.setState({
                     data: res,
                     publications: res.results,
@@ -46,7 +46,7 @@ class PublicationTable extends ResponsiveComponent {
         // } else {
         //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
         } else if (this.props.uniId > 0) {
-            Db.get('CoopUniPub', this.props.uniId, this.state.pageNo).then((res) => {
+            Db.get({action: 'CoopUniPub', id: this.props.uniId, pageNo: this.state.pageNo}).then((res) => {
                 this.setState({
                     data: res,
                     publications: res.results,
@@ -57,7 +57,7 @@ class PublicationTable extends ResponsiveComponent {
             });
         } else {
             // console.log(this.props.keywords);
-            Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
+            Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,
@@ -84,18 +84,18 @@ class PublicationTable extends ResponsiveComponent {
         let selected = Number(obj.selected) + 1;
         this.setState({pageNo: selected}, () => {
             if (this.props.teamId > 0) {
-                Db.get('PubFromProfile', this.props.teamId, this.state.pageNo).then((res) => {
+                Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
                     this.setState({data: res, publications: res.results});
                 });
             // } else {
             //     console.log(this.state.pageNo);
             //     Db.getAllPub(this.state.pageNo).then((res) => this.setState({data: res}));
             } else if (this.props.uniId > 0) {
-                Db.get('CoopUniPub', this.props.uniId, this.state.pageNo).then((res) => {
+                Db.get({action: 'CoopUniPub', id: this.props.uniId, pageNo: this.state.pageNo}).then((res) => {
                     this.setState({data: res, publications: res.results});
                 });
             } else {
-                Db.get('AllPub', -1, this.state.pageNo, this.state.searchInput, this.state.keywords).then((res) => {
+                Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
                     this.setState({
                         data: res, 
                         publications: res.results,
@@ -112,7 +112,7 @@ class PublicationTable extends ResponsiveComponent {
         // console.log(input);
         this.setState({searchInput: input, pageNo: 1}, () => {
             let teamId = (this.props.teamId) ? this.props.teamId : -1;
-            Db.get('AllPub', teamId, this.state.pageNo, input, this.state.keywords).then((res) => {
+            Db.get({action: 'AllPub', id: teamId, pageNo: this.state.pageNo, search: input, keywords: this.state.keywords}).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,
@@ -127,9 +127,9 @@ class PublicationTable extends ResponsiveComponent {
     echoPublications(publications) {
         // console.log(publications);
         if (publications == null || publications == undefined || publications == []) return (<tr><td colspan="2">{this.props.webText.publications.no_results}</td></tr>);
-        let publicationsHTML = publications.map((elm, index) => {
+        let publicationsHTML = publications.map(elm => {
             let pdf = process.env.PUBLIC_URL + '/pdf/publications/' + elm.p_pdf;
-            return <tr key={index}>
+            return <tr key={elm.p_id}>
             <th scope="row">{elm.p_jahr}</th>
             <td>
                 <p className="tag">{(localStorage.getItem('lang') === 'ge') ? elm.pt_typ : elm.pt_typ_eng}</p>
@@ -159,8 +159,9 @@ class PublicationTable extends ResponsiveComponent {
         //     itemsPerPage = this.state.data.pagination.itemsPerPage;
         // }
         if (this.props.limit) {
+            // console.log(publications);
             let limit = Number(this.props.limit);
-            publications = this.state.publications.splice(0, limit);
+            publications = this.state.publications.slice(0, limit);
         }
         publicationsHTML = this.echoPublications(publications);
         // console.log(publications);

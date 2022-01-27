@@ -11,18 +11,18 @@ class ResearchDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: Db.get('ResearchDetails', this.props.id).then(res => res),
-            contacts: Db.get('ContactFromResearch', this.props.id).then(res => res),
-            // group: Db.get('GroupTitleFromProfile', this.props.id).then((res) => res),
-            // topic: Db.get('ResearchTopicFromProfile', this.props.id).then((res) => res),
+            data: Db.get({action: 'ResearchDetails', id: this.props.id}).then(res => res),
+            contacts: Db.get({action: 'ContactFromResearch', id: this.props.id}).then(res => res),
+            // group: Db.get({action: 'GroupTitleFromProfile', this.props.id).then((res) => res),
+            // topic: Db.get({action: 'ResearchTopicFromProfile', this.props.id).then((res) => res),
         }
     }    
 
     componentDidMount() {
-        Db.get('ResearchDetails', this.props.id).then((res) => {
+        Db.get({action: 'ResearchDetails', id: this.props.id}).then((res) => {
             this.setState({data: res});
         });
-        Db.get('ContactFromResearch', this.props.id).then((res) => {
+        Db.get({action: 'ContactFromResearch', id: this.props.id}).then((res) => {
             this.setState({contacts: res});
         });
     }
