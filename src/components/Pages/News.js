@@ -116,13 +116,15 @@ class News extends Component {
                                                     <div className="row">
                                                     <div className="col-12 col-md-4">
                                                     <p>Posted on <Moment format="DD.MM.YYYY">{elm.datum}</Moment> by {elm.autor}</p>
-                                                    <StyledPopup className="border rounded text-center">
+                                                    <p><StyledPopup className="border rounded text-center">
                                                     <img src={process.env.PUBLIC_URL+'/img/news/'+elm.pic} alt={'pic: ' + elm.titel_eng} />
-                                                    </StyledPopup>
+                                                    </StyledPopup></p>
+                                                    {(elm.pdf) && <p>PDF file: <a target="_blank" rel="noopener noreferrer" href={process.env.PUBLIC_URL+'/pdf/news/'+elm.pdf}>{elm.pdf}</a></p>}
                                                     </div>
                                                     <div className="col-12 col-md-8">
                                                     {/* <div className="" dangerouslySetInnerHTML={{__html: sanitizeHtml(elm.text_eng)}} /> */}
                                                     <SanitizedHTML className="" html={ textEng } />
+                                                    {(elm.link) && <div>Link: <a target="_blank" rel="noopener noreferrer" href={'//'+elm.link}>{elm.link}</a></div>}
                                                     </div>
                                                     </div>
                                                 </div>

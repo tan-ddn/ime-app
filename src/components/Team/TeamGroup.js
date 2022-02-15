@@ -77,7 +77,7 @@ export default class TeamGroup extends ResponsiveComponent {
         members.sort((a, b) => {
             return a.t_position - b.t_position || a.t_name.localeCompare(b.t_name);
         });
-            if (this.state.group.id == 3 || this.state.group.id == 4 ) {
+            if (this.state.group.id >= 3 && this.state.group.id <= 5 ) {
                 let leader = members.filter(x => x.t_position == '1');
                 let coworker = members.filter(x => x.t_position == '2');
                 let internee = members.filter(x => x.t_position == '3');
