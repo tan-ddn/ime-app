@@ -6,6 +6,7 @@ import HeaderBanner from '../HeaderBanner';
 import Box from '../Boxes/Box';
 import Db from '../../control/class.db';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import imeAPICalls from '../../imeAPICalls';
 // import '../Equipment/equipment.scss';
 
 let intro_eng = '<p>We have an extensive network of partners. These include in particular strategic partner universities with whom we keep a very intense and diverse collaboration. This can be seen especially in high cooperative publication activity, in jointly organized events such as workshops and conferences, as well as a regular involvement with IME in public funded projects.</p>';
@@ -63,11 +64,15 @@ let intro = '<p>Wir pflegen ein umfangreiches Netzwerk an Partnern. Hierzu gehö
 // ];
 
 class NetworkPartners extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
             // unis: unis
-            unis: Db.get({action: 'UniCoop', id: -1}).then(res => res)
+            // unis: Db.get({action: 'UniCoop', id: -1}).then(res => res),
+            unis: {},
+            network: {},
         }
     }    
 
@@ -75,11 +80,14 @@ class NetworkPartners extends Component {
         Db.get({action: 'UniCoop', id: -1}).then((res) => {
             this.setState({unis: res});
         });
+        this.APICalls.get({ endpoint: 'Link/Network' }).then((res) => {
+            this.setState({network: res});
+        });
     }
     
     render() {
-        let boxContent = Array();
-        let unis = [];
+        let boxContent = Array(), networkContent = Array();
+        let unis = [], network = [];
         if (this.state.unis.success) {
             unis = this.state.unis.results;
             // console.log(unis);
@@ -93,7 +101,21 @@ class NetworkPartners extends Component {
                 };
             });
         }
-        return unis.length == 0 ? 'Loading...' : (
+        if (this.state.network.success) {
+            network = this.state.network.results;
+            // console.log(unis);
+            network.forEach((elm, index) => {
+                networkContent[index] = {
+                    title_eng: elm.title,
+                    title: elm.title,
+                    image: process.env.PUBLIC_URL + '/img/links/' + elm.pic,
+                    button: '',
+                    buttonUrl: elm.link,
+                    externalBtnUrl: true,
+                };
+            });
+        }
+        return ((unis.length == 0) || (network.length == 0)) ? 'Loading...' : (
             <div className="network">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/unikooperation/160210-IME-013.jpg'} transformY='13%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -117,13 +139,25 @@ class NetworkPartners extends Component {
                                         </div>
                                         </div>
                                     </div>
-                                    <div id="topics" className="py-3">
-                                        <h2 className="heading"> Uni Partners</h2>
+                                    <div id="uni-partner" className="py-3">
+                                        <h2 className="heading">Uni Partners</h2>
                                         <div className="">
                                             <div className="row">
                                                 {boxContent.map((elm, index) => (
                                                 <div key={index} className="col-12 col-lg-4 d-flex">
                                                     <Box content={elm} type="equipment" linkTitle="1" classNames="uni-logo-box rounded bg-darkblue0"/>
+                                                </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="network" className="py-3">
+                                        <h2 className="heading">Other Networks</h2>
+                                        <div className="">
+                                            <div className="row">
+                                                {networkContent.map((elm, index) => (
+                                                <div key={index} className="col-12 col-lg-4 d-flex">
+                                                    <Box content={elm} type="equipment" linkTitle="1" classNames="network-box rounded bg-darkblue0"/>
                                                 </div>
                                                 ))}
                                             </div>

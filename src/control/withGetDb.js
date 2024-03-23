@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Db from './class.db';
+import imeAPICalls from '../imeAPICalls';
 
 function withGetDb(WrappedComponent, selectData) {
     return class extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
-                data: selectData(Db, props),
+                // data: selectData(props),
+                data: {},
             };
         }
 
@@ -15,7 +17,7 @@ function withGetDb(WrappedComponent, selectData) {
         }
 
         getDb() {
-            selectData(Db, this.props).then((res) => {
+            selectData(this.props).then((res) => {
                 // console.log(res);
                 this.setState({data: res});
                 window.useScrollTo();

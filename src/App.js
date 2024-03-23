@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, HashRouter, Route, Switch } from "react-router-dom";
 import './App.scss';
 // import ReactDOM from 'react-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -26,13 +26,17 @@ fetch('lang/ge.json')
 library.add(fas, faBars, faTimes);
 //Smooth scroll to element
 window.useScrollTo = function() {
-  let id = window.location.hash.substring(1);
-  // console.log(id);
-  if (id) {
-      const el = document.getElementById(id);
-      // console.log(el);
-      const top = (el) && window.scrollY + el.getBoundingClientRect().top;
-      window.scrollTo({ top, behavior: "smooth" });
+  let hashStr = window.location.hash;
+  let hashArr = hashStr.split('#');
+  let id = hashArr[hashArr.length - 1];
+  console.log(hashArr);
+  if (id != null && id !== '') {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        console.log(el);
+        const top = (el) && window.scrollY + el.getBoundingClientRect().top;
+        window.scrollTo({ top, behavior: "smooth" })
+      }, 300);
   }
 }
 
@@ -48,9 +52,9 @@ class App extends Component {
       // <div id='wrapper'>
       <div className="App">
         <GlobalLangStateProvider>
-          <Router>
+          <HashRouter>
             <PageLayout/>
-          </Router>
+          </HashRouter>
         </GlobalLangStateProvider>
       </div>
     )

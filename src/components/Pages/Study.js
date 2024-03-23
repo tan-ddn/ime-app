@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import Db from '../../control/class.db';
+import imeAPICalls from '../../imeAPICalls';
 import ExamLogin from '../Exams/ExamLogin';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
@@ -14,15 +15,19 @@ let intro_eng = '<p>You can have a look at all lectures and courses which are gi
 let intro = '<p>Alle Lehrveranstaltungen die das IME im aktuellen Semester anbietet, k&ouml;nnen Sie bei <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/login" target="_blank">RWTHonline</a> abrufen. Der Zugang ist jedoch nur f&uuml;r immatrikulierte Studenten der RWTH Aachen oder Hochschulangestellten gestattet. <a href="https://online.rwth-aachen.de/RWTHonline/ee/ui/ca2/app/desktop/#/slc.tm.cp/student/courses?$ctx=design=ca;lang=de;profile=STUDENT&$skip=0&$top=20&objTermId=187&orgId=14507&q=">Hier</a> finden Sie den Direktlink zu unseren Veranstaltungen.</b></br></br> Auch das sogenannte Speed-Dating der Fachgruppe zur Orientierung bezüglich der Vertiefungsrichtungen im Masterstudium wird in diesem Jahr online durchgeführt. Unter dem folgenden Link ist der ungekürzte Beitrag zur Vorstellung des IME abrufbar: (<a href="https://www.youtube.com/watch?v=9pMCLttRJCo">Video)</a></br></br><iframe width="560" height="315" src="https://www.youtube.com/embed/9pMCLttRJCo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></br></br> <b>Info: Aktuelle Situation in Bezug auf Covid-19 und online Lehre am IME </b></br></br> Aufgrund der derzeitigen Situation hat das IME einen online Lehrplan erstellt (<a href="http://www.metallurgie.rwth-aachen.de/data/Others/online_Lehrplan_IME.pdf">Download</a> Hinweis: durch die ungewisse Situation kann sich dieser jederzeit ändern). Die größeren Lehrveranstaltungen finden in diesem Semester online statt. Wir hoffen, dass Vorlesungen im kleineren Rahmen (< 20 Studenten) physisch Ende Mai abzuhalten sind, wofür alle Maßnahmen bzgl. Hygiene und Sicherheitsabstand eingehalten werden. Die Vorlesungen der größeren Veranstaltungen werden live mittels Zoom übertragen. Den Studierenden wird sowohl das Vorlesungsmanuskript als auch die Übungsunterlagen sowie Übungsvideos in Moodle zur Verfügung gestellt. Da wir in diesem Semester nicht auf unsere Praktika verzichten wollen, finden diese eingeschränkt unter Einhaltung der Hygienemaßnahmen und des Sicherheitsabstandes statt. </p>';
 
 class Study extends Component {
+    APIcalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            data: Db.get({action: 'Job'}).then(res => res)
+            // data: Db.get({action: 'Job'}).then(res => res)
+            data: {}
         }
     }    
 
     componentDidMount() {
-        Db.get({action: 'Job'}).then((res) => {
+        // Db.get({action: 'Job'}).then((res) => {
+        this.APIcalls.get({ endpoint: 'job' }).then((res) => {
             this.setState({data: res});
         });
     }
@@ -205,7 +210,7 @@ class Study extends Component {
                                                         if (text == '') {text = elm.j_ueberschrift;}
                                                         if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
-                                                        <li><Link to={"/study/thesistopic/"+elm.j_id}>{text}</Link></li>
+                                                        <li key={index}><Link to={"/study/thesistopic/"+elm.j_id}>{text}</Link></li>
                                                         );
                                                     })}
                                                     </ul>

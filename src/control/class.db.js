@@ -81,76 +81,76 @@ class Db {
         return obj.queryByGet(paramObj);
     }
 
-    // static getDb() { //arguments: function, var1, var2, ...
-    //     let obj = new this();
-    //     let paramObj = obj.mergerObj(arguments);
-    //     paramObj.action = 'getDb'+paramObj.action;
-    //     return obj.queryByGet(paramObj);
-    // }
+    static getDb() { //arguments: function, var1, var2, ...
+        let obj = new this();
+        let paramObj = obj.mergerObj(arguments);
+        paramObj.action = 'getDb'+paramObj.action;
+        return obj.queryByGet(paramObj);
+    }
 
 
-    // async queryByPost(dataObj) {
-    //     let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
-    //     // console.log(url);
-    //     let data = JSON.stringify(dataObj);
-    //     console.log(data);
-    //     let response = await fetch(url, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: data,
-    //     })
-    //     .then((res) => {
-    //         // console.log(res);
-    //         return res.json();
-    //     })
-    //     .then((data) => {
-    //         // console.log(data);
-    //         return data;
-    //     })
-    //     .catch((err) => {
-    //         console.error(err);
-    //     });;
-    //     return response;
-    // }
+    async queryByPost(dataObj) {
+        let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
+        // console.log(url);
+        let data = JSON.stringify(dataObj);
+        console.log(data);
+        let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+        .then((res) => {
+            // console.log(res);
+            return res.json();
+        })
+        .then((data) => {
+            // console.log(data);
+            return data;
+        })
+        .catch((err) => {
+            console.error(err);
+        });;
+        return response;
+    }
 
-    // static set() { //arguments: function, var1, var2, ...
-    //     // let func = 'set'+arguments[0];
-    //     // let obj = new this(func);
-    //     let obj = new this();
-    //     let dataObj = obj.mergerObj(arguments);
-    //     dataObj.action = 'set'+dataObj.action;
-    //     return obj.queryByPost(dataObj);
-    // }
+    static set() { //arguments: function, var1, var2, ...
+        // let func = 'set'+arguments[0];
+        // let obj = new this(func);
+        let obj = new this();
+        let dataObj = obj.mergerObj(arguments);
+        dataObj.action = 'set'+dataObj.action;
+        return obj.queryByPost(dataObj);
+    }
 
-    // async uploadFile(formUpload) {
-    //     let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
-    //     // console.log(url);
-    //     let response = await fetch(url, {
-    //         method: 'POST',
-    //         body: formUpload,
-    //     })
-    //     .then((res) => {
-    //         // console.log(res);
-    //         return res.json();
-    //     })
-    //     .then((data) => {
-    //         // console.log(data);
-    //         return data;
-    //     })
-    //     .catch((err) => {
-    //         console.error(err);
-    //     });;
-    //     return response;
-    // }
+    async uploadFile(formUpload) {
+        let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
+        // console.log(url);
+        let response = await fetch(url, {
+            method: 'POST',
+            body: formUpload,
+        })
+        .then((res) => {
+            // console.log(res);
+            return res.json();
+        })
+        .then((data) => {
+            // console.log(data);
+            return data;
+        })
+        .catch((err) => {
+            console.error(err);
+        });;
+        return response;
+    }
 
-    // static upload(formUpload) {
-    //     console.log(formUpload);
-    //     if (formUpload === null) return {success: 1, msg: 'Empty Upload File'};
-    //     let obj = new this();
-    //     return obj.uploadFile(formUpload);
-    // }
+    static upload(formUpload) {
+        // console.log(formUpload);
+        if (formUpload === null) return {success: 1, msg: 'Empty Upload File'};
+        let obj = new this();
+        return obj.uploadFile(formUpload);
+    }
 
 }
 

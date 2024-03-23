@@ -5,7 +5,6 @@ import TeamGroup from '../Team/TeamGroup';
 import Db from '../../control/class.db';
 import withGetDb from '../../control/withGetDb';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
-import { Link } from 'react-router-dom';
 import imeAPICalls from '../../imeAPICalls';
 
 let intro_eng = '<p>Here you find all employees working currently at the IME - "metallurgy and metal recycling" - ordered by their fields of work.</p><p>If you are searching for a proper contact person, you have the opportunity to get into contact directly per web form. An up to date list of all employees you will find here.</p><p>To get an overview on the institutes organisation and team, you can have a look at this flowchart. </p>';
@@ -19,7 +18,7 @@ const TeamGroupGetDb = withGetDb(
     (props) => APIcalls.get({ endpoint: 'Team', id: props.group.id})
 );
 
-class Team extends Component {
+class Alumni extends Component {
 
     constructor(props) {
         super(props);
@@ -86,7 +85,7 @@ class Team extends Component {
         // console.log(this.props.data);
         if (this.props.data.success) {
             //Remove Alumni group
-            let data = this.props.data.results.filter(x => x.id != 8);
+            let data = this.props.data.results.filter(x => x.id == 8);
             //Sort by sort order and name
             data.sort((a, b) => {
                 return a.sort - b.sort || a.einteilung.localeCompare(b.einteilung);
@@ -108,13 +107,13 @@ class Team extends Component {
                             {/*googleon: all*/}
                             <div className="">
                                 <div className="content" role="article">
-                                    <div id="intro" className="py-3">
-                                        <h2 className="heading">Team</h2>
+                                    {/* <div id="intro" className="py-3">
+                                        <h2 className="heading">Alumni</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-3">
-                                                    <img src={process.env.PUBLIC_URL + '/img/IME-4_s.jpg'} alt="IME Team" />
+                                                    <img src={process.env.PUBLIC_URL + '/img/teaem_2020_web_id_8598.jpg'} alt="IME Team" />
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-9">
                                                     <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
@@ -122,15 +121,10 @@ class Team extends Component {
                                             </div>
                                         </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div id="staff" className="py-3">
-                                        <h2 className="heading">Our Staff</h2>
+                                        {/* <h2 className="heading">Our Staff</h2> */}
                                         {teams}
-                                    </div>
-                                    <div id="alumni" className="pb-5">
-                                        <h2 className="heading">
-                                            <Link to={"/alumni"}>Our Alumni <span className="sub">[ see here ]</span></Link>
-                                        </h2>
                                     </div>
                                 </div>
                             </div>
@@ -144,4 +138,4 @@ class Team extends Component {
     }
 }
 
-export default withLangSwitchListener(Team);
+export default withLangSwitchListener(Alumni);

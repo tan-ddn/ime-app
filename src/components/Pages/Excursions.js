@@ -10,6 +10,7 @@ import Db from '../../control/class.db';
 import TeamBox from '../Team/TeamBox';
 import SanitizedHTML from 'react-sanitized-html';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import imeAPICalls from '../../imeAPICalls';
 
 let intro_eng = '<p>The IME organizes several excursions yearly. Beside of one-day excursions, which belong to certain lectures, there is also a two-week excursion every autumn. During those we visit several companies working in the field of non-ferrous metallurgy and related industries.</p><p>The goal of the excursions is, that students, but also institute employees can gain extensive insight into the diversity of metallurgical appliances.</p><p>In addition to technical aspects, getting to know new interesting countries or regions with their differing cultures is emphasized. That way, the two-week-excursions regularly go abroad. to European- and non-European countries.</p><p>For students participation is low-priced. For further information, ask the organising teams of the next excursion.';
 let intro = '<p>Das IME organisiert j&auml;hrlich mehrere Exkursionen. Neben Tagesexkursionen im Rahmen bestimmter Lehrveranstaltungen findet j&auml;hrlich im Herbst eine zweiw&ouml;chige Exkursion zu einer gro&szlig;en Auswahl von Unternehmen aus dem Bereich der Nichteisenmetallurgie statt.</p><p>Ziel dieser Exkursion ist es Studierenden, aber auch den Mitarbeitern des Instituts, einen umfassenden Einblick in die Vielfalt der metallurgischen Anwendungen zu erm&ouml;glichen. Neben technischen Aspekten erfolgt gleichzeitig auch immer ein Kennen lernen anderer interessanter L&auml;nder und Regionen mit ihren unterschiedlichen Kulturen. So f&uuml;hrt die zweiw&ouml;chige Exkursion regelm&auml;&szlig;ig ins europ&auml;ische sowie au&szlig;ereurop&auml;ische Ausland.</p><p>F&uuml;r Studierende ist die Teilnahme zu kosteng&uuml;nstigen Konditionen m&ouml;glich. N&auml;here Information sind bei den Organisationsteams der Exkursion zu erhalten.</p>';
@@ -27,19 +28,26 @@ let contacts = [
 ];
 
 class Excursions extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            info: Db.get({action: 'ExcursionInfo'}).then(res => res),
-            data: Db.get({action: 'Album', id: 4}).then(res => res)
+            // info: Db.get({action: 'ExcursionInfo'}).then(res => res),
+            // data: Db.get({action: 'Album', id: 4}).then(res => res)
+            info: {},
+            data: {}
         }
     }    
     
     componentDidMount() {
-        Db.get({action: 'ExcursionInfo'}).then(res => {
+        // Db.get({action: 'ExcursionInfo'}).then(res => {
+        this.APICalls.get({ endpoint: 'album/Excursion' }).then((res) => {
+            // console.log(res);
             this.setState({info: res});
         });
-        Db.get({action: 'Album', id: 4}).then(res => {
+        // Db.get({action: 'Album', id: 4}).then(res => {
+        this.APICalls.get({ endpoint: 'album', id: 4 }).then((res) => {
             this.setState({data: res});
         });
     }
@@ -125,7 +133,7 @@ class Excursions extends Component {
                                                     <p className="gallery-row">
                                                         {elm.pics.map((e, i) => (
                                                             <StyledPopup key={i} className="border rounded">
-                                                            <img src={process.env.PUBLIC_URL + '/img/albums/' + elm.file_name + '/' + e} alt={elm.name_eng} />
+                                                            <img src={process.env.PUBLIC_URL + '/img/albums/' + elm.file_name + '/' + e.pic} alt={elm.name_eng} />
                                                             </StyledPopup>
                                                         ))}
                                                     </p>

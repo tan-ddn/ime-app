@@ -107,6 +107,22 @@ class Equipment extends Component {
         Db.get({action: 'EquipCat'}).then((res) => {
             this.setState({data: res});
         });
+        this.updateIntro();
+    }
+    
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.webText !== prevProps.webText) {
+          this.updateIntro();
+        }
+    }
+    
+    updateIntro() {
+        if (localStorage.getItem('lang') === 'ge') {
+            this.setState({intro: intro});
+        } else {
+            this.setState({intro: intro_eng});
+        }
     }
     
     render() {

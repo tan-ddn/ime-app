@@ -59,23 +59,23 @@ class Footer extends Component {
                     </div>
                     <div className="col-12 col-md-6 col-xl-auto">
                         <ul className="social-menu footer-menu">
-                                <li className="menu-item">
-                                    <a target="_blank" href="researchgate" title="ResearchGate">
+                        <li className="menu-item">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://www.researchgate.net/profile/Bernd_Friedrich" title="ResearchGate">
                                     <img alt="ResearchGate icon" src={process.env.PUBLIC_URL + '/img/icons/rg_logo.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="wiki" title="Wikipedia">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://de.wikipedia.org/wiki/Institut_und_Lehrstuhl_f%C3%BCr_Metallurgische_Prozesstechnik_und_Metallrecycling" title="Wikipedia">
                                     <img alt="Wikipedia icon" src={process.env.PUBLIC_URL + '/img/icons/120px-wikipedia.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="LinkedIn" title="LinkedIn">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://www.linkedin.com/company/ime-process-metallurgy-and-metal-recycling" title="LinkedIn">
                                     <img alt="LinkedIn icon" src={process.env.PUBLIC_URL + '/img/icons/LinkedIn2.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="instagram" title="Instagram">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/ime_rwth?igshid=wd2tyd7dg6b6" title="Instagram">
                                     <img alt="Instagram icon" src={process.env.PUBLIC_URL + '/img/icons/132px-Instagram.png'} />
                                     </a>
                                 </li>

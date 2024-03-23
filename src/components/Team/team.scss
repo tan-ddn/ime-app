@@ -3,9 +3,16 @@
 // @import "~bootstrap";
 
 .profile-img {
+    // width: 148px;
+    // height: 190px;
     border: 1px solid #fff;
     border-radius: 5px;
     overflow: hidden;
+    @include img-container(130%, 'cover');
+    img {
+        max-width: 140%;
+        max-height: 105%;
+    }
 }
 
 .team-carousel {
@@ -58,7 +65,7 @@
                 background-color: #ccc;
                 overflow: hidden;
                 img {
-                    max-width: 105%;
+                    max-width: 140%;
                     max-height: 105%;
                 }
             }

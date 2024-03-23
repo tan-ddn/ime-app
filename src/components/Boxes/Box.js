@@ -35,17 +35,26 @@ class Box extends Component {
             this.setState({lang: 2});
         }
     }
+
+    renderLink(href, linkContent, className = '') {
+        if (this.state.content.externalBtnUrl) {
+            return (<a className={className} target='_blank' rel="noopener noreferrer" href={href}>{linkContent}</a>);
+        } else {
+            return (<Link className={className} to={href} dangerouslySetInnerHTML={{__html: linkContent}} />);
+        }
+    }
     
     renderTitle(linkTitle) {
         let title = (this.state.lang == 1) ? this.state.content.title : this.state.content.title_eng;
-        console.log(this.state.lang);
+        // console.log(this.state.lang);
         switch(linkTitle) {
             case '1':
-                return (
-                    <Link to={this.state.content.buttonUrl}>
-                        {title}
-                    </Link>
-                );
+                // return (
+                //     <Link to={this.state.content.buttonUrl}>
+                //         {title}
+                //     </Link>
+                // );
+                return this.renderLink(this.state.content.buttonUrl, title);
             default:
                 return title;
         }
@@ -54,9 +63,14 @@ class Box extends Component {
     teamSummary() {
         // console.log('teamSummary');
         let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        let linkHtml = this.renderLink(this.state.content.link, this.state.content.name);
+        console.log(linkHtml);
         return (
             <div className="events-sum">
-                <h6 className="team-name"><Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link></h6>
+                <h6 className="team-name">
+                    {/* <Link to={this.state.content.link}><span dangerouslySetInnerHTML={{__html: this.state.content.name}} /></Link> */}
+                    {linkHtml}
+                </h6>
                 <div dangerouslySetInnerHTML={{__html: des}} />
             </div>
         );
@@ -65,11 +79,13 @@ class Box extends Component {
         let link = "/research/" + this.state.content.id;
         // console.log(link);
         let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        let linkHtml = this.renderLink(link, this.state.content.button, "btn btn-primary");
         return (
             <div className="events-sum">
                 {/* <p>{this.state.content.description}</p> */}
                 <SanitizedHTML className="mb-3" html={StringHandle.extract(des, 50) + '...' } />
-                <Link className="btn btn-primary" to={link}>{this.state.content.button}</Link>
+                {/* <Link className="btn btn-primary" to={link}>{this.state.content.button}</Link> */}
+                {linkHtml}
             </div>
         );
     }
@@ -132,7 +148,8 @@ class Box extends Component {
                             </div>
                         : <div className="events-sum" dangerouslySetInnerHTML={{__html: this.state.content.description}} />
                     }                     */}
-                    {this.state.content.button && <Link to={this.state.content.buttonUrl} className="anchor-style1" dangerouslySetInnerHTML={{__html: this.state.content.button}} />}
+                    {/* {this.state.content.button && <Link to={this.state.content.buttonUrl} className="anchor-style1" dangerouslySetInnerHTML={{__html: this.state.content.button}} />} */}
+                    {this.state.content.button && this.renderLink(this.state.content.buttonUrl, this.state.content.button, 'anchor-style1')}
                     {this.state.content.date !== '' &&
                         <div className="events-date" dangerouslySetInnerHTML={{__html: this.state.content.date}} />
                     }

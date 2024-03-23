@@ -9,14 +9,21 @@ import PhpTestPage from './components/PhpTest/PhpTestPage';
 import Db from './control/class.db';
 import withGetDb from './control/withGetDb';
 // import Dashboard from './components/Dashboard';
+import withLangSwitchListener from './components/Languages/LangSwitchListener';
+import Alumni from './components/Pages/Alumni';
+import Preise from './components/Pages/Preise';
 
 const TeamGetDb = withGetDb(
     Team,
-    (Db) => Db.get({action: 'TeamGroups'})
+    () => Db.get({action: 'TeamGroups'})
+);
+const AlumniGetDb = withGetDb(
+    Alumni,
+    () => Db.get({action: 'TeamGroups'})
 );
 const NewsGetDb = withGetDb(
     News,
-    (Db) => Db.get({action: 'RecentNews'})
+    () => Db.get({action: 'RecentNews'})
 );
 
 class PageLayout extends Component {
@@ -30,7 +37,7 @@ class PageLayout extends Component {
   
     componentDidUpdate() {
         // let id = window.location.hash.substring(1);
-        window.useScrollTo();
+        // window.useScrollTo();
         // console.log(id);
     }
   
@@ -47,7 +54,9 @@ class PageLayout extends Component {
             <Route path="/test" exact component={() => <PhpTestPage />} />
             <Route path="/" exact component={() => <Home />} />
             <Route path="/about" exact component={() => <About />} />
+            <Route path="/preise" exact component={() => <Preise />} />
             <Route path="/team" exact component={() => <TeamGetDb />} />
+            <Route path="/alumni" exact component={() => <AlumniGetDb />} />
             <Route path="/team/:id" exact component={() => <TeamProfile />} />
             <Route path="/research" exact component={() => <Research />} />
             <Route path="/research/:id" exact component={() => <ResearchProject />} />
@@ -73,4 +82,4 @@ class PageLayout extends Component {
         );
     }
 }
-export default withRouter(PageLayout);
+export default withRouter(withLangSwitchListener(PageLayout));

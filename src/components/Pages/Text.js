@@ -42,7 +42,7 @@ class HomeTxt extends ResponsiveComponent {
       };
       if (this.state.data.success) {
           let data = this.state.data.results[0];
-          //console.log(data);
+          console.log(data);
           homeTxt.title = data.titel;
           homeTxt.txt = data.txt;
       }

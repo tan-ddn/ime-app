@@ -235,7 +235,7 @@ class MainContent extends ResponsiveComponent {
               <div className="row">
                 <div className="col-12 col-lg-6 py-3">
                   <h2 className="heading"><Link to="/team">Our Team</Link></h2>
-                  <img style={{marginTop: '0px'}} src={process.env.PUBLIC_URL + '/img/teaem_2020_web_id_8598.jpg'} alt="" />
+                  <img style={{marginTop: '0px'}} src={process.env.PUBLIC_URL + '/img/IME-4_s.jpg'} alt="" /> 
                   {/* <TeamCarousel/> */}
                 </div>
                 <div className="col-12 col-lg-6 py-3">

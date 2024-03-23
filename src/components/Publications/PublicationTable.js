@@ -7,8 +7,11 @@ import PublicationAuthor from './PublicationAuthor';
 import ReactPaginate from 'react-paginate';
 import SearchBar from '../Search/SearchBar';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import imeAPICalls from '../../imeAPICalls';
 
 class PublicationTable extends ResponsiveComponent {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.updateInput = this.updateInput.bind(this);
@@ -27,14 +30,16 @@ class PublicationTable extends ResponsiveComponent {
 
     fetchData = () => {
         if (this.props.recent == "1") {
-            Db.get({action: 'RecentPub'}).then((res) => {
+            // Db.get({action: 'RecentPub'}).then((res) => {
+            this.APICalls.get({ endpoint: 'Publication/Recent'}).then((res) => {
                 this.setState({
                     data: res,
                     publications: res.results,
                 });
             });
         } else if (this.props.teamId > 0) {
-            Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
+            // Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
+            this.APICalls.get({ endpoint: 'Publication', id: this.props.teamId, pageNo: this.state.pageNo }).then((res) => {
                 this.setState({
                     data: res,
                     publications: res.results,
@@ -57,7 +62,8 @@ class PublicationTable extends ResponsiveComponent {
             });
         } else {
             // console.log(this.props.keywords);
-            Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
+            // Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
+            this.APICalls.get({ endpoint: 'Publication', pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,
@@ -84,7 +90,8 @@ class PublicationTable extends ResponsiveComponent {
         let selected = Number(obj.selected) + 1;
         this.setState({pageNo: selected}, () => {
             if (this.props.teamId > 0) {
-                Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
+                // Db.get({action: 'PubFromProfile', id: this.props.teamId, pageNo: this.state.pageNo}).then((res) => {
+                this.APICalls.get({ endpoint: 'Publication', id: this.props.teamId, pageNo: this.state.pageNo }).then((res) => {
                     this.setState({data: res, publications: res.results});
                 });
             // } else {
@@ -95,7 +102,8 @@ class PublicationTable extends ResponsiveComponent {
                     this.setState({data: res, publications: res.results});
                 });
             } else {
-                Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
+                // Db.get({action: 'AllPub', id: -1, pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords}).then((res) => {
+                this.APICalls.get({ endpoint: 'Publication', pageNo: this.state.pageNo, search: this.state.searchInput, keywords: this.state.keywords }).then((res) => {
                     this.setState({
                         data: res, 
                         publications: res.results,
@@ -112,7 +120,8 @@ class PublicationTable extends ResponsiveComponent {
         // console.log(input);
         this.setState({searchInput: input, pageNo: 1}, () => {
             let teamId = (this.props.teamId) ? this.props.teamId : -1;
-            Db.get({action: 'AllPub', id: teamId, pageNo: this.state.pageNo, search: input, keywords: this.state.keywords}).then((res) => {
+            // Db.get({action: 'AllPub', id: teamId, pageNo: this.state.pageNo, search: input, keywords: this.state.keywords}).then((res) => {
+            this.APICalls.get({ endpoint: 'Publication', id: teamId, pageNo: this.state.pageNo, search: input, keywords: this.state.keywords }).then((res) => {
                 this.setState({
                     data: res, 
                     publications: res.results,

@@ -6,6 +6,7 @@ import Db from '../../control/class.db';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
 import SanitizedHTML from 'react-sanitized-html';
+import imeAPICalls from '../../imeAPICalls';
 // pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<p>The IME offers thesis topics to students of engineering and material sciences with a processing background at any time. Here you may find a selection of current thesis topics.</p><p>You may also want to take the chance to contact our employees in order to make a personal appointment. We find interesting and exciting topics for everyone. </p>';
@@ -23,28 +24,40 @@ let masterThesis = {
 };
 
 class ThesisTopic extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            id: null,
+            // id: null,
             intro: intro,
             // masterThesis: masterThesis,
-            data: Db.get({action: 'Job', id: this.props.match.params.id}).then(res => res),
-            contact: Db.get({action: 'JobContact', id: this.props.match.params.id}).then(res => res)
+            // data: Db.get({action: 'Job', id: this.props.match.params.id}).then(res => res),
+            // contact: Db.get({action: 'JobContact', id: this.props.match.params.id}).then(res => res)
+            data: {},
+            contact: {},
+            similarThesis: {}
         }
-    }    
+    }
 
     componentDidMount() {
         const id = this.props.match.params.id;
-        this.setState({id: id});
-        Db.get({action: 'Job', id}).then((res) => {
-            this.setState({data: res});
+        // this.setState({id: id});
+        // Db.get({action: 'Job', id}).then((res) => {
+        this.APICalls.get({ endpoint: 'job', id: id }).then((res) => {
+            this.setState({ data: res });
+            if (res.success) {
+                this.APICalls.get({ endpoint: 'job', type: res.results[0].j_art }).then((res) => {
+                    this.setState({ similarThesis: res });
+                });
+            }
         });
-        Db.get({action: 'JobContact', id}).then((res) => {
-            this.setState({contact: res});
+        // Db.get({action: 'JobContact', id}).then((res) => {
+        this.APICalls.get({ endpoint: 'job/Contact', id: id }).then((res) => {
+            this.setState({ contact: res });
         });
     }
-    
+
     render() {
         // {Object.keys(leftColumn).map((key, index) => {
         //     if (key == 'jobDescription') key = 'job description';
@@ -52,59 +65,91 @@ class ThesisTopic extends Component {
 
         let leftColumn = {};
         let rightColumn = {};
-        let job = {jp_pic: ''};
+        let job = { jp_pic: '' };
         let contact;
+        let otherThesis = [];
         if (this.state.data.success & this.state.contact.success) {
             job = this.state.data.results[0];
             contact = this.state.contact.results[0];
             job.j_ueberschrift_eng = (job.j_ueberschrift_eng == '') ? job.j_ueberschrift : job.j_ueberschrift_eng;
             job.j_problem_eng = (job.j_problem_eng == '') ? job.j_problem : job.j_problem_eng;
             job.j_aufgaben_eng = (job.j_aufgaben_eng == '') ? job.j_aufgaben : job.j_aufgaben_eng;
-            leftColumn['topic'] = job.j_ueberschrift_eng;
+            // leftColumn['topic'] = job.j_ueberschrift_eng;
             leftColumn['description'] = job.ja_jobart_eng;
             leftColumn['duration'] = job.j_dauer_number + ' month(s)';
             leftColumn['start'] = 'Immediately';
-            leftColumn['contact'] = (<Link to={'/team/'+job.j_kontakt}>{contact.tt_titel + ' ' + contact.t_vorname + ' ' + contact.t_name}</Link>);
+            leftColumn['contact'] = (<Link to={'/team/' + job.j_kontakt}>{contact.tt_titel + ' ' + contact.t_vorname + ' ' + contact.t_name}</Link>);
             rightColumn['background'] = job.j_problem_eng;
             rightColumn['job definition'] = job.j_aufgaben_eng;
             // console.log(leftColumn);
         }
-        return(
+        if (this.state.similarThesis.success) {
+            otherThesis = this.state.similarThesis.results;
+        }
+        return (
             <div className="study">
-                <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark'/>
+                <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark' />
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
                     <div id="" role="article" className="main-content">
                         {/* <FacultyStage/> */}
                         <div id="wrapper-2-outer0">
-                        <div id="wrapper">
-                            {/*googleon: all*/}
-                            <div className="">
-                                <div className="content" role="article">
-                                    <div id="intro" className="py-3">
-                                        <h2 className="heading"><Link className="d-inline-block " to="/study">Study</Link> <span className="text-dark">&#187; {leftColumn['description']}</span></h2>
-                                        <div className="intro-wrap p-4 bg-grey">
-                                        <div className="px-2">
-                                            <div className="row">
-                                                <div className="py-2 col-12 col-sm-8">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-4">
-                                                    <div className="rounded">
-                                                    {job.jp_pic &&
-                                                    <img src={process.env.PUBLIC_URL + '/img/study/' + job.jp_pic} alt={'Image: '+leftColumn['description']}/>
-                                                    }
+                            <div id="wrapper">
+                                {/*googleon: all*/}
+                                <div className="">
+                                    <div className="content" role="article">
+                                        <div id="intro" className="py-3">
+                                            <h2 className="heading"><Link className="d-inline-block " to="/study">Study</Link> <span className="text-dark">&#187; {leftColumn['description']}</span></h2>
+                                            <div className="intro-wrap p-4 bg-grey">
+                                                <div className="px-2">
+                                                    <div className="row">
+                                                        <div className="py-2 col-12 col-sm-">
+                                                            <div className="" dangerouslySetInnerHTML={{ __html: this.state.intro }} />
+                                                            <Link className='d-block pt-3' to="/study#hiwi">See all current jobs &amp; thesis &#187;</Link>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
-                                    </div>
-                                    <div id="thesis" className="py-3">
-                                        <h2 className="heading">Thesis</h2>
-                                        <div className="row">
-                                            <div className="py-2 col-12 col-sm-6 text-left">
-                                                {/* <table className="table-lg">
+                                        <div id="thesis" className="py-3">
+                                            <div className="row">
+                                                <div className="py-2 col-12 col-sm-6 text-left">
+                                                    <h2 className="heading">Other {job.ja_jobart_eng}</h2>
+                                                    <ul>
+                                                        {otherThesis.map((elm, index) => {
+                                                            let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                            if (text == '') { text = elm.j_ueberschrift; }
+                                                            if (text == '') { text = elm.j_ueberschrift_eng; }
+                                                            return (
+                                                                <li className='pb-3' key={index}><Link to={"/study/thesistopic/" + elm.j_id}>{text}</Link></li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                </div>
+                                                <div className="py-2 col-12 col-sm-6">
+                                                    <h2 className="heading">Thesis' Details</h2>
+                                                    <dl>
+                                                        <dt>Topic</dt>
+                                                        <dd>{job.j_ueberschrift_eng}</dd>
+                                                    </dl>
+                                                    <div className='row'>
+                                                        <div className='col-6'>
+                                                            {Object.keys(leftColumn).map((key, index) => (
+                                                                <dl key={index}>
+                                                                    <dt className="text-capitalize">{key}</dt>
+                                                                    <dd>{leftColumn[key]}</dd>
+                                                                </dl>
+                                                            ))}
+                                                        </div>
+                                                        <div className='col-6'>
+                                                            <div className="rounded">
+                                                                {job.jp_pic &&
+                                                                    <img src={process.env.PUBLIC_URL + '/img/jobs/' + job.jp_pic} alt={'Image: ' + leftColumn['description']} />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {/* <table className="table-lg">
                                                     <tbody>
                                                     {Object.keys(leftColumn).map((key, index) => (
                                                     <tr key={index}>
@@ -114,15 +159,7 @@ class ThesisTopic extends Component {
                                                     ))}
                                                     </tbody>
                                                 </table> */}
-                                                {Object.keys(leftColumn).map((key, index) => (
-                                                    <dl key={index}>
-                                                        <dt className="text-capitalize">{key}</dt>
-                                                        <dd>{leftColumn[key]}</dd>
-                                                    </dl>
-                                                ))}
-                                            </div>
-                                            <div className="py-2 col-12 col-sm-6">
-                                                {/* <table className="table-lg">
+                                                    {/* <table className="table-lg">
                                                     <tbody>
                                                     <tr>
                                                         <th style={{'width': '120px', 'verticalAlign': 'initial'}} >Description</th>
@@ -130,21 +167,21 @@ class ThesisTopic extends Component {
                                                     </tr>
                                                     </tbody>
                                                 </table> */}
-                                                {Object.keys(rightColumn).map((key, index) => (
-                                                    <dl key={index}>
-                                                        <dt className="text-capitalize">{key}</dt>
-                                                        <dd><SanitizedHTML html={rightColumn[key]} /></dd>
-                                                    </dl>
-                                                ))}
+                                                    {Object.keys(rightColumn).map((key, index) => (
+                                                        <dl key={index}>
+                                                            <dt className="text-capitalize">{key}</dt>
+                                                            <dd><SanitizedHTML html={rightColumn[key]} /></dd>
+                                                        </dl>
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {/* <p className="to-top-link">
+                                {/* <p className="to-top-link">
                             <a href="#">top</a>
                             </p> */}
-                        </div>
+                            </div>
                         </div>
                     </div>
                     {/* <RightSidebar/> */}

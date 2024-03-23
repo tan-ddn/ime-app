@@ -87,11 +87,23 @@ class HeaderNav extends ResponsiveComponent{
             <li className="rwth_jsopen">
               <Link to="/" className="panel" title={this.props.webText.home.title+" (Main Navigation)"} aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">{this.props.webText.home.title}</Link>
             </li>
-            <li className="rwth_jsopen">
+            <li className="rwth_jsopen dropdown">
               <Link to="/about" className="panel" title={this.props.webText.about.title+" (Main Navigation)"} aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">{this.props.webText.about.title}</Link>
+              <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li className="dropdown-item">
+                <Link to="/preise" className="panel" title={this.props.webText.about.awards+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.about.awards}</Link>
+                </li>
+              </ol>
             </li>
-            <li className="rwth_jsopen">
+            <li className="rwth_jsopen dropdown">
               <Link to="/team" className="panel" title={this.props.webText.team.title+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.team.title}</Link>
+              <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li className="dropdown-item">
+                <Link to="/alumni" className="panel" title={this.props.webText.team.alumni+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.team.alumni}</Link>
+                </li>
+              </ol>
             </li>
             <li className="rwth_jsopen">
               <Link to="/research" className="panel" title={this.props.webText.research.title+" (Main Navigation)"} aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">{this.props.webText.research.title}</Link>
@@ -124,14 +136,14 @@ class HeaderNav extends ResponsiveComponent{
             <li id="nav-icons">
                             <ul className="tools-menu header-right-menu">
                                 <li className="menu-item">
-                                    <a href="contact" title="Contact">
+                                    <Link to="/#site-footer" title="Contact">
                                     <img alt="Contact icon" src={process.env.PUBLIC_URL + '/img/icons/icon-347234_640.png'} />
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="menu-item" title="Imprint">
-                                    <a href="imprint">
+                                    <Link to="/imprint">
                                     <img alt="Imprint icon" src={process.env.PUBLIC_URL + '/img/icons/information-1481584_640.png'} />
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="menu-item" title="Language">
                                     {/* <a href="language">
@@ -140,29 +152,29 @@ class HeaderNav extends ResponsiveComponent{
                                     <LangSwitcher />
                                 </li>
                                 <li className="menu-item" title="Staff login">
-                                    <a href="login">
+                                    <a target="_blank" href="http://www.greenmetallurgy.rwth-aachen.de/ime-dashboard/">
                                     <img alt="Login icon" src={process.env.PUBLIC_URL + '/img/icons/avatar-1577909_640.png'} />
                                     </a>
                                 </li>
                             </ul>
                             <ul className="social-menu header-right-menu">
                                 <li className="menu-item">
-                                    <a target="_blank" href="researchgate" title="ResearchGate">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://www.researchgate.net/profile/Bernd_Friedrich" title="ResearchGate">
                                     <img alt="ResearchGate icon" src={process.env.PUBLIC_URL + '/img/icons/rg_logo.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="wiki" title="Wikipedia">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://de.wikipedia.org/wiki/Institut_und_Lehrstuhl_f%C3%BCr_Metallurgische_Prozesstechnik_und_Metallrecycling" title="Wikipedia">
                                     <img alt="Wikipedia icon" src={process.env.PUBLIC_URL + '/img/icons/120px-wikipedia.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="linkedin" title="LinkedIn">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://www.linkedin.com/company/ime-process-metallurgy-and-metal-recycling" title="LinkedIn">
                                     <img alt="LinkedIn icon" src={process.env.PUBLIC_URL + '/img/icons/LinkedIn2.png'} />
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a target="_blank" href="instagram" title="Instagram">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/ime_rwth?igshid=wd2tyd7dg6b6" title="Instagram">
                                     <img alt="Instagram icon" src={process.env.PUBLIC_URL + '/img/icons/132px-Instagram.png'} />
                                     </a>
                                 </li>

@@ -150,13 +150,11 @@ export default class LatestProjects extends ResponsiveComponent {
                 } else {
                     elm.image = process.env.PUBLIC_URL + '/img/projects/' + elm.fdp_bild;
                 }                
-                elm.title = elm.fp_title_eng.substring(0, 55)+'...';
-                elm.description = elm.fp_description_eng.substring(0, 110)+'...';
+                elm.title_eng = elm.fp_title_eng.substring(0, 55)+'...';
+                elm.description_eng = elm.fp_description_eng.substring(0, 110)+'...';
+                elm.title = elm.fp_title.substring(0, 55)+'...';
+                elm.description = elm.fp_description.substring(0, 110)+'...';
                 elm.date = elm.fp_timeperiod;
-                if (localStorage.getItem('lang') === 'ge') {
-                    elm.title = elm.fp_title.substring(0, 55)+'...';
-                    elm.description = elm.fp_description.substring(0, 110)+'...';
-                }
                 return elm;
             });
         }

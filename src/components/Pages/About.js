@@ -5,6 +5,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
 import HistoryTimeline from '../History/HistoryTimeline';
 import ResearchFeatures from '../Research/ResearchFeatures';
+import { Link } from 'react-router-dom';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<p>Das IME Metallurgische Prozesstechnik und Metallrecycling – Institut und Lehrstuhl der RWTH Aachen (Kurzform: IME) an der RWTH Aachen University ist ein Lehr- und Forschungsinstitut im Bereich der metallurgischen Gewinnung, dem Recycling, der Veredelung und der Synthese von Nichteisenmetallen und Legierungen. Aktuelle Forschungsschwerpunkte fokussieren sich stark auf Aktivitäten zur Circular economy (deutsch: Kreislaufwirtschaft).</p><p>So werden in laufenden Forschungsvorhaben metallurgische Prozesse entwickelt, die ein nachhaltiges Wirtschaften metallhaltiger Abfall- und Reststoffe ermöglichen und damit die Rohstoffversorgung im europäischen Wirtschaftsraum stärken. Das IME ist in die Fachgruppe für „Materialwissenschaft und Werkstofftechnik“ (MuW) der Fakultät für Georessourcen und Materialtechnik eingebunden.</p>';
@@ -29,6 +30,10 @@ export default class About extends Component {
     }    
     
     render() {
+        let see_all_awards = 'See all awards &#187;';
+        if (localStorage.getItem('lang') === 'ge') {
+            see_all_awards = 'See all awards &#187;';
+        }
         return(
             <div className="about">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/about/IME_Gebaeude_Juni_2004-027.jpg'} transformY='-15%'/>
@@ -82,6 +87,9 @@ export default class About extends Component {
                                         <h2 className="heading">Awards and Cooperations</h2>
                                         <div className="awards-wrap p-4 bg-grey">
                                         <div className="p-2">
+                                            <p className='font-weight-bold'>
+                                                <Link to={'/preise'} dangerouslySetInnerHTML={{__html: see_all_awards}} />
+                                            </p>
                                             <div className="" dangerouslySetInnerHTML={{__html: this.state.pre_u_koo}} />
                                         </div>
                                         </div>

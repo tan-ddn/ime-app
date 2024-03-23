@@ -9,18 +9,22 @@ import * as Constants from '../../constants';
 import ProfileDetails from '../Team/ProfileDetails';
 import withGetDb from '../../control/withGetDb';
 import PubSocial from '../Team/PubSocial';
+import imeAPICalls from '../../imeAPICalls';
 
 let intro = '<dl><dt>Job:</dt><dd>Professor</dd><dt>Topic:</dt><dd>Head of the institute</dd></dl>';
 
+const APIcalls = new imeAPICalls();
 const ProfileDetailsGetDb = withGetDb(
     ProfileDetails,
     // (Db, props) => Db.getWithId('ProfileDetails', props.id)
-    (Db, props) => Db.get({action: 'ProfileDetails', id: props.id})
+    // (Db, props) => Db.get({action: 'ProfileDetails', id: props.id})
+    (props) => APIcalls.get({ endpoint: 'Team/Member', id: props.id})
 );
 const PubSocialGetDb = withGetDb(
     PubSocial,
     // (Db, props) => Db.getWithId('PubSocialLinks', props.id)
-    (Db, props) => Db.get({action: 'PubSocialLinks', id: props.id})
+    // (Db, props) => Db.get({action: 'PubSocialLinks', id: props.id})
+    (props) => APIcalls.get({ endpoint: 'Team/PubSocialLinks', id: props.id})
 );
 
 class TeamProfile extends Component {
