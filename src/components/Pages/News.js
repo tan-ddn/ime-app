@@ -9,8 +9,8 @@ import Db from '../../control/class.db';
 import PageLayout from '../../PageLayout';
 import SanitizedHTML from 'react-sanitized-html';
 import StringHandle from '../../utility/stringHandle';
+import { globalLangStateContext } from '../../UserContext';
 
-let intro = '<p>Our whole series of Dr.- thesis can be viewed and purchased at the following link. <a href="http://www.shaker.de/de/content/catalogue/index.asp?lang=de&amp;ID=6&amp;category=280" target="_blank" rel="nofollow noopener"> Search PhD Thesis</a>.</p>';
 // let news = [
 //     {
 //         'datum': '31.05.2021',
@@ -44,7 +44,6 @@ class News extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
             // news: null,
         };
         // let db = new Db('news', true, 12);
@@ -64,12 +63,14 @@ class News extends Component {
     // }
     
     render() {
+        if (!this.context.webText) return '';
         let News = Array();
         // if (this.state.news) News = this.state.news;
         if (this.props.data.success) {
             // console.log(this.props.data);
             News = this.props.data.results;
         }
+        let texts = this.context.webText;
         return(
             <div className="news">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/RWTH-FB5-039.jpg'} transformY='-15%'/>
@@ -82,40 +83,21 @@ class News extends Component {
                             {/*googleon: all*/}
                             <div className="">
                                 <div className="content" role="article">
-                                    {/* <div id="intro" className="py-3">
-                                        <h2 className="heading">PhD Thesis</h2>
-                                        <div className="intro-wrap p-4 bg-grey">
-                                        <div className="px-2">
-                                            <div className="row">
-                                                <div className="py-2 col-12 col-sm-3">
-                                                <figure>
-                                                    <img src={process.env.PUBLIC_URL + '/img/publications/Drarbeit.png'} alt="Building of the IME" />
-                                                </figure>
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-9">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div> */}
                                     <div id="news" className="py-3">
-                                        <h2 className="heading">News (Last 12 months)</h2>
-                                        {/* <div className="row mb-3">
-                                        <div className="col-11" dangerouslySetInnerHTML={{__html: this.state.}} />
-                                        <div className="col-1">
-                                        <img className="float-right" src={process.env.PUBLIC_URL + '/img/publications/pdf_icon_small.gif'} alt="Building of the IME" />
-                                        </div>
-                                        </div> */}
+                                        <h2 className="heading">{texts.news.title} ({texts.news.last_12_months})</h2>
                                         <div className="">
                                             {News.map((elm, index) => {
-                                                let textEng = StringHandle.beautifyHTML(elm.text_eng);
+                                                let newsTitle = (this.context.lang == 'en') ? elm.titel_eng : elm.titel;
+                                                let newsText = (this.context.lang == 'en') ? elm.text_eng : elm.text;
+                                                newsText = StringHandle.beautifyHTML(newsText);
+                                                let postOnByArray = texts.news.posted_on_by.replace('$name$', elm.autor).split('$date$');
+                                                // console.log(postOnByArray);
                                                 return (
                                                 <div id={elm.id} key={index} className="news-box py-4 border-bottom">
-                                                    <h5 className="box-titel_eng">{elm.titel_eng}</h5>
+                                                    <h5 className="box-titel_eng">{newsTitle}</h5>
                                                     <div className="row">
                                                     <div className="col-12 col-md-4">
-                                                    <p>Posted on <Moment format="DD.MM.YYYY">{elm.datum}</Moment> by {elm.autor}</p>
+                                                    <p>{postOnByArray[0]}<Moment format="DD.MM.YYYY">{elm.datum}</Moment>{postOnByArray[1]}</p>
                                                     <p><StyledPopup className="border rounded text-center">
                                                     <img src={process.env.PUBLIC_URL+'/img/news/'+elm.pic} alt={'pic: ' + elm.titel_eng} />
                                                     </StyledPopup></p>
@@ -123,7 +105,7 @@ class News extends Component {
                                                     </div>
                                                     <div className="col-12 col-md-8">
                                                     {/* <div className="" dangerouslySetInnerHTML={{__html: sanitizeHtml(elm.text_eng)}} /> */}
-                                                    <SanitizedHTML className="" html={ textEng } />
+                                                    <SanitizedHTML className="" html={ newsText } />
                                                     {(elm.link) && <div>Link: <a target="_blank" rel="noopener noreferrer" href={'//'+elm.link}>{elm.link}</a></div>}
                                                     </div>
                                                     </div>
@@ -145,4 +127,5 @@ class News extends Component {
         );
     }
 }
+News.contextType = globalLangStateContext;
 export default withRouter(News);

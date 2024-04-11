@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import TopicGrid from '../Research/TopicGrid';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
+import ProjectTable from '../Research/ProjectTable';
 
 let intro_eng = '<p>Through being an experimentally oriented institute, IME constantly handles public and industrial research. Here we offer you a short description for a choice of projects. Either you can search for catchwords or rummage in the discrete topics. </p>';
 let intro = '<p>Das IME bearbeitet als Experimentalinstitut laufend &ouml;ffentliche und  industrielle Forschungsprojekte. An dieser Stelle bieten wir Ihnen zu  einer Auswahl von Projekten eine kurze Beschreibung an. Sie haben die  M&ouml;glichkeit nach Schlagw&ouml;rtern zu suchen oder in den einzelnen  Themengebieten zu st&ouml;bern.</p>';
@@ -82,35 +85,45 @@ let intro = '<p>Das IME bearbeitet als Experimentalinstitut laufend &ouml;ffentl
 // ];
 
 class Research extends Component {
+    APIcalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
+            intro: {},
             // topics: topics
         }
     }    
     
     componentDidMount() {
-        this.updateIntro();
+        // this.updateIntro();
+        this.APIcalls.get({endpoint: 'Texts', meta: 'Research'}).then(res => {
+            this.setState({intro: res});
+        });
     }
     
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.webText !== prevProps.webText) {
-          this.updateIntro();
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     // Typical usage (don't forget to compare props):
+    //     if (this.props.webText !== prevProps.webText) {
+    //       this.updateIntro();
+    //     }
+    // }
     
-    updateIntro() {
-        if (localStorage.getItem('lang') === 'ge') {
-            this.setState({intro: intro});
-        } else {
-            this.setState({intro: intro_eng});
-        }
-    }
+    // updateIntro() {
+    //     if (localStorage.getItem('lang') === 'ge') {
+    //         this.setState({intro: intro});
+    //     } else {
+    //         this.setState({intro: intro_eng});
+    //     }
+    // }
     
     render() {
-        return(
+        let texts = (this.context) ? this.context.webText : null;
+        let intro = '';
+        if (this.state.intro.success) {
+            intro = this.state.intro.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
+        return (texts == null) ? '' : (
             <div className="research">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -122,22 +135,23 @@ class Research extends Component {
                             {/*googleon: all*/}
                             <div className="">
                                 <div className="content" role="article">
+                                    <div id="topics" className="py-3">
+                                        <h2 className="heading">{texts.research.topics}</h2>
+                                        {/* <TopicGrid topics={this.state.topics} /> */}
+                                        <TopicGrid />
+                                    </div>
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading">Research Projects</h2>
+                                        <h2 className="heading">{texts.research.research_projects}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-12">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: intro}} />
                                                 </div>
                                             </div>
                                         </div>
                                         </div>
-                                    </div>
-                                    <div id="topics" className="py-3">
-                                        <h2 className="heading">Topics</h2>
-                                        {/* <TopicGrid topics={this.state.topics} /> */}
-                                        <TopicGrid />
+                                        <ProjectTable search="1" thead="1" />
                                     </div>
                                 </div>
                             </div>
@@ -150,5 +164,6 @@ class Research extends Component {
         );
     }
 }
+Research.contextType = globalLangStateContext;
 
 export default withLangSwitchListener(Research);

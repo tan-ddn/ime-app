@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { Link, withRouter } from 'react-router-dom';
+import { globalLangStateContext } from '../../UserContext';
 // import { Component } from 'react';
 import ResponsiveComponent from '../ResponsiveComponent';
 
@@ -11,6 +11,7 @@ class SideNav extends ResponsiveComponent {
     }
 
     render() {
+        if (!this.context) return '';
         let className = "side-nav pb-3 " + this.props.className;
         return(
             <div id={this.props.id} className={className} >
@@ -19,7 +20,7 @@ class SideNav extends ResponsiveComponent {
                     {this.props.content.map((elm, index) => (
                         <li className="nav-item">
                             <Link className="nav-link" to={elm.url}>
-                                {(localStorage.getItem('lang') == 'ge') ? elm.title : elm.title_eng}
+                                {(this.context.lang == 'ge') ? elm.title : elm.title_eng}
                             </Link>
                         </li>
                     ))}
@@ -28,9 +29,9 @@ class SideNav extends ResponsiveComponent {
         )
     }
 }
-
-export default withLangSwitchListener(SideNav);
+SideNav.contextType = globalLangStateContext;
+export default withRouter(SideNav);
 
 SideNav.defaultProps = {
     heading: 'Navigation',
-  };
+};

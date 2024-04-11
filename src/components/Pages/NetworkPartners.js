@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 // import NewsSlider from '../News/NewsSlider';
 import Box from '../Boxes/Box';
-import Db from '../../control/class.db';
+// import Db from '../../control/class.db';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
 import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
 // import '../Equipment/equipment.scss';
 
 let intro_eng = '<p>We have an extensive network of partners. These include in particular strategic partner universities with whom we keep a very intense and diverse collaboration. This can be seen especially in high cooperative publication activity, in jointly organized events such as workshops and conferences, as well as a regular involvement with IME in public funded projects.</p>';
@@ -73,19 +74,27 @@ class NetworkPartners extends Component {
             // unis: Db.get({action: 'UniCoop', id: -1}).then(res => res),
             unis: {},
             network: {},
+            intro: {},
         }
     }    
 
     componentDidMount() {
-        Db.get({action: 'UniCoop', id: -1}).then((res) => {
+        // Db.get({action: 'UniCoop', id: -1}).then((res) => {
+        //     this.setState({unis: res});
+        // });
+        this.APICalls.get({endpoint: 'Link/Unicoop'}).then((res) => {
             this.setState({unis: res});
         });
         this.APICalls.get({ endpoint: 'Link/Network' }).then((res) => {
             this.setState({network: res});
         });
+        this.APICalls.get({ endpoint: 'Texts', meta: 'Network' }).then((res) => {
+            this.setState({intro: res});
+        });
     }
     
     render() {
+        if (!this.context || !this.state.intro.success) return '';
         let boxContent = Array(), networkContent = Array();
         let unis = [], network = [];
         if (this.state.unis.success) {
@@ -115,6 +124,7 @@ class NetworkPartners extends Component {
                 };
             });
         }
+        let intro = this.state.intro.results.filter(x => x.sprache == this.context.language)[0].txt;
         return ((unis.length == 0) || (network.length == 0)) ? 'Loading...' : (
             <div className="network">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/unikooperation/160210-IME-013.jpg'} transformY='13%' overlay=''/>
@@ -128,19 +138,19 @@ class NetworkPartners extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading">{(localStorage.getItem('lang') === 'ge') ? 'Uni Kooperation' : 'Uni Cooperation'}</h2>
+                                        <h2 className="heading">{this.context.webText.home.network_partners}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-12">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') === 'ge') ? intro : intro_eng}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: intro}} />
                                                 </div>
                                             </div>
                                         </div>
                                         </div>
                                     </div>
                                     <div id="uni-partner" className="py-3">
-                                        <h2 className="heading">Uni Partners</h2>
+                                        <h2 className="heading">{this.context.webText.network.uni_partners}</h2>
                                         <div className="">
                                             <div className="row">
                                                 {boxContent.map((elm, index) => (
@@ -152,7 +162,7 @@ class NetworkPartners extends Component {
                                         </div>
                                     </div>
                                     <div id="network" className="py-3">
-                                        <h2 className="heading">Other Networks</h2>
+                                        <h2 className="heading">{this.context.webText.network.other_networks}</h2>
                                         <div className="">
                                             <div className="row">
                                                 {networkContent.map((elm, index) => (
@@ -174,5 +184,5 @@ class NetworkPartners extends Component {
         );
     }
 }
-
+NetworkPartners.contextType = globalLangStateContext;
 export default withLangSwitchListener(NetworkPartners);

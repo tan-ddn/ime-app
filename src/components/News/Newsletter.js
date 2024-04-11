@@ -1,7 +1,7 @@
 import React from 'react';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-import Db from '../../control/class.db';
+// import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+// import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import imeAPICalls from '../../imeAPICalls';
 // import '../Scss/box.scss';
 import Box from '../Boxes/Box';
 import NewsBox from '../Boxes/NewsBox';
@@ -18,6 +18,8 @@ const selectDropdown = '<dl style="font-size: .7em; margin: 4px 0 0;"><!--dt>Sel
 const topics = '<div><span>Topics of the edition 39 (SS 2020):</span><ul>                <li>phD topic -  Pyrolysis for integration of SLF in the WEEE Recycling</li>                <li>phD topic - "Early stage gold recovery from PCBs via thiosulfate leaching"</li>                <li>phD topic - Metallothermal scandium reduction</li>                </ul></div>';
 
 export default class Newsletter extends Box {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
 
@@ -28,12 +30,12 @@ export default class Newsletter extends Box {
                 // button: 'Read Pdf &#187;',
             },
             id: null,
-            data: Db.get({action: 'Newsletter'}).then(res => res)
+            data: {}
         };
     }
 
     componentDidMount() {
-        Db.get({action: 'Newsletter'}).then((res) => {
+        this.APICalls.get({ endpoint: 'News/Newsletter' }).then(res => {
             this.setState({
                 data: res,
                 id: res.results[0].id,
@@ -62,7 +64,7 @@ export default class Newsletter extends Box {
                 }
                 return (<option key={elm.id} value={elm.id}>{elm.semester}</option>);
             });
-            selectDropdown = (<div>Newsletter<div style={{fontSize: '.7em', margin: '4px 0 0;'}}><select name="newsletter" id="newsletter" className="w-100" onChange={this.handleChange} value={this.state.newsletterId}><option value="" style={{fontWeight: 'bold'}}>Select Edition (Semester)</option>{options}</select></div></div>);
+            selectDropdown = (<div>Newsletter<div style={{fontSize: '.7em', margin: '4px 0 0'}}><select name="newsletter" id="newsletter" className="w-100" onChange={this.handleChange} value={this.state.newsletterId} ><option value="" style={{fontWeight: 'bold'}}>Select Edition (Semester)</option>{options}</select></div></div>);
             // console.log(selectDropdown);
         }
         return (newsletter == '') ? 'Loading...' : (

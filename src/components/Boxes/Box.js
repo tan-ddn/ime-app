@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import SanitizedHTML from 'react-sanitized-html';
 import StringHandle from '../../utility/stringHandle';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { globalLangStateContext } from '../../UserContext';
 
 class Box extends Component {
     constructor(props) {
@@ -13,28 +14,37 @@ class Box extends Component {
             content: this.props.content,
             type: this.props.type,
             linkTitle: this.props.linkTitle,
-            lang: 2,
+            // lang: 2,
         };
     }
 
     componentDidMount() {
-        this.changeLang();
+        // this.changeLang();
     }
-    
+
     componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.webText !== prevProps.webText) {
-          this.changeLang();
+        if (this.props.content !== prevProps.content || this.props.type !== prevProps.type) {
+            this.setState({
+                content: this.props.content,
+                type: this.props.type
+            });
         }
     }
     
-    changeLang() {
-        if (localStorage.getItem('lang') === 'ge') {
-            this.setState({lang: 1});
-        } else {
-            this.setState({lang: 2});
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     // Typical usage (don't forget to compare props):
+    //     if (this.props.webText !== prevProps.webText) {
+    //       this.changeLang();
+    //     }
+    // }
+    
+    // changeLang() {
+    //     if (localStorage.getItem('lang') === 'ge') {
+    //         this.setState({lang: 1});
+    //     } else {
+    //         this.setState({lang: 2});
+    //     }
+    // }
 
     renderLink(href, linkContent, className = '') {
         if (this.state.content.externalBtnUrl) {
@@ -45,7 +55,8 @@ class Box extends Component {
     }
     
     renderTitle(linkTitle) {
-        let title = (this.state.lang == 1) ? this.state.content.title : this.state.content.title_eng;
+        // let title = (this.state.lang == 1) ? this.state.content.title : this.state.content.title_eng;
+        let title = (this.context.lang == 'ge') ? this.state.content.title : this.state.content.title_eng;
         // console.log(this.state.lang);
         switch(linkTitle) {
             case '1':
@@ -62,7 +73,8 @@ class Box extends Component {
 
     teamSummary() {
         // console.log('teamSummary');
-        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        // let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        let des = (this.context.lang == 'ge') ? this.state.content.description : this.state.content.description_eng;
         let linkHtml = this.renderLink(this.state.content.link, this.state.content.name);
         console.log(linkHtml);
         return (
@@ -78,7 +90,8 @@ class Box extends Component {
     researchSummary() {
         let link = "/research/" + this.state.content.id;
         // console.log(link);
-        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        // let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        let des = (this.context.lang == 'ge') ? this.state.content.description : this.state.content.description_eng;
         let linkHtml = this.renderLink(link, this.state.content.button, "btn btn-primary");
         return (
             <div className="events-sum">
@@ -91,7 +104,8 @@ class Box extends Component {
     }
 
     renderSummary(type) {
-        let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        // let des = (this.state.lang == 1) ? this.state.content.description : this.state.content.description_eng;
+        let des = (this.context.lang == 'ge') ? this.state.content.description : this.state.content.description_eng;
         switch(type) {
             case 'team':
                 return this.teamSummary();
@@ -105,6 +119,7 @@ class Box extends Component {
     }
 
     render() {
+        if (!this.context.lang) return '';
         let classText = "events-box " + this.props.classNames;
         // console.log(classText);
         let imageClass = "events-img " + this.props.image;
@@ -158,4 +173,5 @@ class Box extends Component {
         )
     }
 }
+Box.contextType = globalLangStateContext;
 export default withLangSwitchListener(Box);

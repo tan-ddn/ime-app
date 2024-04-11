@@ -4,8 +4,10 @@ import HeaderBanner from '../HeaderBanner';
 import { withRouter } from "react-router";
 import { Link } from 'react-router-dom';
 import SideNav from '../Navigation/SideNav';
-import Db from '../../control/class.db';
 import ProjectDetailsBox from '../Research/ProjectDetailsBox';
+import { globalLangStateContext } from '../../UserContext';
+import ProjectList from '../Research/ProjectList';
+import imeAPICalls from '../../imeAPICalls';
 
 // let researchAreas = [
 //     {
@@ -93,6 +95,8 @@ import ProjectDetailsBox from '../Research/ProjectDetailsBox';
 // };
 
 class ProjectDetails extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
@@ -100,22 +104,37 @@ class ProjectDetails extends Component {
             // projectDetails: projectDetails
             // data: [],
             researchAreas: [],
+            researchTopic: {},
             projectDetails: []
         }
     }    
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            this.fetchData();
+        }
+    }
+
+    fetchData() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get({action: 'ProjectDetails', id: id}).then((res) => {
-            this.setState({projectDetails: res})
+        this.APICalls.get({ endpoint: 'Research/Project', id: id }).then(res => {
+            this.setState({projectDetails: res});
+            this.APICalls.get({ endpoint: 'Research', id: res.results[0].project_typ }).then(res => {
+                this.setState({researchTopic: res})
+            })
         });
-        Db.get({action: 'AllResearch'}).then((res) => {
+        this.APICalls.get({ endpoint: 'Research' }).then(res => {
             this.setState({researchAreas: res})
         });
     }
     
     render() {
+        if (!this.context.webText) return '';
         let researchAreas = [];
         if (this.state.researchAreas.success) {
             researchAreas = this.state.researchAreas.results;
@@ -129,7 +148,16 @@ class ProjectDetails extends Component {
             projectDetails = this.state.projectDetails.results[0];
             console.log(projectDetails);
         }
-        return(
+        let researchTopic = null, researchTitle = null;
+        if (this.state.researchTopic.success) {
+            researchTopic = this.state.researchTopic.results[0];
+            if (this.context.lang == 'en') {
+                researchTitle = researchTopic.title_eng;
+            } else {
+                researchTitle = researchTopic.title;
+            }
+        }
+        return (!projectDetails.project_typ || !researchTopic) ? '' : (
             <div className="project-details">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -143,13 +171,15 @@ class ProjectDetails extends Component {
                                 <div className="content" role="article">
                                     <div className="row justify-content-between">
                                     <div className="py-3 col-12 col-sm-5 text-left">
-                                        {(researchAreas) &&
+                                        {/* {(researchAreas) &&
                                         <SideNav heading="Research Areas" content={researchAreas} />
-                                        }
+                                        } */}
+                                        <h2 className="heading">{this.context.webText.project.project_list}</h2>
+                                        <ProjectList id={projectDetails.project_typ} />
                                     </div>
                                     <div id="intro" className="py-3 col-12 col-sm-7">
                                         {/* {this.state.id} */}
-                                        <h2 className="heading"><Link className="d-inline-block " to="/research">Research</Link> <span className="text-dark">&#187; Project Details</span></h2>
+                                        <h2 className="heading"><Link className="d-inline-block " to="/research">{this.context.webText.research.title}</Link> <span className="text-dark">&#187;</span> <Link className="d-inline-block " to={"/research/"+researchTopic.id}>{researchTitle}</Link> <span className="text-dark">&#187; {this.context.webText.project.project_details}</span></h2>
                                         <ProjectDetailsBox content={projectDetails} />
                                     </div>
                                     </div>
@@ -164,4 +194,5 @@ class ProjectDetails extends Component {
         );
     }
 }
+ProjectDetails.contextType = globalLangStateContext;
 export default withRouter(ProjectDetails);

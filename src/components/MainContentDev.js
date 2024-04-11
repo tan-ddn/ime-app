@@ -64,7 +64,7 @@ import { globalLangStateContext } from '../UserContext';
 //   },
 // ]
 
-class MainContent extends ResponsiveComponent {
+class MainContentDev extends ResponsiveComponent {
   APICalls = new imeAPICalls();
 
   constructor(props) {
@@ -237,12 +237,6 @@ class MainContent extends ResponsiveComponent {
             {/* <div class="horizontal-sep"></div> */}
             <div id="intro" className="py-3">
               <HomeTxt/>
-              <div className='wrapper pt-5'>
-                {/* <iframe width="1120" height="630" src="https://www.youtube.com/embed/Po6p-4NThMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> */}
-                <video controls predload="auto" style={{width:100+"%", maxHeight:100+"%"}}>
-                  <source src="/vid/IME_Imagefilm_Master.mp4" type="video/mp4"/>
-                </video>
-              </div>
             </div>
             <div id="" className="py-2">
               <div className="row">
@@ -286,6 +280,6 @@ class MainContent extends ResponsiveComponent {
     )
   }
 }
-MainContent.contextType = globalLangStateContext;
+MainContentDev.contextType = globalLangStateContext;
 
-export default withLangSwitchListener(MainContent);
+export default withLangSwitchListener(MainContentDev);

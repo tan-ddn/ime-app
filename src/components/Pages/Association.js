@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Db from '../../control/class.db';
+import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 // import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -11,27 +12,64 @@ import StyledPopup from '../Popup/Popup';
 let intro = '<h4>Ziele des Vereins</h4><p>Förderung der Qualität von Ausbildung und Forschung am IME Metallurgische Prozesstechnik und Metallrecycling (Institut und Lehrstuhl der RWTH Aachen), insbes. auf dem Gebiet der Nichteisenmetallurgie</p><h4>Durch</h4><ul><li>Unterstützung bei der Sicherstellung einer praxisbezogenen Lehre und Ausbildung.</li><li>Finanzielle Unterstützung der IME- Fachexkursionen.</li><li>Anwerbung, Betreuung und Förderung von Studenten.</li><li>Anbindung der IME Absolventen/innen an das Institut.</li><li>Organisation wissenschaftlicher Veranstaltungen. (z.B. Industrieseminare).</li><li>Verbesserung der Institutsausstattung, insbes. für die Außenwirkung.</li></ul>';
 
 class Association extends Component {
+    APIcalls = new imeAPICalls;
+
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
-            data: Db.get({action: 'Album', id: 1}).then(res => res)
+            intro: {},
+            personalia: {},
+            data: {},
+            yearlymeetings: {}
         }
     }    
 
     componentDidMount() {
-        Db.get({action: 'Album', id: 1}).then(res => {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.fetchData();
+        }
+    }
+
+    fetchData() {
+        this.APIcalls.get({endpoint: 'Album', id: 1}).then(res => {
             this.setState({data: res});
+        });
+        this.APIcalls.get({endpoint: 'Texts', meta: 'Association'}).then(res => {
+            this.setState({intro: res});
+        });
+        this.APIcalls.get({endpoint: 'Texts', meta: 'Verein'}).then(res => {
+            this.setState({personalia: res});
+        });
+        this.APIcalls.get({endpoint: 'Texts', meta: 'YearlyMeetings'}).then(res => {
+            this.setState({yearlymeetings: res});
         });
     }
     
     render() {
-        let meetings = [];
+        if (!this.context.lang) return '';
+        let meetings = [], personalia = null;
         if (this.state.data.success) {
             meetings = this.state.data.results;
-            // console.log(meetings);
+            console.log(meetings);
         }
-        return(
+        if (this.state.personalia.success) {
+            personalia = this.state.personalia.results.filter(x => x.sprache == this.context.language)[0];
+            console.log(personalia);
+        }
+        let intro = '';
+        if (this.state.intro.success) {
+            intro = this.state.intro.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
+        let yearlymeetings = '';
+        if (this.state.yearlymeetings.success) {
+            yearlymeetings = this.state.yearlymeetings.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
+        let texts = this.context.webText;
+        return (personalia == null) ? '' : (
             <div className="association">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/association/160224-IME-149.jpg'} transformY='0%' overlay='dark'/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -44,19 +82,19 @@ class Association extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading">Association</h2>
+                                        <h2 className="heading">{this.context.webText.social.association}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-8">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: intro}} />
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-4">
                                                     <div className="mb-3"><img src={process.env.PUBLIC_URL + '/img/association/logo.png'} alt="IME-Society" /></div>            
                                                     <h4>Documents</h4>
                                                     <ul>
-                                                        <li><a href={process.env.PUBLIC_URL + '/pdf/association/satzung.pdf'}>Satzung</a></li>
-                                                        <li><a href={process.env.PUBLIC_URL + '/pdf/association/beitrittserklaerung.pdf'}>Mitgliedsantrag</a></li>
+                                                        <li><a href={process.env.PUBLIC_URL + '/pdf/association/Satzung_Stand_01.01.2018.pdf'}>Satzung</a></li>
+                                                        <li><a href={process.env.PUBLIC_URL + '/pdf/association/Beitrittserklaerung2.pdf'}>Mitgliedsantrag</a></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -64,10 +102,10 @@ class Association extends Component {
                                         </div>
                                     </div>
                                     <div id="personal" className="py-3">
-                                        <h2 className="heading">Personalia</h2>
+                                        <h2 className="heading">{texts.social.personalia}</h2>
                                         <div className="row">
                                             <div className="py-2 col-12">
-                                                {localStorage.getItem('lang') == 'ge'
+                                                {/* {localStorage.getItem('lang') == 'ge'
                                                 ? <table className="table table-striped table-bordered">
                                                 <tbody>
                                                     <tr>
@@ -97,7 +135,7 @@ class Association extends Component {
                                                     <tr>
                                                     <th>Info / Kontakt</th>
                                                     <td>Mrs. Nadine Hellmann<br/>
-                                                    <a href="mailto: 	ikoren@ime-aachen.de"> 	ikoren@ime-aachen.de</a>
+                                                    <a href="mailto: 	nhellmann@ime-aachen.de">nhellmann@ime-aachen.de</a>
                                                     </td>
                                                     </tr>
                                                 </tbody>
@@ -131,22 +169,19 @@ class Association extends Component {
                                                     <tr>
                                                     <th>Info / Contact</th>
                                                     <td>Mrs. Nadine Hellmann<br/>
-                                                    <a href="mailto: 	ikoren@ime-aachen.de"> 	ikoren@ime-aachen.de</a>
+                                                    <a href="mailto: 	nhellmann@ime-aachen.de">nhellmann@ime-aachen.de</a>
                                                     </td>
                                                     </tr>
                                                 </tbody>
                                                 </table>
-                                                }
-                                                
+                                                } */}
+                                                <div dangerouslySetInnerHTML={{__html: personalia.txt}} />
                                             </div>
                                         </div>
                                     </div>
                                     <div id="annual-meeting" className="py-3 pb-5">
-                                        <h2 className="heading">{(localStorage.getItem('lang')) == 'ge' ? 'Jahrestreffen' : 'Yearly Meetings'}</h2>
-                                        {localStorage.getItem('lang') == 'ge'
-                                        ? <p>Traditionell findet jeden ersten Freitag im November das Absolvententreffen des IME statt. Dieses bietet Gelegenheit für einen Institutsrundgang und zur Teilnahme an der Mitgliederversammlung des Vereins „Freunde des IME e.V.“. Am Abend erfolgt die Verleihung der Studienförderpreise und der Preise für exzellente Masterarbeit der Aurubis AG und des Vereins. </p>
-                                        : <p>Traditionally, the IME graduate meeting takes place every first Friday in November. This gives an opportunity to do a round-trip through the institute and to participate in the annual meeting of the association "Friends of IME e.V.". In the evening, the research funding awards and the prizes for excellent master thesis of Aurubis AG and the association are presented as well. </p>
-                                        }                                    
+                                        <h2 className="heading">{texts.social.yearly_meetings}</h2>
+                                        <div dangerouslySetInnerHTML={{__html: yearlymeetings}} />
                                         {meetings.map((elm) => {
                                             if (elm.pics == undefined) return;
                                             return (
@@ -157,7 +192,7 @@ class Association extends Component {
                                                     <p className="gallery-row">
                                                         {elm.pics.map((e, i) => (
                                                             <StyledPopup key={i} className="border rounded">
-                                                            <img src={process.env.PUBLIC_URL + '/img/albums/' + elm.file_name + '/' + e} alt={elm.name_eng} />
+                                                            <img src={process.env.PUBLIC_URL + '/img/albums/' + elm.file_name + '/' + e.pic} alt={elm.name_eng} />
                                                             </StyledPopup>
                                                         ))}
                                                         {/* <StyledPopup className="border rounded">
@@ -244,5 +279,6 @@ class Association extends Component {
         );
     }
 }
+Association.contextType = globalLangStateContext;
 
 export default withLangSwitchListener(Association);

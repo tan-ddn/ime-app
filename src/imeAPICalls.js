@@ -26,7 +26,7 @@ class imeAPICalls {
 
     // Call endpoint
     async callEndpoint(endpoint = '', config = {}, paramObj = {}) {
-        let url = new URL("http://" + window.location.hostname + "/ime-rest-api/index.php/"+endpoint);
+        let url = new URL("https://" + window.location.hostname + "/ime-rest-api/index.php/"+endpoint);
         //let fetchConfig = config;
         if (paramObj) {
             url.search = new URLSearchParams(paramObj).toString();
@@ -107,7 +107,7 @@ class imeAPICalls {
 
     // Handle upload request | Not working
     async uploadFile(formUpload) {
-        let url = new URL("http://" + window.location.hostname + "/ime-rest-api/controller/upload.php");
+        let url = new URL("https://" + window.location.hostname + "/ime-rest-api/controller/upload.php");
         // console.log(url);
         let response = await fetch(url, {
             method: 'PUT',

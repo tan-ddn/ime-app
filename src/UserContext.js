@@ -5,7 +5,9 @@ import React from 'react';
 //Language global state
 export const defaultLangGlobalState = {
     lang: (localStorage.getItem('lang') === null) ? 'en' : localStorage.getItem('lang'),
-    // webText: (localStorage.getItem('lang') === 'ge') ? ge : en,
+    webText: null,
+    language: (localStorage.getItem('lang') === 'en') ? 2 : 1,
+    updateLanguage: () => {},
 };
 export const globalLangStateContext = React.createContext(defaultLangGlobalState);
 export const dispatchLangStateContext = React.createContext(undefined);

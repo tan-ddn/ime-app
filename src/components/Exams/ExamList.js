@@ -31,7 +31,7 @@ export default class ExamList extends ResponsiveComponent {
                     <tr key={index}>{elm.fach}
                         <td>{index}</td>
                         <td>{elm.k_f_fach}</td>
-                        <td><a href={elm.k_u_pdf}>{elm.k_u_titel}</a></td>
+                        <td><a href={process.env.PUBLIC_URL + '/pdf/exam/' + elm.k_u_pdf}>{elm.k_u_titel}</a></td>
                     </tr>
                 )
             })

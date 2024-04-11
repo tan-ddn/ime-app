@@ -13,6 +13,11 @@ class EquipmentSingle extends ResponsiveComponent {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.content !== prevProps.content) {
+            this.setState({content: this.props.content});
+        }
+    }
 
     render() {
         let className = "equipment-box col-12 col-md-6 py-3 " + this.props.className;

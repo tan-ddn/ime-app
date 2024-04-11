@@ -5,7 +5,11 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import HeaderBanner from '../HeaderBanner';
 import HistoryTimeline from '../History/HistoryTimeline';
 import ResearchFeatures from '../Research/ResearchFeatures';
+import Lightbox from 'react-image-lightbox';
 import { Link } from 'react-router-dom';
+import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 let intro = '<p>Das IME Metallurgische Prozesstechnik und Metallrecycling – Institut und Lehrstuhl der RWTH Aachen (Kurzform: IME) an der RWTH Aachen University ist ein Lehr- und Forschungsinstitut im Bereich der metallurgischen Gewinnung, dem Recycling, der Veredelung und der Synthese von Nichteisenmetallen und Legierungen. Aktuelle Forschungsschwerpunkte fokussieren sich stark auf Aktivitäten zur Circular economy (deutsch: Kreislaufwirtschaft).</p><p>So werden in laufenden Forschungsvorhaben metallurgische Prozesse entwickelt, die ein nachhaltiges Wirtschaften metallhaltiger Abfall- und Reststoffe ermöglichen und damit die Rohstoffversorgung im europäischen Wirtschaftsraum stärken. Das IME ist in die Fachgruppe für „Materialwissenschaft und Werkstofftechnik“ (MuW) der Fakultät für Georessourcen und Materialtechnik eingebunden.</p>';
@@ -19,101 +23,140 @@ let pre_u_koo = '<p>Das IME wurde mehrmals für seine wissenschaftlichen Leistun
 let lehrangebot = '<ul><li>Der sich in den vergangenen Jahren vollzogene Strukturwandel in der Metallindustrie hatte auch gravierende Auswirkungen auf die Ingenieursqualifikation. Insbesondere kleinere und mittelständische Unternehmen (KMU) forderten verstärkt fachübergreifende Fähigkeiten. Folglich ist ein Ingenieur auszubilden, der in der Lage ist durch Kombination fundierter Kenntnisse in Metallurgie, Anlagenbau und Informatik, die Entwicklung und Optimierung metallurgischer Prozesse sowie von Metalllegierungen zu ermöglichen.</li><li>Das praxisnah gestaltete Studium der Nichteisenmetallurgie in der Fachgruppe „Materialwissenschaft und Werkstofftechnik“ soll diesen Anforderungen entsprechen. Dabei soll auf die Befähigung sowohl zur Entwicklung von Verfahren zur Herstellung innovativer metallischer Werkstoffe als auch zu deren Recycling ein wesentliches Augenmerk gelegt werden. Das Lehrangebot des IME richtet sich vornehmlich an Studierende des Werkstoffingenieurwesens, sowie der Studiengänge des Wirtschaftsingenieurwesen (Schwerpunkt Werkstoff- und Prozesstechnik) und des Umweltingenieurwesens (Schwerpunkt Rohstofftechnik). Diese werden an der RWTH Aachen in einem 6-semestrigen Bachelor-/4-semestrigen Masterstudiengang oder in einem 4-semestrigen englischsprachigen Aufbaustudiengang zum „Master in Metallurgical Engineering“ ausgebildet.</li><li>In allen drei Studiengängen werden die Schwerpunkte Thermische Gewinnungsverfahren, Thermische Raffinationsverfahren und Hydrometallurgie angeboten. Ferner runden die Wahlfächer „Ressourceneffizienz beim Metallrecycling“, „Metallurgie und Eigenschaften von Al-Schmelzen“, „Planung und Wirtschaftlichkeit metallurgischer Anlagen“ und „Die Wertschöpfungskette der Seltenen Erden (SE)- Gewinnung und Recycling“ das Lehrangebot des Institutes ab.</li></ul>';
 
 export default class About extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
-            forsgeb: forsgeb,
-            pre_u_koo: pre_u_koo,
-            lehrangebot: lehrangebot
+            records: {},
+            organigram: {},
+            isPopup: false,
         }
-    }    
-    
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData() {
+        this.APICalls.get({ endpoint: 'Texts', meta: 'AboutUs' }).then((res) => {
+            this.setState({ records: res });
+        });
+        this.APICalls.get({ endpoint: 'Texts', meta: 'Organigram' }).then((res) => {
+            this.setState({ organigram: res });
+        });
+    }
+
+    popupImage = (e) => {
+        e.preventDefault();
+        this.setState({isPopup: true});
+    }
+
     render() {
-        let see_all_awards = 'See all awards &#187;';
-        if (localStorage.getItem('lang') === 'ge') {
-            see_all_awards = 'See all awards &#187;';
+        if (!this.context.webText) return '';
+        let context = this.context;
+        let intro = '', forsgeb = {}, pre_u_koo = '', lehrangebot = '';
+        if (this.state.records.success) {
+            let record = this.state.records.results.filter(e => e.sprache == context.language);
+            intro = record.find(x => x.field == 'aboutus').txt;
+            forsgeb = {
+                field1: record.find(x => x.field == 'researchareas1').txt,
+                field2: record.find(x => x.field == 'researchareas2').txt,
+                field3: record.find(x => x.field == 'researchareas3').txt,
+                greentxt: record.find(x => x.field == 'researchareasgreen').txt
+            }
+            pre_u_koo = record.find(x => x.field == 'awards').txt;
+            lehrangebot = record.find(x => x.field == 'course').txt;
+            // console.log(intro);
         }
-        return(
+        let webText = context.webText.about, organigram = null;
+        // console.log(webText, this.state.isPopup);
+        if (this.state.organigram.success) {
+            organigram = this.state.organigram.results.filter(e => e.sprache == context.language)[0].txt;
+        }
+        return (organigram == null) ? '' : (
             <div className="about">
-                <HeaderBanner img={process.env.PUBLIC_URL + '/img/about/IME_Gebaeude_Juni_2004-027.jpg'} transformY='-15%'/>
+                <HeaderBanner img={process.env.PUBLIC_URL + '/img/about/IME_Gebaeude_Juni_2004-027.jpg'} transformY='-15%' />
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
                     <div id="" role="article" className="main-content">
                         {/* <FacultyStage/> */}
                         <div id="wrapper-2-outer0">
-                        <div id="wrapper">
-                            {/*googleon: all*/}
-                            <div className="">
-                                <div className="content" role="article">
-                                    <div id="intro" className="py-3">
-                                        <h2 className="heading">About Us</h2>
-                                        <div className="intro-wrap p-4 bg-grey">
-                                        <div className="px-2">
-                                            <div className="row">
-                                                <div className="py-2 col-12 col-sm-8">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-4">
-                                                <figure>
-                                                    <img src={process.env.PUBLIC_URL + '/img/about/IME_Gebaeude_Juni_2004-011.jpg'} alt="Building of the IME" />
-                                                    <figcaption>Building of the IME</figcaption>
-                                                </figure>
+                            <div id="wrapper">
+                                {/*googleon: all*/}
+                                <div className="">
+                                    <div className="content" role="article">
+                                        <div id="intro" className="py-3">
+                                            <h2 className="heading">{webText.title}</h2>
+                                            <div className="intro-wrap p-4 bg-grey">
+                                                <div className="px-2">
+                                                    <div className="row">
+                                                        <div className="py-2 col-12 col-sm-8">
+                                                            <div className="" dangerouslySetInnerHTML={{ __html: intro }} />
+                                                        </div>
+                                                        <div className="py-2 col-12 col-sm-4">
+                                                            <figure>
+                                                                <img src={process.env.PUBLIC_URL + '/img/about/IME_Gebaeude_Juni_2004-011.jpg'} alt="Building of the IME" />
+                                                                {/* <figcaption>Building of the IME</figcaption> */}
+                                                            </figure>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        </div>
-                                    </div>
-                                    <div id="organization" className="py-3">
-                                        <h2 className="heading">Our Organization</h2>
-                                        <div className="py-3">
-                                            <div className="pdf-preview organization-img">
-                                                <img src={process.env.PUBLIC_URL + '/img/about/ime_orgaenisaet_id_2511.jpg'} alt="IME Organization"/>
-                                                {/* <Document file={process.env.PUBLIC_URL + '/img/about/ime_orgaenisaet_id_2511.pdf'} renderMode="svg"
+                                        <div id="organization" className="py-3">
+                                            <h2 className="heading">{webText.our_organization}</h2>
+                                            <div className="py-3">
+                                                <a className="d-block pdf-preview organization-img" href="#" onClick={this.popupImage}>
+                                                    <img src={process.env.PUBLIC_URL + '/img/about/' + organigram} alt="IME Organization" />
+                                                    {this.state.isPopup &&
+                                                        <Lightbox mainSrc={process.env.PUBLIC_URL + '/img/about/' + organigram} onCloseRequest={() => this.setState({ isPopup: false })} />
+                                                    }
+                                                    {/* <Document file={process.env.PUBLIC_URL + '/img/about/ime_orgaenisaet_id_2511.pdf'} renderMode="svg"
                                                     // onLoadSuccess={onDocumentLoadSuccess}
                                                 > */}
                                                     {/* <Page pageNumber={pageNumber} /> */}
                                                     {/* <Page pageNumber={1} />
                                                 </Document> */}
-                                                {/* <p>Page {pageNumber} of {numPages}</p> */}
+                                                    {/* <p>Page {pageNumber} of {numPages}</p> */}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="research" className="py-3">
+                                            <h2 className="heading">{webText.research_areas}</h2>
+                                            <ResearchFeatures forsgeb={forsgeb} />
+                                        </div>
+                                        <div id="awards" className="pt-4">
+                                            <h2 className="heading">{webText.awards_cooperations}</h2>
+                                            <div className="awards-wrap p-4 bg-grey">
+                                                <div className="p-2">
+                                                    <p className='font-weight-bold'>
+                                                        <Link to={'/preise'} dangerouslySetInnerHTML={{ __html: webText.see_all_awards }} />
+                                                    </p>
+                                                    <div className="" dangerouslySetInnerHTML={{ __html: pre_u_koo }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="courses" className="pt-4">
+                                            <h2 className="heading">{webText.courses_offer}</h2>
+                                            <div className="awards-wrap p-40 bg-grey0">
+                                                <div className="py-2">
+                                                    <div className="ml-2" dangerouslySetInnerHTML={{ __html: lehrangebot }} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="history" className="py-3">
+                                            <h2 className="heading">{webText.our_history}</h2>
+                                            <div className="pb-3">
+                                                <HistoryTimeline />
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="research" className="py-3">
-                                        <h2 className="heading">Research Areas</h2>
-                                        <ResearchFeatures forsgeb={this.state.forsgeb} />
-                                    </div>
-                                    <div id="awards" className="pt-4">
-                                        <h2 className="heading">Awards and Cooperations</h2>
-                                        <div className="awards-wrap p-4 bg-grey">
-                                        <div className="p-2">
-                                            <p className='font-weight-bold'>
-                                                <Link to={'/preise'} dangerouslySetInnerHTML={{__html: see_all_awards}} />
-                                            </p>
-                                            <div className="" dangerouslySetInnerHTML={{__html: this.state.pre_u_koo}} />
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div id="courses" className="pt-4">
-                                        <h2 className="heading">Courses Offer</h2>
-                                        <div className="awards-wrap p-40 bg-grey0">
-                                        <div className="py-2">
-                                            <div className="ml-2" dangerouslySetInnerHTML={{__html: this.state.lehrangebot}} />
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div id="history" className="py-3">
-                                        <h2 className="heading">Our History</h2>
-                                        <div className="pb-3">
-                                        <HistoryTimeline/>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                            {/* <p className="to-top-link">
+                                {/* <p className="to-top-link">
                             <a href="#">top</a>
                             </p> */}
-                        </div>
+                            </div>
                         </div>
                     </div>
                     {/* <RightSidebar/> */}
@@ -122,3 +165,4 @@ export default class About extends Component {
         );
     }
 }
+About.contextType = globalLangStateContext

@@ -31,7 +31,7 @@ export default class NewsletterImage extends Component {
     render() {
         let pdf = '';
         if (this.state.data.success) {
-            pdf = process.env.PUBLIC_URL + '/pdf/ime_aktuell/'+this.state.data.results[0].pdfname;
+            pdf = process.env.PUBLIC_URL + '/pdf/ime_aktuell/'+this.state.data.results[0].pdf;
             // console.log(pdf);
         }
         return (

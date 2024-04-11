@@ -27,7 +27,7 @@ class Db {
     }
 
     async queryByGet(paramObj) {
-        let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/get.php");
+        let url = new URL("https://" + window.location.hostname + "/ime-app-be/models/get.php");
         // url.search = this.search;
         url.search = new URLSearchParams(paramObj).toString();
         console.log(url);
@@ -90,7 +90,7 @@ class Db {
 
 
     async queryByPost(dataObj) {
-        let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
+        let url = new URL("https://" + window.location.hostname + "/ime-app-be/models/post.php");
         // console.log(url);
         let data = JSON.stringify(dataObj);
         console.log(data);
@@ -125,7 +125,7 @@ class Db {
     }
 
     async uploadFile(formUpload) {
-        let url = new URL("http://" + window.location.hostname + "/ime-app-be/models/post.php");
+        let url = new URL("https://" + window.location.hostname + "/ime-app-be/models/post.php");
         // console.log(url);
         let response = await fetch(url, {
             method: 'POST',

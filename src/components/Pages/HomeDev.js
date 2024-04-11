@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import MainContent from '../MainContent';
 import HeaderBanner from '../HeaderBanner';
+import MainContentDev from '../MainContentDev';
+import HeaderBannerDev from '../HeaderBannerDev';
 
-export default class Home extends Component {
+export default class HomeDev extends Component {
     componentDidMount() {
         document.body.classList.add('home');
     }
@@ -14,7 +16,7 @@ export default class Home extends Component {
     render() {
         return(
             <div className="home">
-                <HeaderBanner id="home-banner" greenLogo={true} transformX={'10px'} />
+                <HeaderBannerDev id="home-banner" greenLogo={true} transformX={'10px'} />
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
                     <div id="" role="article" className="main-content">
@@ -23,7 +25,7 @@ export default class Home extends Component {
                         <div id="wrapper">
                             {/*googleon: all*/}
                             <div className="">
-                            <MainContent/>
+                            <MainContentDev/>
                             </div>
                             {/* <p className="to-top-link">
                             <a href="#">top</a>

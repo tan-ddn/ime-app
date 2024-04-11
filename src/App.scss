@@ -26,8 +26,10 @@ img {
 }
 
 .footer-container {
-  max-width: calc(#{$max_width_0} - 170px);
+  max-width: calc(#{$max_width_0} - 0px);
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .container {
@@ -104,7 +106,7 @@ img {
   font-size: 1.4em;
   position: fixed;
   right: 15px;
-  bottom: 15px;
+  bottom: 70px;
   width: 35px;
   height: 35px;
   // border-radius: 50%;
@@ -209,6 +211,10 @@ ul {
   }
 }
 
+iframe {
+  max-width: 100%;
+}
+
 .box-title {
   color: $color2;
   font-weight: 600;
@@ -245,6 +251,10 @@ ul {
   padding: 5px 10px;
   margin: 10px 0;
   border-bottom: 1px solid $color1;
+}
+
+.btn {
+  text-transform: capitalize;
 }
 
 .btn-primary,
@@ -606,14 +616,33 @@ a.btn-primary {
     color: #fff;
 
     .dropdown-menu {
+      text-align: center;
+      width: max-content;
+      width: fit-content;
       border-radius: 0;
-      transform: translate(0, 100%) !important;
+      // padding: 0;
+      left: -50%;
+      right: -50%;
+      padding: 0;
+      margin: auto;
+      transform: translate(-50px, 30px) !important;
+
+      @include media-breakpoint-up(lg) {
+        text-align: left;
+        // padding: 10px 0;
+        left: 0;
+        margin: 0;
+        transform: translate(-20px, 30px) !important;
+      }
 
       .dropdown-item {
         display: block;
         width: auto;
+        padding: 0.5rem 10px;
+        margin: 0 !important;
 
         a {
+          font-size: .9em;
           width: 100%;
         }
       }
@@ -639,12 +668,12 @@ a.btn-primary {
         a {
           display: inline-block;
           color: #fff;
-          font-size: 1.1em;
+          // font-size: 1.1em;
           font-weight: 500;
           text-decoration: none;
 
           &.dropdown-toggle {
-            padding: 0 0 0 10px;
+            padding: 0 0 0 5px;
           }
         }
       }
@@ -657,7 +686,7 @@ a.btn-primary {
         background-color: transparent;
 
         li {
-          margin: 0 12px;
+          margin: 0 8px;
 
           a {
             color: #111;
@@ -673,6 +702,7 @@ a.btn-primary {
       }
 
       &.style3 {
+        min-width: 170px;
         max-width: 180px;
         padding: 0;
         position: relative;
@@ -796,6 +826,15 @@ a.btn-primary {
   }
 
   .wrapper {
+    .video {
+      position: relative;
+      z-index: 1;
+      top: 0;
+      width: 100%;
+      height: 0;
+      padding-bottom: 42.18%;
+      overflow: hidden;
+    }
     .image {
       position: relative;
       width: 100%;
@@ -1038,7 +1077,9 @@ a.btn-primary {
     position: relative;
 
     &>div.footer-container {
+      max-width: calc(#{$max_width_0} - 50px);
       transform: translateX(-85px);
+      transform: translateX(-25px);
     }
 
     .footer-logo-wrap {
@@ -1154,6 +1195,34 @@ a.btn-primary {
 }
 
 // General styles for components
+.news1-list {
+  // font-size: .9em;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: calc(100% - 50px);
+  overflow: hidden;
+  // border-top: 1px solid rgba($color2,.3);
+  position: relative;
+
+  &:after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 15%;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 255));
+  }
+
+  li {
+    padding: 8px 0;
+    border-top: 1px solid rgba($color2, .3);
+  }
+}
+
 #home-news {
   .main-row {
     .events-box {
@@ -1296,11 +1365,11 @@ a.btn-primary {
   .react-pdf__Page__svg {
     width: auto !important;
     height: auto !important;
+  }
 
-    svg {
-      width: 100%;
-      height: auto;
-    }
+  svg, canvas {
+    width: 100%!important;
+    height: auto!important;
   }
 
   .preview-btn {
@@ -1430,6 +1499,22 @@ a.btn-primary {
   }
 }
 
+.team-img {
+  border-radius: 0px;
+  border: 1px solid #999;
+  overflow: hidden;
+}
+
+.organization-img {
+  @include img-container(70%, contain);
+  border-radius: 10px;
+  border: 1px solid #999;
+}
+
+.research-img {
+  @include img-container(70%, contain);
+}
+
 .preise-img {
   @include img-container(70%, contain);
   border-radius: 10px;
@@ -1444,6 +1529,7 @@ a.btn-primary {
 
 .b-pagi {
   display: flex;
+  flex-wrap: wrap;
   list-style: none;
   padding: 0;
   margin: 20px 0;
@@ -1458,6 +1544,8 @@ a.btn-primary {
   }
 
   .page-item {
+    padding: 2px 0;
+
     &.active {
       .page-link {
         border-color: $color1;
@@ -1472,6 +1560,22 @@ a.btn-primary {
       display: block;
       padding: .5rem .75rem;
     }
+  }
+}
+
+.instagram-wrap {
+  margin: 10px 0;
+  border: 1px solid #434648;
+  border-radius: 5px;
+
+  &>* {
+    width: 200px !important;
+    min-width: 190px !important;
+    height: 300px !important;
+    margin: 10px auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    /* overflow-y: scroll!important; */
   }
 }
 
@@ -1519,6 +1623,7 @@ a.btn-primary {
       }
 
       ol.toc.style3 {
+        min-width: 130px;
         max-width: 140px;
 
         &:after {
@@ -1533,6 +1638,7 @@ a.btn-primary {
           a {
             img {
               height: 20px;
+              width: 20px;
             }
           }
         }
@@ -1544,6 +1650,12 @@ a.btn-primary {
     .wrapper {
       .image {
         padding-bottom: calc(38vh + 35%);
+
+        img {
+          max-width: 200%;
+          min-height: 100%;
+          max-height: 150%;
+        }
       }
     }
 
@@ -1572,8 +1684,9 @@ a.btn-primary {
   #site-footer {
     #before-site-info {
       &>div.footer-container {
-        width: calc(100% - 120px);
-        transform: translateX(-30px);
+        width: calc(100% - 100px);
+        transform: translateX(-50px);
+        padding-left: 20px;
       }
     }
   }

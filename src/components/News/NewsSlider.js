@@ -7,6 +7,7 @@ import './news-slider.scss';
 import SanitizedHTML from 'react-sanitized-html';
 import StringHandle from '../../utility/stringHandle';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { globalLangStateContext } from '../../UserContext';
 
 // const slides = [
 //     {
@@ -46,7 +47,8 @@ class NewsSlider extends Component {
     // console.log(this.props.slides);
     let Slides = [{titel_eng: 'Loading...'}]
     if (this.props.slides) Slides = this.props.slides;
-    return (
+    let texts = (this.context) ? this.context.webText : null;
+    return (texts == null) ? '' : (
         <div id="" className={classText} style={{height: `${this.props.height}`, margin: '15px 0'}}>
             <Slider autoplay={4000}
                 classNames={{
@@ -59,7 +61,7 @@ class NewsSlider extends Component {
                 // let textEng = textEngArray.join(' ');
                 let title = item.titel_eng;
                 let text = StringHandle.extract(item.text_eng, 18);
-                let image = process.env.PUBLIC_URL + '/img/news/' + item.pic;
+                let image = this.props.imgFolder + item.pic;
                 if (localStorage.getItem('lang') === 'ge') {
                     title = item.titel;
                     text = StringHandle.extract(item.text, 18);
@@ -73,10 +75,15 @@ class NewsSlider extends Component {
 						<h1 className="title">{title}</h1>
 						{/* <p className="article-text" dangerouslySetInnerHTML={{__html: sanitizeHtml(textEng)+' ...'}} /> */}
                         <SanitizedHTML className="article-text" html={ text+' ...' } />
-                        <Link to={"/news#"+item.id} className="btn btn-primary" >
-                            {this.props.webText.button.read_more}
+                        {this.props.externalUrl
+                            ? (<a href={item.buttonUrl} className="btn btn-primary">
+                                {texts.button.read_more}
+                            </a>)
+                            : (<Link to={this.props.urlStart+item.id} className="btn btn-primary" >
+                                {texts.button.read_more}
                             {/* {item.button} */}
-                        </Link>
+                            </Link>)
+                        }
 					</div>
 				</div>
 			    )}
@@ -86,4 +93,5 @@ class NewsSlider extends Component {
     )
   }
 }
+NewsSlider.contextType = globalLangStateContext;
 export default withLangSwitchListener(NewsSlider);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
+import { globalLangStateContext } from '../../UserContext';
 import ResponsiveComponent from '../ResponsiveComponent';
 import './box.scss';
 // import Box from '../Box';
@@ -31,6 +32,7 @@ export default class NewsBox extends ResponsiveComponent {
 //     )
 //   }
     render() {
+        if (!this.context.webText) return '';
         let classText = "events-box news-box " + this.props.classNames;
         return (
             <div id="news-1" className={classText} style={{height: `${this.props.height}`}}>
@@ -56,3 +58,4 @@ export default class NewsBox extends ResponsiveComponent {
         )
     }
 }
+NewsBox.contextType = globalLangStateContext;

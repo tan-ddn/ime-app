@@ -9,12 +9,28 @@ import './custom.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const lang = (localStorage.getItem('lang')) ? localStorage.getItem('lang') : localStorage.setItem('lang', 'ge');
+//Fetch languageuage json files and import to localStorage
+const enText = fetch(process.env.PUBLIC_URL + '/lang/en.json')
+  .then((r) => r.json())
+  .then((data) => {
+    console.log(data);
+    localStorage.setItem('enText', JSON.stringify(data));
+  })
+const geText = fetch(process.env.PUBLIC_URL + '/lang/ge.json')
+  .then((r) => r.json())
+  .then((data) => {
+    localStorage.setItem('geText', JSON.stringify(data));
+  })
+
+Promise.all([lang, enText, geText]).then((res) => {
+  ReactDOM.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+})
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

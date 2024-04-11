@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
-import Db from '../../control/class.db';
+// import Db from '../../control/class.db';
 import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
 import ExamLogin from '../Exams/ExamLogin';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { Document, Page, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
@@ -20,6 +21,8 @@ class Study extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            intro: {},
+            thesisIntro: {},
             // data: Db.get({action: 'Job'}).then(res => res)
             data: {}
         }
@@ -30,9 +33,16 @@ class Study extends Component {
         this.APIcalls.get({ endpoint: 'job' }).then((res) => {
             this.setState({data: res});
         });
+        this.APIcalls.get({ endpoint: 'Texts', meta: 'Study' }).then((res) => {
+            this.setState({intro: res});
+        });
+        this.APIcalls.get({ endpoint: 'Texts', meta: 'ThesisTopic' }).then((res) => {
+            this.setState({thesisIntro: res});
+        });
     }
     
     render() {
+        if (!this.context.webText) return '';
         let jobs = [];
         let hiwi = [], bachelor = [], master = [], mini = [];
         if (this.state.data.success) {
@@ -60,6 +70,14 @@ class Study extends Component {
             // console.log(bachelor);
             // console.log(hiwi);
         }
+        let texts = this.context.webText;
+        let intro = '', thesisIntro = '';
+        if (this.state.intro.success) {
+            intro = this.state.intro.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
+        if (this.state.thesisIntro.success) {
+            thesisIntro = this.state.thesisIntro.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
         return jobs.length == 0 ? "Loading..." : (
             <div className="study">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/study/160224-IME-087.jpg'} transformY='5%' overlay='dark'/>
@@ -73,12 +91,12 @@ class Study extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading">Teaching</h2>
+                                        <h2 className="heading">{texts.study.teaching}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-8">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: (localStorage.getItem('lang') == 'ge') ? intro : intro_eng}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: intro}} />
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-4">
                                                 <img src={process.env.PUBLIC_URL + '/img/study/RWTHonline.png'} alt="RWTHonline" />
@@ -88,8 +106,8 @@ class Study extends Component {
                                         </div>
                                     </div>
                                     <div id="hiwi" className="py-3">
-                                        <h2 className="heading">HiWi Jobs</h2>
-                                        {localStorage.getItem('lang') == 'ge'
+                                        <h2 className="heading">{texts.study.hiwi_jobs}</h2>
+                                        {this.context.lang == 'ge'
                                         ? <div className="row">
                                             <div className="py-2 col-12">
                                                 <p>Am IME besteht die M&ouml;glichkeit als studentische Hilfskraft mit einem Arbeitsumfang von 5 bis 8 Stunden in der Woche sehr praxisnah zu arbeiten.</p>
@@ -143,7 +161,7 @@ class Study extends Component {
                                                 <div className="card-header" id="hiwi-heading-1">
                                                     <h4 className="mb-0">
                                                     <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#hiwi-1" aria-expanded="true" aria-controls="hiwi-1">
-                                                    Student worker
+                                                    {texts.study.hiwi_jobs}
                                                     </button>
                                                     </h4>
                                                 </div>
@@ -154,14 +172,11 @@ class Study extends Component {
                                         </div>
                                     </div>
                                     <div id="thesis" className="py-3">
-                                        <h2 className="heading">Open Thesis Topics</h2>
+                                        <h2 className="heading">{texts.study.open_thesis_topics}</h2>
                                         
                                         <div className="row">
                                             <div className="py-2 col-12">
-                                                {localStorage.getItem('lang') == 'ge'
-                                                ? <div><p>Das IME bietet Studierenden der Ingenieur- und Materialwissenschaften mit prozesstechnischem Hintergrund jederzeit Themen für Bachelor- oder Masterarbeiten, sowie Hauptseminare an. Unten aufgeführt finden Sie eine Auswahl aktueller Arbeitsthemen.</p><p>Nutzen Sie darüber hinaus auch die Möglichkeit unsere wissenschaftlichen Mitarbeiter zu kontaktieren oder sich nach einem Beratungstermin zu erkundigen. Wir finden für jeden ein interessantes und spannendes Thema.</p><p>Alle Bachelorkandidaten sollten bestenfalls die Klausur für das Basisfach bestanden haben. Ohne das nötige Grundverständnis ist die Anfertigung einer wissenschaftlichen Arbeit in einem so kurzen Zeitraum nicht ohne weiteres möglich. Eine Ausnahme bilden jedoch Themen der Nanogruppe, da die Grundlagen der Nanotechnologie nicht im Basisfach &quot;Metallurgie und Recycling&quot; vermittelt werden.</p></div>
-                                                : <p>The IME offers thesis topics to students of engineering and material sciences with a processing background at any time. Here you may find a selection of current thesis topics. You may also want to take the chance to contact our employees in order to make a personal appointment. We find interesting and exciting topics for everyone.</p>
-                                                }
+                                                <div dangerouslySetInnerHTML={{__html: thesisIntro}} />
                                             </div>
                                         </div>
                                         <div className="py-2 accordion" id="thesis-accordion">
@@ -169,7 +184,7 @@ class Study extends Component {
                                                 <div className="card-header" id="thesis-heading-1">
                                                     <h4 className="mb-0">
                                                     <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#thesis-1" aria-expanded="true" aria-controls="thesis-1">
-                                                    Master Thesis
+                                                    {texts.study.master_thesis}
                                                     </button>
                                                     </h4>
                                                 </div>
@@ -178,7 +193,7 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {master.map((elm, index) => {
-                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        let text = (this.context.lang == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
                                                         if (text == '') {text = elm.j_ueberschrift;}
                                                         if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
@@ -197,7 +212,7 @@ class Study extends Component {
                                                 <div className="card-header" id="thesis-heading-2">
                                                     <h4 className="mb-0">
                                                     <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#thesis-2" aria-expanded="true" aria-controls="thesis-2">
-                                                    Bachelor Thesis
+                                                    {texts.study.bachelor_thesis}
                                                     </button>
                                                     </h4>
                                                 </div>
@@ -206,7 +221,7 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {bachelor.map((elm, index) => {
-                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        let text = (this.context.lang == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
                                                         if (text == '') {text = elm.j_ueberschrift;}
                                                         if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
@@ -222,7 +237,7 @@ class Study extends Component {
                                                 <div className="card-header" id="thesis-heading-3">
                                                     <h4 className="mb-0">
                                                     <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#thesis-3" aria-expanded="true" aria-controls="thesis-3">
-                                                    Minithesis
+                                                    {texts.study.minithesis}
                                                     </button>
                                                     </h4>
                                                 </div>
@@ -231,7 +246,7 @@ class Study extends Component {
                                                     <div className="py-2 col-12 col-sm-">
                                                     <ul>
                                                     {mini.map((elm, index) => {
-                                                        let text = (localStorage.getItem('lang') == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
+                                                        let text = (this.context.lang == 'ge') ? elm.j_ueberschrift : elm.j_ueberschrift_eng;
                                                         if (text == '') {text = elm.j_ueberschrift;}
                                                         if (text == '') {text = elm.j_ueberschrift_eng;}
                                                         return (
@@ -246,7 +261,7 @@ class Study extends Component {
                                         </div>
                                     </div>
                                     <div id="exams" className="py-3 pb-5">
-                                        <h2 className="heading">Exams</h2>
+                                        <h2 className="heading">{texts.study.mock_exams}</h2>
                                         <ExamLogin />
                                     </div>
                                 </div>
@@ -263,4 +278,5 @@ class Study extends Component {
         );
     }
 }
+Study.contextType = globalLangStateContext;
 export default withLangSwitchListener(withRouter(Study));

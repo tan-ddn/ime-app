@@ -10,20 +10,17 @@ import ProfileDetails from '../Team/ProfileDetails';
 import withGetDb from '../../control/withGetDb';
 import PubSocial from '../Team/PubSocial';
 import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
 
 let intro = '<dl><dt>Job:</dt><dd>Professor</dd><dt>Topic:</dt><dd>Head of the institute</dd></dl>';
 
 const APIcalls = new imeAPICalls();
 const ProfileDetailsGetDb = withGetDb(
     ProfileDetails,
-    // (Db, props) => Db.getWithId('ProfileDetails', props.id)
-    // (Db, props) => Db.get({action: 'ProfileDetails', id: props.id})
     (props) => APIcalls.get({ endpoint: 'Team/Member', id: props.id})
 );
 const PubSocialGetDb = withGetDb(
     PubSocial,
-    // (Db, props) => Db.getWithId('PubSocialLinks', props.id)
-    // (Db, props) => Db.get({action: 'PubSocialLinks', id: props.id})
     (props) => APIcalls.get({ endpoint: 'Team/PubSocialLinks', id: props.id})
 );
 
@@ -33,17 +30,36 @@ class TeamProfile extends Component {
         this.state = {
             id: this.props.match.params.id,
             intro: intro,
+            hasPublication: false,
             // groups: Constants.groups,
             // publications: Constants.publications
         }
     }    
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props != prevProps) {
+            this.fetchData();
+        }
+    }
+
+    fetchData() {
         const id = this.props.match.params.id;
         this.setState({id: id});
+        APIcalls.get({endpoint: 'Team/HasPublication', id: id}).then((res) => {
+            if (res.hasPublication == 1) {
+                this.setState({ hasPublication: true });
+            } else {
+                this.setState({ hasPublication: false });
+            }
+        });
     }
     
     render() {
+        if (!this.context.webText) return '';
         // let profileId = this.props.match.params.id;
         // const profile = this.state.groups[0].members.find(elm => elm.id == profileId);
         // console.log(profile);
@@ -64,7 +80,8 @@ class TeamProfile extends Component {
                                         <ProfileDetailsGetDb id={this.state.id} />
                                     </div>
                                     <div id="publications" className="py-3">
-                                        <h2 className="heading">Publications</h2>
+                                    {(this.state.hasPublication) && <>
+                                        <h2 className="heading">{this.context.webText.publications.title}</h2>
                                         <div className="row">
                                             <div className="col-8"></div>
                                             <div className="col-4">
@@ -72,6 +89,7 @@ class TeamProfile extends Component {
                                             </div>
                                         </div>
                                         <PublicationTable thead="1" teamId={this.state.id} className="mt-3"/>
+                                    </>}
                                     </div>
                                 </div>
                             </div>
@@ -84,4 +102,5 @@ class TeamProfile extends Component {
         );
     }
 }
+TeamProfile.contextType = globalLangStateContext;
 export default withRouter(TeamProfile);

@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import Db from '../../control/class.db';
 import EquipmentSubcat from '../Equipment/EquipmentSubcat';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
 
 // let categories = [
 //     {
@@ -110,24 +112,37 @@ let category = {
 };
 
 class EquipmentCategory extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
             // category: category
             id: null,
-            categories: Db.get({action: 'EquipCat'}).then(res => res)
+            categories: {}            
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get({action: 'EquipCat'}).then((res) => {
+        // Db.get({action: 'EquipCat'}).then((res) => {
+        //     this.setState({categories: res});
+        // });
+        this.APICalls.get({endpoint: 'Equipment/Technology'}).then(res => {
             this.setState({categories: res});
         });
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            const id = this.props.match.params.id;
+            this.setState({id: id});
+        }
+    }
     
     render() {
+        if (!this.context.webText) return '';
         let categories = [];
         let cat = {
             typ: '',
@@ -144,10 +159,10 @@ class EquipmentCategory extends Component {
                     cat = elm;
                 }
             })
-            //console.log(cat);
+            console.log(cat);
         }
         // let subCat = Array();
-        // this.state.category.subcat.forEach((elm, index) => {
+        // category.subcat.forEach((elm, index) => {
         //     subCat[index] = Object.assign({}, elm);
         //     subCat[index].equipment.forEach((e, i) => {
         //         // delete e.image;
@@ -155,7 +170,8 @@ class EquipmentCategory extends Component {
         //     });
         // });
         // console.log(subCat);
-        return cat.typ == '' ? <span>Loading...</span> : (
+        let texts = (this.context) ? this.context.webText : null;
+        return (cat.typ == '' || texts == null) ? <span>Loading...</span> : (
             <div className="equipment-cat">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-208.jpg'} transformY='0%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -170,10 +186,10 @@ class EquipmentCategory extends Component {
                                     <div className="row py-3">
                                         <div className="col-12 col-md-3">
                                             {/* <Tabs/> */}
-                                            <SideNav heading="Categories" content={categories} />
+                                            <SideNav heading={this.context.webText.equipment.categories} content={categories} />
                                         </div>
                                         <div className="col-12 col-md-9">
-                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">Equipement</Link> <span className="text-dark">&#187; {(localStorage.getItem('lang') == 'ge') ? cat.typ : cat.typ_eng}</span> </h2>
+                                            <h2 className="heading"><Link className="d-inline-block " to="/equipment">{texts.equipment.title}</Link> <span className="text-dark">&#187; {(this.context.lang == 'ge') ? cat.typ : cat.typ_eng}</span> </h2>
                                             <EquipmentSubcat cat={cat.typ} />
                                         </div>
                                     </div>
@@ -188,4 +204,5 @@ class EquipmentCategory extends Component {
         );
     }
 }
+EquipmentCategory.contextType = globalLangStateContext;
 export default withLangSwitchListener(withRouter(EquipmentCategory));

@@ -7,46 +7,47 @@ import Box from '../Boxes/Box';
 import '../Equipment/equipment.scss';
 import Db from '../../control/class.db';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
 
 let intro_eng = '<p>IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures below. </p>';
 let intro = '<p>Das IME verf&uuml;gt &uuml;ber eine umfangreiche und moderne Anlagenausstattung. Ein virtueller Rundgang ist momentan in Arbeit. Um sich &uuml;ber konkrete Ausstattungsbereiche zu informieren, besteht hier die M&ouml;glichkeit, unsere Flyer herunterzuladen.</p>';
 
 const slides = [
-    {
-        titel_eng: 'Flyer',
-        text_eng: 'IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures here.',
-        titel: 'Flyer',
-        text: 'Das IME verf&uuml;gt &uuml;ber eine umfangreiche und moderne Anlagenausstattung. Ein virtueller Rundgang ist momentan in Arbeit. Um sich &uuml;ber konkrete Ausstattungsbereiche zu informieren, besteht hier die M&ouml;glichkeit, unsere Flyer herunterzuladen.',
-        button: '',
-        buttonUrl: '',
-        image: process.env.PUBLIC_URL + '/img/equipment/ausstattung.png'
-    },
+    // {
+    //     titel_eng: 'Flyer',
+    //     text_eng: 'IME has a broad variety of modern equipment available. A virtual tour is being created at the moment. To inform yourself on a specific area, you can download our information brochures here.',
+    //     titel: 'Flyer',
+    //     text: 'Das IME verf&uuml;gt &uuml;ber eine umfangreiche und moderne Anlagenausstattung. Ein virtueller Rundgang ist momentan in Arbeit. Um sich &uuml;ber konkrete Ausstattungsbereiche zu informieren, besteht hier die M&ouml;glichkeit, unsere Flyer herunterzuladen.',
+    //     button: false,
+    //     pic: 'ausstattung.png'
+    // },
     {
         titel_eng: 'IME (Introduction)',
         text_eng: '',
         titel: 'IME (Introduction)',
         text: '',
-        button: 'Download',
-        buttonUrl: process.env.PUBLIC_URL + '/img/equipment/IME_Eng.pdf',
-        image: process.env.PUBLIC_URL + '/img/equipment/IME_Eng.jpg'
+        button: false,
+        buttonUrl: '/img/equipment/IME_Eng.pdf',
+        pic: 'IME_Eng.jpg'
     },
     {
         titel_eng: 'Vacuum Metallurgy',
         text_eng: '',
         titel: 'Vacuum Metallurgy',
         text: '',
-        button: 'Download',
-        buttonUrl: process.env.PUBLIC_URL + '/img/equipment/vacuum_flyer.pdf',
-        image: process.env.PUBLIC_URL + '/img/equipment/vacuum_flyer.jpg'
+        button: false,
+        buttonUrl: '/img/equipment/vacuum_flyer.pdf',
+        pic: 'vacuum_flyer.jpg'
     },
     {
         titel_eng: 'Recyclingmetallurgy',
         text_eng: '',
         titel: 'Recyclingmetallurgy',
         text: '',
-        button: 'Download',
-        buttonUrl: process.env.PUBLIC_URL + '/img/equipment/recyclingmetallurgy.pdf',
-        image: process.env.PUBLIC_URL + '/img/equipment/recyclingmetallurgy.jpg'
+        button: false,
+        buttonUrl: '/img/equipment/recyclingmetallurgy.pdf',
+        pic: 'recyclingmetallurgy.jpg'
     },
 ]
 
@@ -94,36 +95,44 @@ let equipment = [
 ];
 
 class Equipment extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
+            intro: {},
             // equipment: equipment,
             data: Db.get({action: 'EquipCat'}).then(res => res)
         }
     }    
 
     componentDidMount() {
-        Db.get({action: 'EquipCat'}).then((res) => {
+        // Db.get({action: 'EquipCat'}).then((res) => {
+        //     this.setState({data: res});
+        // });
+        // this.updateIntro();
+        this.APICalls.get({endpoint: 'Equipment/Technology'}).then(res => {
             this.setState({data: res});
         });
-        this.updateIntro();
+        this.APICalls.get({endpoint: 'Texts', meta: 'Equipment'}).then(res => {
+            this.setState({intro: res});
+        });
     }
     
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.webText !== prevProps.webText) {
-          this.updateIntro();
-        }
-    }
+    // componentDidUpdate(prevProps) {
+    //     // Typical usage (don't forget to compare props):
+    //     if (this.props.webText !== prevProps.webText) {
+    //       this.updateIntro();
+    //     }
+    // }
     
-    updateIntro() {
-        if (localStorage.getItem('lang') === 'ge') {
-            this.setState({intro: intro});
-        } else {
-            this.setState({intro: intro_eng});
-        }
-    }
+    // updateIntro() {
+    //     if (localStorage.getItem('lang') === 'ge') {
+    //         this.setState({intro: intro});
+    //     } else {
+    //         this.setState({intro: intro_eng});
+    //     }
+    // }
     
     render() {
         // let boxContent = Array();
@@ -151,7 +160,12 @@ class Equipment extends Component {
                 };
             });
         }
-        return(
+        let texts = (this.context) ? this.context.webText : null;
+        let intro = '';
+        if (this.state.intro.success) {
+            intro = this.state.intro.results.filter(x => x.sprache == this.context.language)[0].txt;
+        }
+        return (texts == null) ? '' : (
             <div className="equipment">
                 <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-208.jpg'} transformY='0%' overlay=''/>
                 <div className="d-flex justify-content-between container sidebar-right0">
@@ -164,19 +178,19 @@ class Equipment extends Component {
                             <div className="">
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
-                                        <h2 className="heading">Flyer</h2>
+                                        <h2 className="heading">{texts.equipment.flyer}</h2>
                                         <div className="intro-wrap p-4 bg-grey">
                                         <div className="px-2">
                                             <div className="row">
                                                 <div className="py-2 col-12 col-sm-7">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                                                    <div className="" dangerouslySetInnerHTML={{__html: intro}} />
                                                     <div className="row">
                                                         <div className="py-3 col-12 col-sm-7">
                                                             <ul>
                                                                 {slides.map((elm, index) => {
-                                                                    if (index !== 0) {
+                                                                    if (index !== -1) {
                                                                         return (
-<li><a href={elm.buttonUrl}>{elm.titel_eng}</a></li>
+<li key={index}><a href={elm.buttonUrl}>{elm.titel_eng}</a></li>
                                                                         )
                                                                     }
                                                                 })}
@@ -192,7 +206,7 @@ class Equipment extends Component {
                                                 </div>
                                                 <div className="py-2 col-12 col-sm-5">
                                                     <div style={{'margin': '-15px 0'}}>
-                                                    <NewsSlider slides={slides} className="equipment-slider" height="250px"/>
+                                                    <NewsSlider slides={slides} imgFolder={process.env.PUBLIC_URL + '/img/equipment/'} externalUrl="1" className="equipment-slider" height="250px"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -200,7 +214,7 @@ class Equipment extends Component {
                                         </div>
                                     </div>
                                     <div id="topics" className="py-3">
-                                        <h2 className="heading">Equipment</h2>
+                                        <h2 className="heading">{texts.equipment.title}</h2>
                                         <div className="">
                                             <div className="row">
                                                 {/* <div className="col-12 col-lg-4 d-flex">
@@ -225,5 +239,6 @@ class Equipment extends Component {
         );
     }
 }
+Equipment.contextType = globalLangStateContext;
 
 export default withLangSwitchListener(Equipment);

@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeaderBanner from '../HeaderBanner';
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
-import Db from '../../control/class.db';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
 
 let intro = '<p>Our whole series of Dr.- thesis can be viewed and purchased at the following link. <a href="http://www.shaker.de/de/content/catalogue/index.asp?lang=de&amp;ID=6&amp;category=280" target="_blank" rel="nofollow noopener"> Search PhD Thesis</a>.</p>';
 let publText = '<p>Here academic publications of the IME since 2000 are listed, which are usually available for download as PDF-file. Authors depicted in blue belong or belonged to IME. In order to view the documents you need the <a target="_blank" rel="nofollow noopener" href="http://www.adobe.com/de/products/acrobat/readstep2.html">Adobe-Acrobat-Reader</a>.</p>';
@@ -32,61 +33,79 @@ let publText = '<p>Here academic publications of the IME since 2000 are listed, 
 // ]
 
 export default class Publications extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
-            publText: publText,
+            intro: {},
+            // publText: {},
             // publications: publications
         }
-    }    
-    
+    }
+
+    componentDidMount() {
+        this.APICalls.get({ endpoint: 'Texts', meta: 'Publication' }).then(res => {
+            this.setState({ intro: res });
+        });
+    }
+
     render() {
-        return(
+        if (!this.context.webText) return '';
+        let phdText = '', pubText = '';
+        if (this.state.intro.success) {
+            let texts = this.state.intro.results.filter(x => x.sprache == this.context.language);
+            console.log(texts);
+            texts.forEach((elm) => {
+                if (elm.field == 'phdthesis') phdText = elm.txt;
+                if (elm.field == 'publications') pubText = elm.txt;
+            });
+        }
+        return (
             <div className="publications">
-                <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark'/>
+                <HeaderBanner img={process.env.PUBLIC_URL + '/img/home-slider/160224-IME-057.jpg'} transformY='5%' overlay='dark' />
                 <div className="d-flex justify-content-between container sidebar-right0">
                     {/* <LeftSidebar/> */}
                     <div id="" role="article" className="main-content">
                         {/* <FacultyStage/> */}
                         <div id="wrapper-2-outer0">
-                        <div id="wrapper">
-                            {/*googleon: all*/}
-                            <div className="">
-                                <div className="content" role="article">
-                                    <div id="intro" className="py-3">
-                                        <h2 className="heading">PhD Thesis</h2>
-                                        <div className="intro-wrap p-4 bg-grey">
-                                        <div className="px-2">
-                                            <div className="row">
-                                                <div className="py-2 col-12 col-sm-3">
-                                                <figure>
-                                                    <img src={process.env.PUBLIC_URL + '/img/publications/Drarbeit.png'} alt="Building of the IME" />
-                                                </figure>
-                                                </div>
-                                                <div className="py-2 col-12 col-sm-9">
-                                                    <div className="" dangerouslySetInnerHTML={{__html: this.state.intro}} />
+                            <div id="wrapper">
+                                {/*googleon: all*/}
+                                <div className="">
+                                    <div className="content" role="article">
+                                        <div id="intro" className="py-3">
+                                            <h2 className="heading">{this.context.webText.publications.phd_thesis}</h2>
+                                            <div className="intro-wrap p-4 bg-grey">
+                                                <div className="px-2">
+                                                    <div className="row">
+                                                        <div className="py-2 col-12 col-sm-3">
+                                                            <figure>
+                                                                <img src={process.env.PUBLIC_URL + '/img/publications/Drarbeit.png'} alt="Building of the IME" />
+                                                            </figure>
+                                                        </div>
+                                                        <div className="py-2 col-12 col-sm-9">
+                                                            <div className="" dangerouslySetInnerHTML={{ __html: phdText }} />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="publications" className="py-3">
+                                            <h2 className="heading">{this.context.webText.publications.title}</h2>
+                                            <div className="row mb-3">
+                                                <div className="col-11" dangerouslySetInnerHTML={{ __html: pubText }} />
+                                                <div className="col-1">
+                                                    <img className="float-right" src={process.env.PUBLIC_URL + '/img/publications/pdf_icon_small.gif'} alt="Building of the IME" />
+                                                </div>
+                                            </div>
+                                            <PublicationTable teamId="-1" search="1" thead="1" />
                                         </div>
-                                    </div>
-                                    <div id="publications" className="py-3">
-                                        <h2 className="heading">Publications</h2>
-                                        <div className="row mb-3">
-                                        <div className="col-11" dangerouslySetInnerHTML={{__html: this.state.publText}} />
-                                        <div className="col-1">
-                                        <img className="float-right" src={process.env.PUBLIC_URL + '/img/publications/pdf_icon_small.gif'} alt="Building of the IME" />
-                                        </div>
-                                        </div>
-                                        <PublicationTable teamId="-1" search="1" thead="1"/>
                                     </div>
                                 </div>
-                            </div>
-                            {/* <p className="to-top-link">
+                                {/* <p className="to-top-link">
                             <a href="#">top</a>
                             </p> */}
-                        </div>
+                            </div>
                         </div>
                     </div>
                     {/* <RightSidebar/> */}
@@ -95,3 +114,4 @@ export default class Publications extends Component {
         );
     }
 }
+Publications.contextType = globalLangStateContext

@@ -5,9 +5,11 @@ import { Link, useHistory, withRouter } from "react-router-dom";
 import Box from '../Boxes/Box';
 import PublicationTable from '../Publications/PublicationTable';
 import '../Publications/publications.scss';
-import Db from '../../control/class.db';
+// import Db from '../../control/class.db';
 import ProjectsAndEvents from '../UniCoop/ProjectsAndEvents';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
+import imeAPICalls from '../../imeAPICalls';
+import { globalLangStateContext } from '../../UserContext';
 
 let intro = '<p></p>';
 let unis = [
@@ -102,26 +104,32 @@ let publications = [
 ]
 
 class UniDetails extends Component {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
         this.state = {
             id: 0,
             // unis: unis,
             // ppse: ppse,
-            publications: publications,
-            unis: Db.get({action: 'UniCoop', id: this.props.match.params.id}).then(res => res),
+            publications: {},
+            unis: {},
         }
     }    
 
     componentDidMount() {
         const id = this.props.match.params.id;
         this.setState({id: id});
-        Db.get({action: 'UniCoop', id}).then((res) => {
+        // Db.get({action: 'UniCoop', id}).then((res) => {
+        //     this.setState({unis: res});
+        // });
+        this.APICalls.get({ endpoint: 'Link/Unicoop', id: id}).then(res => {
             this.setState({unis: res});
-        });
+        })
     }
     
     render() {
+        if (!this.context) return '';
         // let uniId = this.props.match.params.id;
         // const uni = this.state.unis.find(elm => elm.id == uniId);
         let uni = null;
@@ -130,18 +138,18 @@ class UniDetails extends Component {
             console.log(uni);
             uni.persons = [
                 {
-                    'title': uni.firstprofessorname,
-                    'title_eng': uni.firstprofessorname,
+                    'title': uni.professor1,
+                    'title_eng': uni.professor1,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic1
                 },
                 {
-                    'title': uni.secondprofessorname,
-                    'title_eng': uni.secondprofessorname,
+                    'title': uni.professor2,
+                    'title_eng': uni.professor2,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic2
                 },
                 {
-                    'title': uni.thirdprofessorname,
-                    'title_eng': uni.thirdprofessorname,
+                    'title': uni.professor3,
+                    'title_eng': uni.professor3,
                     'image': process.env.PUBLIC_URL + '/img/unikooperation/' + uni.pic3
                 },
             ]
@@ -160,7 +168,7 @@ class UniDetails extends Component {
                                 <div className="content" role="article">
                                     <div id="intro" className="py-3">
                                         {/* {this.state.id} */}
-                                        <h2 className="heading"><Link className="d-inline-block " to="/network">Network &amp; Partners</Link> <span className="text-dark">&#187;</span> <a className="d-inline-block" rel="noopener noreferrer" target="_blank" href={uni.externalUrl}>{uni.uni}</a></h2>
+                                        <h2 className="heading"><Link className="d-inline-block " to="/network">{this.context.webText.home.network_partners}</Link> <span className="text-dark">&#187;</span> <a className="d-inline-block" rel="noopener noreferrer" target="_blank" href={uni.externalUrl}>{uni.uni}</a></h2>
                                                 {/* <div className="py-2 col-12 col-sm-12" dangerouslySetInnerHTML={{__html: this.state.intro}} /> */}
                                         <div className=" row">
                                             <div className="col-12 col-sm-12">
@@ -201,4 +209,5 @@ class UniDetails extends Component {
         );
     }
 }
+UniDetails.contextType = globalLangStateContext
 export default withLangSwitchListener(withRouter(UniDetails));

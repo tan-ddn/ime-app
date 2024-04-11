@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 // import '../Scss/box.scss';
-import Db from '../../control/class.db';
+// import Db from '../../control/class.db';
 import Box from '../Boxes/Box';
 import NewsBox from '../Boxes/NewsBox';
 import ResponsiveComponent from '../ResponsiveComponent';
 import SanitizedHTML from 'react-sanitized-html';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
 import Slider from 'react-slick';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
 
 class EventsBox extends ResponsiveComponent {
+    APICalls = new imeAPICalls();
+
     constructor(props) {
         super(props);
 
@@ -20,17 +24,18 @@ class EventsBox extends ResponsiveComponent {
                 // date: '',
                 // image: process.env.PUBLIC_URL + '/img/calendar-1990453_1280.jpg'
             // }
-            data: Db.get({action: 'CalendarDate'}).then(res => res)
+            data: {}
         };
     }
 
-    componentDidMount() {
-        Db.get({action: 'CalendarDate'}).then((res) => {
+    componentDidMount() {            
+        this.APICalls.get({endpoint: 'Termin'}).then((res) => {
             this.setState({data: res})
         })
     }
 
     render() {
+        if (!this.context) return '';
         const settings = {
             centerMode: true,
             centerPadding: '0px',
@@ -48,7 +53,7 @@ class EventsBox extends ResponsiveComponent {
             // image: process.env.PUBLIC_URL + '/img/calendar-1990453_1280.jpg'
         };
         let description = '';
-        let slider = null;
+        let slider = 'No event at the moment.';
         if (this.state.data.success) {
             // let date = this.state.data.results[0];
             let date = this.state.data.results;
@@ -60,7 +65,7 @@ class EventsBox extends ResponsiveComponent {
             slider = (
                 <Slider {...settings}>
                     {date.map((item, index) => {
-                        if (localStorage.getItem('lang') === 'ge') {
+                        if (this.context.lang === 'ge') {
                             description = '<h6><b>'+item.t_titel+'</b></h6>';
                             description += '<dl><dt>Terminart:</dt><dd class="text-capitalize">'+item.ty_termin+'</dd>';
                             description += '<dt>Beschreibung:</dt><dd>'+item.t_beschreibung+'</dd>';
@@ -79,9 +84,9 @@ class EventsBox extends ResponsiveComponent {
                     )})}
                 </Slider>);
         }
-        return (description == '') ? 'Loading...' : (
+        return (
             <div className="">
-                <NewsBox classNames="event-slider" title={this.props.webText.news.activities_events} height={this.props.height}>
+                <NewsBox classNames="event-slider" title={this.context.webText.news.activities_events} height={this.props.height}>
             {/* <div id="events" className={"events-box news-box event-slider " + this.props.classNames} style={{height: `${this.props.height}`}}>
                 <div className="events-wrapper">
                     <h5 className="box-title">
@@ -96,4 +101,5 @@ class EventsBox extends ResponsiveComponent {
         )
     }
 }
+EventsBox.contextType = globalLangStateContext;
 export default withLangSwitchListener(EventsBox);

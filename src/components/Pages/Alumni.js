@@ -23,29 +23,20 @@ class Alumni extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            intro: intro,
             // data: null,
         };
     }    
 
     componentDidMount() {
-        this.updateIntro();
+
     }
     
       componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
         if (this.props.webText !== prevProps.webText) {
-          this.updateIntro();
+
         }
       }
-    
-    updateIntro() {
-        if (localStorage.getItem('lang') === 'ge') {
-            this.setState({intro: intro});
-        } else {
-            this.setState({intro: intro_eng});
-        }
-    }
     
     // componentDidMount() {
         // let db = new Db('team_einteilung');
@@ -81,7 +72,7 @@ class Alumni extends Component {
     // }
     
     render() {
-        let teams = 'Loading...';
+        let teams = '';
         // console.log(this.props.data);
         if (this.props.data.success) {
             //Remove Alumni group

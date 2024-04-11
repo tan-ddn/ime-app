@@ -4,8 +4,12 @@ import Db from '../../control/class.db';
 import ResponsiveComponent from '../ResponsiveComponent';
 import withLangSwitchListener from '../Languages/LangSwitchListener';
 import SanitizedHTML from 'react-sanitized-html';
+import { globalLangStateContext } from '../../UserContext';
+import imeAPICalls from '../../imeAPICalls';
 
 class HomeTxt extends ResponsiveComponent {
+  APIcalls = new imeAPICalls();
+
     constructor(props) {
       super(props);
       this.state = {
@@ -18,37 +22,42 @@ class HomeTxt extends ResponsiveComponent {
     }
   
     componentDidUpdate(prevProps) {
-      // Typical usage (don't forget to compare props):
-      if (this.props.webText !== prevProps.webText) {
-        this.fetchData();
-      }
+      //Typical usage (don't forget to compare props):
+      // if (this.props.webText !== prevProps.webText) {
+      //   this.fetchData();
+      // }
     }
   
     fetchData() {
-      let lang = 1;
-      if (localStorage.getItem('lang') === 'en') {
-        lang = 2;
-      }
-      Db.get({action: 'HomeTxt', id: lang}).then((res) => {
+      // let lang = 1;
+      // if (localStorage.getItem('lang') === 'en') {
+      //   lang = 2;
+      // }
+      // Db.get({action: 'HomeTxt', id: lang}).then((res) => {
+      //   this.setState({data: res});
+      // });
+
+      this.APIcalls.get({endpoint: 'Texts', meta: 'HomeGreen'}).then((res) => {
         this.setState({data: res});
       });
     }
   
     render() {
+      if (!this.context.webText) return '';
       let greenLogoAlign = (this.state.screenSize === 'xs') ? 'center' : 'right';
       let homeTxt = {
         title: 'Loading...',
         txt: 'Loading...',
       };
       if (this.state.data.success) {
-          let data = this.state.data.results[0];
+          let data = this.state.data.results.filter(x => x.sprache == this.context.language)[0];
           console.log(data);
           homeTxt.title = data.titel;
           homeTxt.txt = data.txt;
       }
       return (
         <div id="homeTxt">
-            <h2 className="heading">{homeTxt.title}</h2>
+            <h2 className="heading" dangerouslySetInnerHTML={{__html: this.context.webText.home.the_world_of_green_metallurgy}} />
             <div className="row" style={{marginTop: '30px'}} >
             <SanitizedHTML className="col-12 col-sm-9" html={homeTxt.txt} />
             <div className="col-12 col-sm-3">
@@ -72,4 +81,5 @@ class HomeTxt extends ResponsiveComponent {
       );
     }
   }
+  HomeTxt.contextType = globalLangStateContext;
   export default withLangSwitchListener(HomeTxt);

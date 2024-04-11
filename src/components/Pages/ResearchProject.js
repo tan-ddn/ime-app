@@ -7,6 +7,7 @@ import '../Publications/publications.scss';
 import ResearchDetails from '../Research/ResearchDetails';
 import ProjectList from '../Research/ProjectList';
 import Db from '../../control/class.db';
+import { globalLangStateContext } from '../../UserContext';
 
 let intro = '<p>The IME pursues the objective to use the high potential of WEEE as a resource for various metals by developing a sustainable metallurgical recycling process. The focal point is the recovery of base metals (copper, aluminum), precious metals (gold, silver, platinum and palladium) as well as critical elements (gallium, germanium and indium). Currently, five doctoral studies examine different approaches of hydro- and pyrometallurgical processes concerning their selectivity, efficiency and flexibility. These processes aim at the treatment of several waste streams (such as printed circuit boards, shredder dust or whole smartphones) to recover various valuable metals with minimal losses. By elaborating several single methods, a process concept will be developed, which enables the recovery of individual elements through a flexible combination of these methods, adapted to a given waste stream and particular requirements.</p><p>Key aspects: Reductive and energetic use of organics; thermal preparation of rest fractions (Pyrolysis); autothermal metallurgy, microwave heating; slag design and controlled solidification for metal concentration; critical metals recovery; autogenious pellets with respect to phase separation; TBRC furnace development for treating pure WEEE; scraps synergies by waste mixtures</p>';
 let projectList = [
@@ -74,6 +75,7 @@ class ResearchProject extends Component {
     }
     
     render() {
+        if (!this.context.webText) return '';
         // let keywords = '';
         // if (this.state.data.success) {
         //     keywords = this.state.data.results[0].publicationKeywords;
@@ -93,11 +95,11 @@ class ResearchProject extends Component {
                                 <div className="content" role="article">
                                     <ResearchDetails id={this.state.id} />
                                     <div id="project-list" className="py-3">
-                                        <h2 className="heading">Project List</h2>
+                                        <h2 className="heading">{this.context.webText.project.project_list}</h2>
                                         <ProjectList id={this.state.id} />
                                     </div>
                                     <div id="publications" className="py-3">
-                                        <h2 className="heading">Publications</h2>
+                                        <h2 className="heading">{this.context.webText.publications.title}</h2>
                                         <div className="row">
                                             <div className="col-8"></div>
                                             {/* <div className="col-4">
@@ -138,4 +140,5 @@ class ResearchProject extends Component {
         );
     }
 }
+ResearchProject.contextType = globalLangStateContext;
 export default withRouter(ResearchProject);

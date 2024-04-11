@@ -5,6 +5,7 @@ import ResponsiveComponent from './ResponsiveComponent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LangSwitcher from './Languages/LangSwitcher';
 import withLangSwitchListener from './Languages/LangSwitchListener';
+import { globalLangStateContext } from '../UserContext';
 
 class HeaderNav extends ResponsiveComponent{
   constructor(props) {
@@ -67,8 +68,10 @@ class HeaderNav extends ResponsiveComponent{
       this.state.className = this.state.className.replaceAll(' horizontal', ' vertical');
     }
 
-    // console.log(this.props.webText);
-    return (this.state.webText === null) ? '' : (
+    // console.log(webText);
+    let webText = (this.context.webText)? this.context.webText : null;
+    console.log(webText);
+    return (webText == null) ? '' : (
       <div id={this.props.id} role="navigation" className={this.state.className}>
         {/* <div className="ime-logo-container">
           <div className="ime-logo">
@@ -85,51 +88,102 @@ class HeaderNav extends ResponsiveComponent{
           
           <ol className="toc style2">
             <li className="rwth_jsopen">
-              <Link to="/" className="panel" title={this.props.webText.home.title+" (Main Navigation)"} aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">{this.props.webText.home.title}</Link>
+              <Link to="/" className="panel" title={webText.home.title+" (Main Navigation)"} aria-controls="nav-section-0" tabIndex={0} aria-expanded="false" role="button" data-href="#">{webText.home.title}</Link>
             </li>
             <li className="rwth_jsopen dropdown">
-              <Link to="/about" className="panel" title={this.props.webText.about.title+" (Main Navigation)"} aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">{this.props.webText.about.title}</Link>
+              <Link to="/about" className="panel" title={webText.about.title+" (Main Navigation)"} aria-controls="nav-section-1" tabIndex={1} aria-expanded="false" role="button" data-href="#">{webText.about.title}</Link>
               <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
               <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li className="dropdown-item">
-                <Link to="/preise" className="panel" title={this.props.webText.about.awards+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.about.awards}</Link>
+                <Link to="/about#organization" className="panel" title={webText.about.our_organization+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.about.our_organization}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/about#research" className="panel" title={webText.about.research_areas+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.about.research_areas}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/about#history" className="panel" title={webText.about.our_history+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.about.our_history}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/preise" className="panel" title={webText.about.awards+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.about.awards}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/association" className="panel" title={webText.social.friend_association+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.social.friend_association}</Link>
                 </li>
               </ol>
             </li>
             <li className="rwth_jsopen dropdown">
-              <Link to="/team" className="panel" title={this.props.webText.team.title+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.team.title}</Link>
+              <Link to="/team" className="panel" title={webText.team.title+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.team.title}</Link>
               <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
               <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li className="dropdown-item">
-                <Link to="/alumni" className="panel" title={this.props.webText.team.alumni+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{this.props.webText.team.alumni}</Link>
+                <Link to="/team#staff" className="panel" title={webText.team.our_team+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.team.our_team}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/alumni" className="panel" title={webText.team.alumni+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.team.alumni}</Link>
+                </li>
+              </ol>
+            </li>
+            <li className="rwth_jsopen dropdown">
+              <Link to="/research" className="panel" title={webText.research.title+" (Main Navigation)"} aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">{webText.research.title}</Link>
+              <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li className="dropdown-item">
+                <Link to="/research#topics" className="panel" title={webText.research.topics+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={1} aria-expanded="false" role="button" data-href="#">{webText.research.topics}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/research#intro" className="panel" title={webText.research.research_projects+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={1} aria-expanded="false" role="button" data-href="#">{webText.research.research_projects}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/publications" className="panel" title={webText.publications.title+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={1} aria-expanded="false" role="button" data-href="#">{webText.publications.title}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/network#uni-partner" className="panel" title={webText.network.international_network+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={1} aria-expanded="false" role="button" data-href="#">{webText.network.international_network}</Link>
                 </li>
               </ol>
             </li>
             <li className="rwth_jsopen">
-              <Link to="/research" className="panel" title={this.props.webText.research.title+" (Main Navigation)"} aria-controls="nav-section-3" tabIndex={3} aria-expanded="false" role="button" data-href="#">{this.props.webText.research.title}</Link>
+              <Link to="/equipment" className="panel" title={webText.equipment.title+" (Main Navigation)"} aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">{webText.equipment.title}</Link>
             </li>
-            <li className="rwth_jsopen">
-              <Link to="/equipment" className="panel" title={this.props.webText.equipment.title+" (Main Navigation)"} aria-controls="nav-section-4" tabIndex={4} aria-expanded="false" role="button" data-href="#">{this.props.webText.equipment.title}</Link>
-            </li>
-            <li className="rwth_jsopen">
-              <Link to="/study" className="panel" title={this.props.webText.study.title+" (Main Navigation)"} aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">{this.props.webText.study.title}</Link>
+            <li className="rwth_jsopen dropdown">
+              <Link to="/study" className="panel" title={webText.study.title+" (Main Navigation)"} aria-controls="nav-section-5" tabIndex={5} aria-expanded="false" role="button" data-href="#">{webText.study.title}</Link>
+              <a className="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+              <ol className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li className="dropdown-item">
+                <Link to="/study#intro" className="panel" title={webText.study.teaching+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.study.teaching}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/study#hiwi" className="panel" title={webText.study.hiwi_jobs+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.study.hiwi_jobs}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/study#thesis" className="panel" title={webText.study.thesis_topics+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.study.thesis_topics}</Link>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/study#exams" className="panel" title={webText.study.mock_exams+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.study.mock_exams}</Link>
+                </li>
+                <li className="dropdown-item">
+                <a href="http://imeperiodensystem.579146461784.hostingkunde.de/" className="panel" title={webText.research.periodic_table+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#" rel="noopener noreferrer" target="_blank">{webText.research.periodic_table}</a>
+                </li>
+                <li className="dropdown-item">
+                <Link to="/excursions" className="panel" title={webText.social.excursions+" (Main Navigation)"} aria-controls="nav-section-2" tabIndex={2} aria-expanded="false" role="button" data-href="#">{webText.social.excursions}</Link>
+                </li>
+              </ol>
             </li>
             {this.props.type === 'mobile-nav' && <>
             <li className="rwth_jsopen">
-              <a className="panel" title={this.props.webText.news.title+" (Main Navigation)"} aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">{this.props.webText.news.title}</a>
+              <Link to="/news" className="panel" title={webText.news.title+" (Main Navigation)"} aria-controls="nav-section-6" tabIndex={6} aria-expanded="false" role="button" data-href="#">{webText.news.title}</Link>
             </li>
-            <li className="rwth_jsopen">
-              <a className="panel" title={this.props.webText.publications.title+" (Main Navigation)"} aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">{this.props.webText.publications.title}</a>
-            </li>
+            {/* <li className="rwth_jsopen">
+              <Link to="/publications" className="panel" title={webText.publications.title+" (Main Navigation)"} aria-controls="nav-section-7" tabIndex={7} aria-expanded="false" role="button" data-href="#">{webText.publications.title}</Link>
+            </li> */}
             {/* <li className="rwth_jsopen">
               <a className="panel" title="Research Areas (Main Navigation)" aria-controls="nav-section-8" tabIndex={8} aria-expanded="false" role="button" data-href="#">Research Areas</a>
             </li> */}
-            <li className="rwth_jsopen">
+            {/* <li className="rwth_jsopen">
               <a className="panel" title="Public Funded Projects (Main Navigation)" aria-controls="nav-section-9" tabIndex={9} aria-expanded="false" role="button" data-href="#">Public Funded Projects</a>
-            </li>
-            <li className="rwth_jsopen">
+            </li> */}
+            {/* <li className="rwth_jsopen">
               <a className="panel" title="Social Activities (Main Navigation)" aria-controls="nav-section-10" tabIndex={10} aria-expanded="false" role="button" data-href="#">Social Activities</a>
-            </li>
+            </li> */}
             </>}
           </ol>
           <ol className="toc style3 ml-4">
@@ -149,10 +203,14 @@ class HeaderNav extends ResponsiveComponent{
                                     {/* <a href="language">
                                     <img alt="Language icon" src={process.env.PUBLIC_URL + '/img/icons/flag_usa.png'} />
                                     </a> */}
-                                    <LangSwitcher />
+                                    <globalLangStateContext.Consumer>
+                                      {({ lang, updateLanguage }) => (
+                                        <LangSwitcher context={{ lang, updateLanguage }} />
+                                      )}
+                                    </globalLangStateContext.Consumer>
                                 </li>
                                 <li className="menu-item" title="Staff login">
-                                    <a target="_blank" href="http://www.greenmetallurgy.rwth-aachen.de/ime-dashboard/">
+                                    <a target="_blank" href="http://www.metallurgie.rwth-aachen.de/ime-dashboard">
                                     <img alt="Login icon" src={process.env.PUBLIC_URL + '/img/icons/avatar-1577909_640.png'} />
                                     </a>
                                 </li>
@@ -174,7 +232,7 @@ class HeaderNav extends ResponsiveComponent{
                                     </a>
                                 </li>
                                 <li className="menu-item">
-                                    <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/ime_rwth?igshid=wd2tyd7dg6b6" title="Instagram">
+                                    <a rel="noopener noreferrer" target="_blank" href="https://instagram.com/ime_rwth?igshid=YmMyMTA2M2Y=" title="Instagram">
                                     <img alt="Instagram icon" src={process.env.PUBLIC_URL + '/img/icons/132px-Instagram.png'} />
                                     </a>
                                 </li>
@@ -538,6 +596,7 @@ class HeaderNav extends ResponsiveComponent{
     )
   }
 }
+HeaderNav.contextType = globalLangStateContext;
 
 // export default withRouter(HeaderNav);
 export default withRouter(withLangSwitchListener(HeaderNav));

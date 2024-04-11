@@ -65,7 +65,7 @@ export default class Header extends ResponsiveComponent {
                     </p>
                     <div className="ime-logo-container">
                     <div className="ime-logo">
-                        <Link to="/" ><img alt="IME logo" src={process.env.PUBLIC_URL + '/img/ime_logo.png'} /></Link>
+                        <Link to="/" ><img alt="IME logo" src={process.env.PUBLIC_URL + '/img/ime_logo1.png'} /></Link>
                     </div>
                     </div>
                     {/* <div className="vertical-separator"></div>
